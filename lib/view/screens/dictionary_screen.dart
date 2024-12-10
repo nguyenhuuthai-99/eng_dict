@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class DictionaryScreen extends StatelessWidget {
   final String screenId = "DictionaryScreen";
@@ -6,6 +7,7 @@ class DictionaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return ListView(
+    );
   }
 }
