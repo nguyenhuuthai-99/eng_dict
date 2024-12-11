@@ -12,7 +12,7 @@ class CustomSearchBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        print("adf");
+        print("search word");
       },
       child: Container(
         decoration: BoxDecoration(
