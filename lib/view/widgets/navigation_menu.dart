@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:eng_dict/view/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,26 +14,32 @@ class NavigationMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     ScreenData data = Provider.of<ScreenData>(context);
     return Scaffold(
+      extendBody: true,
       bottomNavigationBar: NavigationBarTheme(
         data: buildNavigationBarThemeData(),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                color: Constant.kGreyBorder
-              )
-            )
+        child: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX:25, sigmaY: 25, tileMode: TileMode.mirror),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    color: Constant.kGreyBorder
+                  )
+                )
+              ),
+              child: NavigationBar(
+                  selectedIndex: data.index,
+                  indicatorColor: Colors.transparent,
+                  backgroundColor: Colors.white.withOpacity(0.4),
+                  onDestinationSelected: (index)=>data.changeIndex(index),
+                  destinations: const [
+                NavigationDestination(icon: Icon(CustomIcon.house),  label: "Home"),
+                NavigationDestination(icon:Icon(CustomIcon.book), label: "Dictionary"),
+                NavigationDestination(icon: Icon(CustomIcon.vocabulary),  label: "Vocabulary"),
+              ],),
+            ),
           ),
-          child: NavigationBar(
-              selectedIndex: data.index,
-              indicatorColor: Colors.transparent,
-              backgroundColor: Colors.white,
-              onDestinationSelected: (index)=>data.changeIndex(index),
-              destinations: const [
-            NavigationDestination(icon: Icon(CustomIcon.house),  label: "Home"),
-            NavigationDestination(icon:Icon(CustomIcon.book), label: "Dictionary"),
-            NavigationDestination(icon: Icon(CustomIcon.vocabulary),  label: "Vocabulary"),
-          ],),
         ),
       ),
       body: data.screens[data.index],

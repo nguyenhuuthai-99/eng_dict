@@ -15,6 +15,12 @@ class Constant {
   static const Color kButtonUnselectedColor = Color(0xB81B1F26);
   static const Color kGreyText = Color(0xff888888);
   static const Color kLightGreyText = Color(0x6b000000);
+  static const Gradient kGradient = LinearGradient(
+      transform: GradientRotation(-0.5),
+      colors: [
+        Color(0xffF47728),
+        Color(0xffFBA820)
+  ]);
 
   //Text Colors
   static const Color kHeading1Color = Color(0xcc000000);

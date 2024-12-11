@@ -1,15 +1,14 @@
 import 'dart:ui';
 
 import 'package:eng_dict/model/word_form.dart';
+import 'package:eng_dict/view/component/glass_app_bar.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/widgets/readings_box.dart';
 import 'package:eng_dict/view/widgets/word_of_the_day_box.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:just_audio/just_audio.dart';
 import '../../model/word.dart';
 import '../utils/custom_icon.dart';
-import '../widgets/search_bar.dart';
+import '../component/search_bar.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -25,9 +24,6 @@ class HomeScreen extends StatelessWidget {
 
 
   init(){
-    //Build Appbar
-    appBar = buildAppBar();
-
     //Get Word of the day
     wordForm = getWordOfTheDay();
 
@@ -49,27 +45,12 @@ class HomeScreen extends StatelessWidget {
   }
 
 
-
-  AppBar buildAppBar(){
-    return AppBar(
-      title: Text("Home"),
-      backgroundColor: Colors.white.withOpacity(0.2),
-      surfaceTintColor: Colors.grey.withOpacity(0.2),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        child: ClipRRect(
-            child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 25, sigmaY: 25),
-                child: appBar)),
-        preferredSize: Size(MediaQuery.of(context).size.width, appBar.preferredSize.height),
-      ),
+      appBar: GlassAppBar(title: 'Home',),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Constant.kMarginLarge),
         child: ListView(
@@ -78,13 +59,52 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: Constant.kMarginExtraLarge,),
               WordOfTheDayBox(wordForm: wordForm,),
               const SizedBox(height: Constant.kMarginExtraLarge,),
-              const ReadingsBox()
+              const ReadingsBox(),
+              const RemoveAdsBox()
           ],
         ),
       ),
     );
   }
 }
+
+class RemoveAdsBox extends StatelessWidget {
+  const RemoveAdsBox({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: Constant.kMarginExtraLarge),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(Constant.kMarginSmall)),
+        gradient: Constant.kGradient,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: Constant.kMarginLarge, vertical: Constant.kMarginExtraSmall),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Remove Ads", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24,color: Colors.white),),
+                  Text(
+                    "Enjoy searching words without distraction ad asdf asf ", style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic, fontSize: 15),),
+                  Icon(CustomIcon.arrow, color: Colors.white,size: 30,)
+            
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(right: 30),
+              child: Icon(CustomIcon.noads, color: Colors.white,size: 50,))
+        ],
+      ),
+    );
+  }
+}
+
 
 
 
