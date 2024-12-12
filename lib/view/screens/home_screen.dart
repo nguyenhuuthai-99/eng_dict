@@ -14,8 +14,6 @@ class HomeScreen extends StatelessWidget {
 
   final String screenId = "HomeScreen";
 
-  late AppBar appBar;
-
   late WordForm wordForm;
 
   HomeScreen({super.key}){
