@@ -108,8 +108,9 @@ class IPAComponents extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async{
-        await playSound();
-        print("asdf");
+        if(canPlay){
+          await playSound();
+        }
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
