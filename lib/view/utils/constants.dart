@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 class Constant {
@@ -17,16 +15,12 @@ class Constant {
   static const Color kLightGreyText = Color(0x6b000000);
   static const Gradient kGradient = LinearGradient(
       transform: GradientRotation(-0.5),
-      colors: [
-        Color(0xffF47728),
-        Color(0xffFBA820)
-  ]);
+      colors: [Color(0xffF47728), Color(0xffFBA820)]);
 
   //Text Colors
   static const Color kHeading1Color = Color(0xcc000000);
   static const Color kHeading2Color = Color(0xb81b1f26);
   static const Color kContentTextColor = Color(0xB8000000);
-
 
   //App dimensions
   static const int kIconSize = 35;
@@ -45,14 +39,25 @@ class Constant {
   static const double kBorderRadiusExtraLarge = 28;
 
   //Text Style
-  static const TextStyle kBottomNavigationBarTextStyleSelected = TextStyle(color: kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w700);
-  static const TextStyle kBottomNavigationBarTextStyle = TextStyle(color: kButtonUnselectedColor, fontSize: 14, fontWeight: FontWeight.w700);
-  static const TextStyle kSearchBarTextStyle = TextStyle(color: kGreyText, fontSize: 15, fontStyle: FontStyle.italic,fontFamily: "Inter");
-  static const TextStyle kHeadingTextStyle = TextStyle(color: kHeading1Color, fontSize: 20, fontWeight: FontWeight.bold,fontFamily: "Inter");
-  static const TextStyle kHeading2TextStyle = TextStyle(color: kHeading2Color, fontSize: 16, fontWeight: FontWeight.bold);
-  static const TextStyle kIPATextStyle = TextStyle(color: kHeading2Color, fontSize: 16, fontWeight: FontWeight.w100);
+  static const TextStyle kBottomNavigationBarTextStyleSelected = TextStyle(
+      color: kPrimaryColor, fontSize: 14, fontWeight: FontWeight.w700);
+  static const TextStyle kBottomNavigationBarTextStyle = TextStyle(
+      color: kButtonUnselectedColor, fontSize: 14, fontWeight: FontWeight.w700);
+  static const TextStyle kSearchBarTextStyle = TextStyle(
+      color: kGreyText,
+      fontSize: 15,
+      fontStyle: FontStyle.italic,
+      fontFamily: "Inter");
+  static const TextStyle kHeadingTextStyle = TextStyle(
+      color: kHeading1Color,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      fontFamily: "Inter");
+  static const TextStyle kHeading2TextStyle = TextStyle(
+      color: kHeading2Color, fontSize: 16, fontWeight: FontWeight.bold);
+  static const TextStyle kIPATextStyle = TextStyle(
+      color: kHeading2Color, fontSize: 16, fontWeight: FontWeight.w100);
 
   //Border Radius
   static const Radius kRadiusSmall = Radius.circular(10);
-
 }

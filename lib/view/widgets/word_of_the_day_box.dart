@@ -57,7 +57,7 @@ class WordOfTheDayBox extends StatelessWidget {
                   ],
                 ),
               ),
-              Text( word.definition, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w100, color: Constant.kHeading2Color)),
+              Text( word.definition, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w100, color: Constant.kHeading2Color)),
               const Padding(
                 padding: EdgeInsets.only(top: Constant.kMarginMedium),
                 child: Row(
@@ -83,16 +83,20 @@ class WordOfTheDayBox extends StatelessWidget {
 }
 
 class IPAComponents extends StatelessWidget {
-  late bool canPlay;
+  bool canPlay = false;
   String accent;
   String IPA;
-  String soundURL;
-  IPAComponents({super.key,required this.accent, required this.IPA, required this.soundURL});
+  String? soundURL;
+  IPAComponents({super.key,required this.accent, required this.IPA, this.soundURL}){
+   if(soundURL!=null){
+     canPlay = true;
+   }
+  }
 
   Future<void> playSound()async {
     final AudioPlayer audioPlayer = AudioPlayer();
     String prefix = "https://dictionary.cambridge.org/";
-    String url = prefix + soundURL;
+    String url = prefix + soundURL!;
     try{
       await audioPlayer.setUrl(url);
       await audioPlayer.play();
