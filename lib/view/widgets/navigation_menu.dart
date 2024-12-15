@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:eng_dict/view/screens/dictionary_screen.dart';
 import 'package:eng_dict/view/screens/home_screen.dart';
+import 'package:eng_dict/view/screens/vocabulary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/constants.dart';
@@ -70,7 +71,7 @@ class ScreenData extends ChangeNotifier {
   final List<Widget> screens = [
     HomeScreen(),
     DictionaryScreen(),
-    Container(color: Colors.green),
+    VocabularyScreen(),
   ];
 
   int get index => _index;

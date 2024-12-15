@@ -2,8 +2,10 @@ import 'dart:ffi';
 
 import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/view/utils/constants.dart';
+import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DefinitionBox extends StatelessWidget {
   Word word;
@@ -15,63 +17,69 @@ class DefinitionBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (word.isPhrase) {
-      return buildPhraseBox();
+      return buildPhraseBox(context);
     }
     return buildWordBox();
   }
 
   Widget buildWordBox() {
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          vertical: Constant.kMarginMedium, horizontal: Constant.kMarginMedium),
+      padding: const EdgeInsets.only(
+          top: Constant.kMarginMedium,
+          left: Constant.kMarginMedium,
+          right: Constant.kMarginMedium,
+          bottom: Constant.kMarginSmall),
       child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.only(right: Constant.kMarginSmall),
-            child: Row(
-              children: [
-                Expanded(
-                    child: Text(
-                  "B1",
-                  style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                      color: Constant.kPrimaryColor,
-                      fontFamily: "Inter"),
-                )),
-                Icon(
-                  Icons.bookmark_outline,
-                  size: 30,
-                  color: Colors.redAccent,
-                )
-              ],
-            ),
+          Row(
+            children: [
+              Expanded(
+                  child: Text(
+                "B1",
+                style: GoogleFonts.inter(
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 20,
+                    color: Constant.kPrimaryColor),
+                // style: TextStyle(
+                //   fontSize: 20,
+                //   fontWeight: FontWeight.bold,
+                //   fontStyle: FontStyle.italic,
+                //   color: Constant.kPrimaryColor,
+                // ),
+              )),
+              const Icon(
+                CustomIcon.book_mark,
+                color: Colors.redAccent,
+              )
+            ],
           ),
           buildDefinitionText(
               "The word or words that a person, thing, or place is known by:"),
           Padding(
             padding: const EdgeInsets.only(
-                left: Constant.kMarginMedium, top: Constant.kMarginExtraSmall),
+                left: Constant.kMarginMedium,
+                top: Constant.kMarginExtraSmall,
+                bottom: Constant.kMarginSmall),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 buildExample(
-                    "•  Please write your full (= complete) name and address on the form."),
+                    "Please write your full (= complete) name and address on the form."),
                 buildExample(
-                    "•  Please write your full (= complete) name and address on the form."),
+                    "Please write your full (= complete) name and address on the form."),
                 buildExample(
-                    "•  Please write your full (= complete) name and address on the form."),
+                    "Please write your full (= complete) name and address on the form."),
                 buildExample(
-                    "•  Please write your full (= complete) name and address on the form."),
+                    "Please write your full (= complete) name and address on the form."),
                 buildExample(
-                    "•  Please write your full (= complete) name and address on the form."),
+                    "Please write your full (= complete) name and address on the form."),
                 buildExample(
-                    "•  Please write your full (= complete) name/and/address on the form."),
+                    "Please write your full (= complete) name/and/address on the form."),
                 buildExample(
-                    "•  Please write your full (= complete) name and address on the form."),
+                    "Please write your full (= complete) name and address on the form."),
                 buildExample(
-                    "•  Please write your full (= complete) name and address on the form."),
+                    "Please write your full (= complete) name and address on the form."),
               ],
             ),
           ),
@@ -87,25 +95,52 @@ class DefinitionBox extends StatelessWidget {
     );
   }
 
-  Widget buildPhraseBox() {
+  Widget buildPhraseBox(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            Text(
-              "phrase with ",
-              style: TextStyle(color: Constant.kGreyText),
-            ),
-            Text(
-              "Name",
-              style: TextStyle(color: Colors.black),
-            )
-          ],
+        Padding(
+          padding: const EdgeInsets.only(left: Constant.kMarginLarge),
+          child: Row(
+            children: [
+              Text(
+                "phrase with ",
+                style: TextStyle(
+                    color: Constant.kGreyText, fontStyle: FontStyle.italic),
+              ),
+              Text(
+                "Name",
+                style: TextStyle(
+                    color: Color(0xb82a3343), fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
         ),
         Container(
+          padding: EdgeInsets.symmetric(
+              horizontal: Constant.kMarginMedium,
+              vertical: Constant.kMarginMedium),
           color: Constant.kGreyBackground,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                children: [
+                  Expanded(
+                      child: buildPhraseTitle("Go by the name off something")),
+                  Icon(
+                    CustomIcon.book_mark,
+                    color: Constant.kAccentColor,
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: Constant.kMarginMedium),
+                child: Container(
+                  height: 1,
+                  color: Constant.kGreyLine,
+                ),
+              ),
               buildDefinitionText(
                   "The word or words that a person, thing, or place is known by:"),
               Padding(
@@ -116,29 +151,24 @@ class DefinitionBox extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     buildExample(
-                        "•  Please write your full (= complete) name and address on the form."),
+                        "Please write your full (= complete) name and address on the form."),
                     buildExample(
-                        "•  Please write your full (= complete) name and address on the form."),
+                        "Please write your full (= complete) name and address on the form."),
                     buildExample(
-                        "•  Please write your full (= complete) name and address on the form."),
+                        "Please write your full (= complete) name and address on the form."),
                     buildExample(
-                        "•  Please write your full (= complete) name and address on the form."),
+                        "Please write your full (= complete) name and address on the form."),
                     buildExample(
-                        "•  Please write your full (= complete) name and address on the form."),
+                        "Please write your full (= complete) name and address on the form."),
                     buildExample(
-                        "•  Please write your full (= complete) name/and/address on the form."),
+                        "Please write your full (= complete) name/and/address on the form."),
                     buildExample(
-                        "•  Please write your full (= complete) name and address on the form."),
+                        "Please write your full (= complete) name and address on the form."),
                     buildExample(
-                        "•  Please write your full (= complete) name and address on the form."),
+                        "Please write your full (= complete) name and address on the form."),
                   ],
                 ),
               ),
-              const Divider(
-                color: Constant.kGreyLine,
-                height: 30,
-                thickness: 0.8,
-              )
             ],
           ),
         ),
@@ -146,15 +176,30 @@ class DefinitionBox extends StatelessWidget {
     );
   }
 
+  RichText buildPhraseTitle(String title) {
+    return RichText(
+        text: TextSpan(
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Constant.kPrimaryColor),
+            children: buildClickableTextSpan(text: title)));
+  }
+
   RichText buildDefinitionText(String text) {
     return RichText(
         text: TextSpan(
             style: const TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black),
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: Constant.kHeading1Color),
             children: buildClickableTextSpan(text: text)));
   }
 
   RichText buildExample(String text) {
+    List<TextSpan> children = buildClickableTextSpan(text: text);
+    children.insert(
+        0, const TextSpan(style: TextStyle(fontSize: 18), text: "• "));
     return RichText(
         text: TextSpan(
             style: const TextStyle(
@@ -162,7 +207,7 @@ class DefinitionBox extends StatelessWidget {
                 letterSpacing: 0.1,
                 height: 1.5,
                 color: Colors.black87),
-            children: buildClickableTextSpan(text: text)));
+            children: children));
   }
 
   List<TextSpan> buildClickableTextSpan({required String text}) {
@@ -180,6 +225,7 @@ class DefinitionBox extends StatelessWidget {
         words.add(buildCharacter(String.fromCharCode(char)));
       }
     }
+    if (curString.isNotEmpty) words.add(buildClickableWord(curString));
     return words;
   }
 

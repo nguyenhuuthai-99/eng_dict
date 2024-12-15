@@ -10,8 +10,10 @@ class Constant {
   static const Color kGreyBackground = Color(0xffF2F2F2);
   static const Color kGreyBorder = Color(0x1F767680);
   static const Color kGreyLine = Color(0xffE2E2E2);
+  static const Color kGreyVocabBorder = Color(0xffb1b1b1);
   static const Color kButtonUnselectedColor = Color(0xB81B1F26);
   static const Color kGreyText = Color(0xff888888);
+  static const Color kHyperLinkTextColor = Color(0xff007AFF);
   static const Color kLightGreyText = Color(0x6b000000);
   static const Gradient kGradient = LinearGradient(
       transform: GradientRotation(-0.5),
