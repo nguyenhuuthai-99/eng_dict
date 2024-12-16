@@ -28,7 +28,7 @@ class NavigationMenu extends StatelessWidget {
               child: NavigationBar(
                 selectedIndex: data.index,
                 indicatorColor: Colors.transparent,
-                backgroundColor: Colors.white.withOpacity(0.4),
+                backgroundColor: Colors.white.withOpacity(0.6),
                 height: 70,
                 onDestinationSelected: (index) => data.changeIndex(index),
                 destinations: const [
