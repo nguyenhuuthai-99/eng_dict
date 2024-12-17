@@ -1,4 +1,4 @@
-
+import 'package:eng_dict/view/screens/search_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,16 +11,14 @@ class CustomSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        print("search word");
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => SearchScreen()));
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Constant.kGreyBackground,
-          borderRadius: BorderRadius.circular(
-            Constant.kBorderRadiusSmall
-          )
-        ),
+            color: Constant.kGreyBackground,
+            borderRadius: BorderRadius.circular(Constant.kBorderRadiusSmall)),
         child: Padding(
           padding: const EdgeInsets.only(left: Constant.kMarginLarge),
           child: Row(
@@ -28,19 +26,32 @@ class CustomSearchBar extends StatelessWidget {
             children: [
               const Row(
                 children: [
-                  Icon(CustomIcon.search, color: Constant.kGreyText, size: 25,),
-                  SizedBox(width: 20,),
-                  Text("Search your word", style: Constant.kSearchBarTextStyle,),
+                  Icon(
+                    CustomIcon.search,
+                    color: Constant.kGreyText,
+                    size: 25,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Text(
+                    "Search your word",
+                    style: Constant.kSearchBarTextStyle,
+                  ),
                 ],
               ),
               Expanded(child: SizedBox()),
               Padding(
                 padding: const EdgeInsets.only(top: 2.0),
                 child: TextButton(
-                    onPressed: (){
-                    print("history");
+                    onPressed: () {
+                      print("history");
                     },
-                    child: const Icon(CustomIcon.history, color: Constant.kGreyText,size: 25,)),
+                    child: const Icon(
+                      CustomIcon.history,
+                      color: Constant.kGreyText,
+                      size: 25,
+                    )),
               ),
             ],
           ),

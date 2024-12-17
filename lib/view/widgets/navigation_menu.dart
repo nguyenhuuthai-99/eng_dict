@@ -44,7 +44,10 @@ class NavigationMenu extends StatelessWidget {
           ),
         ),
       ),
-      body: data.screens[data.index],
+      body: IndexedStack(
+        index: data.index,
+        children: data.screens,
+      ),
     );
   }
 

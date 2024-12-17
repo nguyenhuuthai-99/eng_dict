@@ -1,7 +1,6 @@
-
 import 'package:eng_dict/model/word.dart';
 
-class WordForm{
+class WordForm {
   String? _formTitle;
   String? _ukIPA;
   String? _ukIPASoundURL;
@@ -10,7 +9,6 @@ class WordForm{
   late Word _word;
 
   WordForm();
-
 
   String? get formTitle => _formTitle;
 
