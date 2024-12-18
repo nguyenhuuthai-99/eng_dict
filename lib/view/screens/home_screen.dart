@@ -30,12 +30,14 @@ class HomeScreen extends StatelessWidget {
     wordForm.usIPA = "/dɪˈvɝː.sə.t̬i/";
     wordForm.ukIPA = "/daɪˈvɜː.sə.ti/";
 
+    List<Word> words = [];
     Word word = Word();
     word.wordTitle = "diversity";
     word.definition =
         "the fact of many different types of things or people being included in something; a range of different things or people:";
     word.url = "";
-    wordForm.word = word;
+    words.add(word);
+    wordForm.words = words;
 
     return wordForm;
   }

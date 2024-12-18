@@ -8,9 +8,9 @@ class WordField {
 
   factory WordField.fromJson(Map<String, dynamic> json) {
     return WordField()
-      .._fieldTitle = json['']
-      .._wordForms = (json['wordForms'] as List<WordForm>?)
-          ?.map((e) => WordForm().fromJson(e))
+      .._fieldTitle = json['fieldTitle']
+      .._wordForms = (json['wordForms'] as List<dynamic>?)
+          ?.map((e) => WordForm.fromJson(e))
           .toList();
     ;
   }

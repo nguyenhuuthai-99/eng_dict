@@ -1,4 +1,5 @@
 import 'package:eng_dict/model/word.dart';
+import 'package:flutter/cupertino.dart';
 
 class WordForm {
   String? _formTitle;
@@ -6,9 +7,26 @@ class WordForm {
   String? _ukIPASoundURL;
   String? _usIPA;
   String? _usIPASoundURL;
-  late Word _word;
+  late List<Word>? _words;
 
   WordForm();
+
+  factory WordForm.fromJson(Map<String, dynamic> json) {
+    return WordForm()
+      .._formTitle = json['formTitle']
+      .._ukIPA = json['ukIPA']
+      .._ukIPASoundURL = json['ukIPASoundURL']
+      .._usIPA = json['usIPA']
+      .._usIPASoundURL = json['usIPASoundURL']
+      .._words = (json['words'] as List<dynamic>?)
+          ?.map((e) => Word.fromJson(e))
+          .toList();
+  }
+
+  Widget buildWordFormBox(WordForm wordForm){
+    return
+
+  }
 
   String? get formTitle => _formTitle;
 
@@ -40,9 +58,9 @@ class WordForm {
     _ukIPASoundURL = value;
   }
 
-  Word get word => _word;
+  List<Word>? get words => _words;
 
-  set word(Word value) {
-    _word = value;
+  set words(List<Word>? value) {
+    _words = value;
   }
 }

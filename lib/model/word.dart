@@ -1,8 +1,7 @@
-
-class Word{
+class Word {
   String? _wordTitle;
   String? _wordForm;
-  late bool isPhrase;
+  late bool _isPhrase;
   String? _phraseTitle;
   String? _usage;
   String? _level;
@@ -10,7 +9,28 @@ class Word{
   List<String>? _examples;
   late String _url;
 
+  Word();
 
+  factory Word.fromJson(Map<String, dynamic> json) {
+    return Word()
+      .._wordTitle = json['wordTitle']
+      .._wordForm = json['wordForm']
+      .._isPhrase = json['phrase']
+      .._phraseTitle = json['phraseTitle']
+      .._usage = json['usage']
+      .._level = json['level']
+      .._definition = json['definition']
+      .._examples = (json['examples'] as List<dynamic>?)
+          ?.map((e) => e.toString())
+          .toList()
+      .._url = json['url'];
+  }
+
+  bool get isPhrase => _isPhrase;
+
+  set isPhrase(bool value) {
+    _isPhrase = value;
+  }
 
   String? get wordTitle => _wordTitle;
 
@@ -59,5 +79,4 @@ class Word{
   set wordForm(String? value) {
     _wordForm = value;
   }
-
 }
