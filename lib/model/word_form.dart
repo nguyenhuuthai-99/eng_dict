@@ -23,11 +23,6 @@ class WordForm {
           .toList();
   }
 
-  Widget buildWordFormBox(WordForm wordForm){
-    return
-
-  }
-
   String? get formTitle => _formTitle;
 
   set formTitle(String? value) {

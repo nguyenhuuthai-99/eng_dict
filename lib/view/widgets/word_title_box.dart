@@ -1,10 +1,16 @@
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
+import '../../model/word_form.dart';
+
 class WordTitleBox extends StatelessWidget {
-  const WordTitleBox({
+  WordForm? wordForm;
+
+  WordTitleBox({
+    required this.wordForm,
     super.key,
   });
 
@@ -25,7 +31,9 @@ class WordTitleBox extends StatelessWidget {
                 textBaseline: TextBaseline.alphabetic,
                 children: [
                   Text(
-                    "Sophisticate",
+                    wordForm?.words?[0].wordTitle != null
+                        ? wordForm!.words![0].wordTitle!
+                        : "",
                     style: TextStyle(
                         fontSize: 24,
                         color: Colors.black.withOpacity(0.9),
@@ -35,7 +43,7 @@ class WordTitleBox extends StatelessWidget {
                     width: Constant.kMarginExtraSmall,
                   ),
                   Text(
-                    "noun",
+                    wordForm?.formTitle != null ? wordForm!.formTitle! : "",
                     style: TextStyle(
                         color: Constant.kGreyText,
                         fontStyle: FontStyle.italic,
@@ -48,8 +56,16 @@ class WordTitleBox extends StatelessWidget {
               spacing: 20, // Space between children
               runSpacing: 8.0, // Space between rows
               children: [
-                IPABox(IPA: "/səsufiwis/", accent: "UK"),
-                IPABox(IPA: "/səˈfɪs.tɪ.kət/", accent: "US"),
+                IPABox(
+                  IPA: wordForm?.usIPA != null ? wordForm!.usIPA! : "",
+                  accent: "US",
+                  soundURL: wordForm?.usIPASoundURL,
+                ),
+                IPABox(
+                  IPA: wordForm?.ukIPA != null ? wordForm!.ukIPA! : "",
+                  accent: "UK",
+                  soundURL: wordForm?.ukIPASoundURL,
+                ),
               ],
             ),
             Padding(
@@ -99,15 +115,18 @@ class IPABox extends StatelessWidget {
   }
 
   Future<void> playSound() async {
+    if (soundURL == null) {
+      return;
+    }
     final AudioPlayer audioPlayer = AudioPlayer();
-    String prefix = "https://dictionary.cambridge.org/";
-    String url = prefix + soundURL!;
     try {
-      await audioPlayer.setUrl(url);
+      await audioPlayer.setUrl(soundURL!);
       await audioPlayer.play();
       await audioPlayer.dispose();
     } on PlayerException catch (e) {
-      print(e.message);
+      if (kDebugMode) {
+        print(e.message);
+      }
     }
   }
 
@@ -115,7 +134,6 @@ class IPABox extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        print("ádfasdf");
         if (canPlay) {
           await playSound();
         }

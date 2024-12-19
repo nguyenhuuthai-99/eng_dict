@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/word_form.dart';
+
 class DictionaryScreen extends StatelessWidget {
   final String screenId = "DictionaryScreen";
 
@@ -28,7 +30,7 @@ class DictionaryScreen extends StatelessWidget {
 
   Future<void> init() async {
     wordFieldData = WordFieldData();
-    await wordFieldData.updateWordFieldList("hello");
+    await wordFieldData.updateWordFieldList("name");
     tabList = buildTabs(wordFieldData.wordFields);
     numberOfTab = tabList.length;
   }
@@ -44,12 +46,61 @@ class DictionaryScreen extends StatelessWidget {
   List<Widget> buildTabsView(List<WordField> wordFields) {
     return (wordFields.map(
       (e) => ListView.builder(
-        itemBuilder: (context, index) {},
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          final WordForm? wordForm = e.wordForms?[index];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: buildWordBox(wordForm),
+          );
+        },
+        itemCount: e.wordForms?.length,
       ),
     )).toList();
   }
 
-  // List<Widget> buildWordFormBox(WordForm) {}
+  List<Widget> buildWordBox(WordForm? wordForm) {
+    return [
+      WordTitleBox(
+        wordForm: wordForm,
+      ),
+      ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, wordIndex) {
+          final Word? word = wordForm?.words?[wordIndex];
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: Constant.kMarginLarge),
+                child: word?.isPhrase == true && word?.wordTitle != null
+                    ? Row(
+                        children: [
+                          const Text(
+                            "phrase with ",
+                            style: TextStyle(
+                                color: Constant.kGreyText,
+                                fontStyle: FontStyle.italic),
+                          ),
+                          Text(
+                            word!.wordTitle!,
+                            style: const TextStyle(
+                                color: Color(0xb82a3343),
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      )
+                    : const SizedBox(),
+              ),
+              DefinitionBox(word: word),
+            ],
+          );
+        },
+        itemCount: wordForm?.words?.length,
+      )
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,15 +211,3 @@ class WordFieldData extends ChangeNotifier {
     // notifyListeners();
   }
 }
-
-// ListView(
-// children: [
-// WordTitleBox(),
-// DefinitionBox(
-// word: Word()..isPhrase = false,
-// ),
-// DefinitionBox(
-// word: Word()..isPhrase = true,
-// ),
-// ],
-// ),

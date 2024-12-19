@@ -3,12 +3,13 @@ import 'dart:ffi';
 import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DefinitionBox extends StatelessWidget {
-  Word word;
+  Word? word;
   DefinitionBox({
     required this.word,
     super.key,
@@ -16,7 +17,10 @@ class DefinitionBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (word.isPhrase) {
+    if (word == null) {
+      return SizedBox();
+    }
+    if (word!.isPhrase) {
       return buildPhraseBox(context);
     }
     return buildWordBox();
@@ -30,32 +34,27 @@ class DefinitionBox extends StatelessWidget {
           right: Constant.kMarginMedium,
           bottom: Constant.kMarginSmall),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Expanded(
                   child: Text(
-                "B1",
+                word!.level != null ? word!.level! : "",
                 style: GoogleFonts.inter(
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.italic,
                     fontSize: 20,
                     color: Constant.kPrimaryColor),
-                // style: TextStyle(
-                //   fontSize: 20,
-                //   fontWeight: FontWeight.bold,
-                //   fontStyle: FontStyle.italic,
-                //   color: Constant.kPrimaryColor,
-                // ),
               )),
               const Icon(
+                //todo: add action for save button
                 CustomIcon.book_mark,
                 color: Colors.redAccent,
               )
             ],
           ),
-          buildDefinitionText(
-              "The word or words that a person, thing, or place is known by:"),
+          buildDefinitionText(word!.definition),
           Padding(
             padding: const EdgeInsets.only(
                 left: Constant.kMarginMedium,
@@ -63,24 +62,7 @@ class DefinitionBox extends StatelessWidget {
                 bottom: Constant.kMarginSmall),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildExample(
-                    "Please write your full (= complete) name and address on the form."),
-                buildExample(
-                    "Please write your full (= complete) name and address on the form."),
-                buildExample(
-                    "Please write your full (= complete) name and address on the form."),
-                buildExample(
-                    "Please write your full (= complete) name and address on the form."),
-                buildExample(
-                    "Please write your full (= complete) name and address on the form."),
-                buildExample(
-                    "Please write your full (= complete) name/and/address on the form."),
-                buildExample(
-                    "Please write your full (= complete) name and address on the form."),
-                buildExample(
-                    "Please write your full (= complete) name and address on the form."),
-              ],
+              children: buildExampleBox(word!.examples),
             ),
           ),
           SizedBox(
@@ -95,28 +77,22 @@ class DefinitionBox extends StatelessWidget {
     );
   }
 
+  List<Widget> buildExampleBox(List<String>? examples) {
+    if (examples == null) {
+      return [];
+    }
+    return examples
+        .map(
+          (e) => buildExample(e),
+        )
+        .toList();
+  }
+
   Widget buildPhraseBox(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: Constant.kMarginLarge),
-          child: Row(
-            children: [
-              Text(
-                "phrase with ",
-                style: TextStyle(
-                    color: Constant.kGreyText, fontStyle: FontStyle.italic),
-              ),
-              Text(
-                "Name",
-                style: TextStyle(
-                    color: Color(0xb82a3343), fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-        ),
         Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
               horizontal: Constant.kMarginMedium,
               vertical: Constant.kMarginMedium),
           color: Constant.kGreyBackground,
@@ -126,8 +102,10 @@ class DefinitionBox extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                      child: buildPhraseTitle("Go by the name off something")),
-                  Icon(
+                      child: word!.phraseTitle != null
+                          ? buildPhraseTitle(word!.phraseTitle!)
+                          : const SizedBox()),
+                  const Icon(
                     CustomIcon.book_mark,
                     color: Constant.kAccentColor,
                   )
@@ -141,37 +119,22 @@ class DefinitionBox extends StatelessWidget {
                   color: Constant.kGreyLine,
                 ),
               ),
-              buildDefinitionText(
-                  "The word or words that a person, thing, or place is known by:"),
+              buildDefinitionText(word!.definition),
               Padding(
                 padding: const EdgeInsets.only(
                     left: Constant.kMarginMedium,
                     top: Constant.kMarginExtraSmall),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    buildExample(
-                        "Please write your full (= complete) name and address on the form."),
-                    buildExample(
-                        "Please write your full (= complete) name and address on the form."),
-                    buildExample(
-                        "Please write your full (= complete) name and address on the form."),
-                    buildExample(
-                        "Please write your full (= complete) name and address on the form."),
-                    buildExample(
-                        "Please write your full (= complete) name and address on the form."),
-                    buildExample(
-                        "Please write your full (= complete) name/and/address on the form."),
-                    buildExample(
-                        "Please write your full (= complete) name and address on the form."),
-                    buildExample(
-                        "Please write your full (= complete) name and address on the form."),
-                  ],
+                  children: buildExampleBox(word!.examples),
                 ),
               ),
             ],
           ),
         ),
+        const SizedBox(
+          height: Constant.kMarginLarge,
+        )
       ],
     );
   }
@@ -179,7 +142,7 @@ class DefinitionBox extends StatelessWidget {
   RichText buildPhraseTitle(String title) {
     return RichText(
         text: TextSpan(
-            style: TextStyle(
+            style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
                 color: Constant.kPrimaryColor),
@@ -238,7 +201,9 @@ class DefinitionBox extends StatelessWidget {
         text: word,
         recognizer: TapGestureRecognizer()
           ..onTap = () {
-            print(word);
+            if (kDebugMode) {
+              print(word);
+            }
           });
   }
 }
