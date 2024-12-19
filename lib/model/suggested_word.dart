@@ -1,8 +1,12 @@
-class SuggestedWord{
-  String wordTitle;
-  String url;
+class SuggestedWord {
+  late String wordTitle;
+  late String url;
 
-  SuggestedWord({required this.wordTitle,required this.url});
+  SuggestedWord();
 
-
+  factory SuggestedWord.fromJson(Map<String, dynamic> json) {
+    return SuggestedWord()
+      ..wordTitle = json['word']
+      ..url = json['url'];
+  }
 }

@@ -12,7 +12,6 @@ import 'package:eng_dict/view/widgets/definition_box.dart';
 import 'package:eng_dict/view/widgets/word_title_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../model/word_form.dart';
@@ -106,62 +105,59 @@ class DictionaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => wordFieldData,
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          bottom: false,
-          child: FutureBuilder(
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const DictionaryLoadingScreen();
-              } else if (snapshot.hasError) {
-                return const DictionaryErrorScreen();
-              } else {
-                return DefaultTabController(
-                  length: numberOfTab,
-                  child: NestedScrollView(
-                    headerSliverBuilder:
-                        (BuildContext context, bool innerBoxIsScrolled) {
-                      return [
-                        const SliverAppBar(
-                            pinned: false,
-                            snap: true,
-                            floating: true,
-                            backgroundColor: Colors.white,
-                            surfaceTintColor: Colors.white,
-                            title: CustomSearchBar()),
-                        SliverPersistentHeader(
-                          pinned: true,
-                          delegate: TabBarDelegate(
-                            child: TabBar(
-                              dividerHeight: 2,
-                              tabAlignment: TabAlignment.start,
-                              isScrollable: true,
-                              tabs: tabList,
-                              unselectedLabelColor: Constant.kGreyText,
-                              labelColor: Constant.kPrimaryColor,
-                              padding: EdgeInsets.zero,
-                              indicatorSize: TabBarIndicatorSize.tab,
-                              indicatorColor: Constant.kPrimaryColor,
-                              labelStyle: const TextStyle(
-                                fontSize: 18,
-                              ),
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        bottom: false,
+        child: FutureBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const DictionaryLoadingScreen();
+            } else if (snapshot.hasError) {
+              return const DictionaryErrorScreen();
+            } else {
+              return DefaultTabController(
+                length: numberOfTab,
+                child: NestedScrollView(
+                  headerSliverBuilder:
+                      (BuildContext context, bool innerBoxIsScrolled) {
+                    return [
+                      const SliverAppBar(
+                          pinned: false,
+                          snap: true,
+                          floating: true,
+                          backgroundColor: Colors.white,
+                          surfaceTintColor: Colors.white,
+                          title: CustomSearchBar()),
+                      SliverPersistentHeader(
+                        pinned: true,
+                        delegate: TabBarDelegate(
+                          child: TabBar(
+                            dividerHeight: 2,
+                            tabAlignment: TabAlignment.start,
+                            isScrollable: true,
+                            tabs: tabList,
+                            unselectedLabelColor: Constant.kGreyText,
+                            labelColor: Constant.kPrimaryColor,
+                            padding: EdgeInsets.zero,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            indicatorColor: Constant.kPrimaryColor,
+                            labelStyle: const TextStyle(
+                              fontSize: 18,
                             ),
                           ),
                         ),
-                      ];
-                    },
-                    body: TabBarView(
-                        children: buildTabsView(wordFieldData.wordFields)),
-                  ),
-                );
-              }
-            },
-            future: init(),
-          ),
+                      ),
+                    ];
+                  },
+                  body: TabBarView(
+                      children: buildTabsView(wordFieldData.wordFields)),
+                ),
+              );
+            }
+          },
+          future: init(),
         ),
       ),
     );
