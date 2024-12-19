@@ -18,7 +18,7 @@ import '../../model/word_form.dart';
 
 class DictionaryScreen extends StatelessWidget {
   final String screenId = "DictionaryScreen";
-
+  String asdf = 'asdf';
   late List<Tab> tabList = [
     Tab(
       text: "General",
