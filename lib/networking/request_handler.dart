@@ -10,7 +10,7 @@ class RequestHandler {
 
   Future<List<WordField>> getWordData(String word) async {
     List<WordField> wordFields = [];
-    URL = Uri.parse("http://localhost:8080/dictionary/$word");
+    URL = Uri.parse("http://172.20.10.2:8080/dictionary/$word");
     var response = await http.get(URL);
 
     int responseCode = response.statusCode;

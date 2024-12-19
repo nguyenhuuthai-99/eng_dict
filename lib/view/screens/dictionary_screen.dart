@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/model/word_field.dart';
 import 'package:eng_dict/networking/request_handler.dart';
+import 'package:eng_dict/view/component/placeholder.dart';
 import 'package:eng_dict/view/component/search_bar.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/widgets/definition_box.dart';
@@ -12,6 +13,7 @@ import 'package:eng_dict/view/widgets/word_title_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../model/word_form.dart';
 
@@ -114,11 +116,9 @@ class DictionaryScreen extends StatelessWidget {
           child: FutureBuilder(
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container();
+                return const DictionaryLoadingScreen();
               } else if (snapshot.hasError) {
-                return Container(
-                  child: Text("Error"),
-                );
+                return const DictionaryErrorScreen();
               } else {
                 return DefaultTabController(
                   length: numberOfTab,
@@ -168,6 +168,96 @@ class DictionaryScreen extends StatelessWidget {
   }
 }
 
+class DictionaryErrorScreen extends StatelessWidget {
+  const DictionaryErrorScreen({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const CustomSearchBar(),
+      ),
+      body: SizedBox(
+        width: double.infinity,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: Constant.kMarginExtraLarge),
+              child: RichText(
+                text: const TextSpan(
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  children: [
+                    TextSpan(
+                      text: "Oops! Something went wrong. Please try again.\n\n",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextSpan(
+                      text: "What could have happened?\n",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    TextSpan(
+                        text:
+                            "- Your internet connection might be unstable or disconnected.\n"),
+                    TextSpan(
+                        text:
+                            "- You might have searched for an invalid word.\n"),
+                    TextSpan(
+                        text: "- There could be an issue with our server.\n\n"),
+                    TextSpan(
+                      text:
+                          "If you believe this is a server issue, please let us know.\n",
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            TextButton(onPressed: () {}, child: const Text("Report"))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DictionaryLoadingScreen extends StatelessWidget {
+  const DictionaryLoadingScreen({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const CustomSearchBar(),
+      ),
+      body: Shimmer.fromColors(
+        baseColor: Colors.grey.shade300,
+        highlightColor: Colors.grey.shade100,
+        enabled: true,
+        direction: ShimmerDirection.ltr,
+        child: Column(
+          children: [
+            TabBarPlaceHolder(),
+            WordTitlePlaceholder(),
+            DefinitionPlaceholder(),
+            DefinitionPlaceholder(),
+            Expanded(child: WordTitlePlaceholder()),
+            Expanded(child: WordTitlePlaceholder())
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class TabBarDelegate extends SliverPersistentHeaderDelegate {
   final TabBar child;
 
@@ -208,6 +298,6 @@ class WordFieldData extends ChangeNotifier {
 
   Future<void>? updateWordFieldList(String word) async {
     wordFields = await requestHandler.getWordData(word);
-    // notifyListeners();
+    notifyListeners();
   }
 }

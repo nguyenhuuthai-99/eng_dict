@@ -1,9 +1,12 @@
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
+import 'package:eng_dict/view/widgets/navigation_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
+  String searchTextFieldText = "";
+  SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +45,18 @@ class SearchScreen extends StatelessWidget {
                       onTapOutside: (event) {
                         FocusManager.instance.primaryFocus?.unfocus();
                       },
+                      onChanged: (value) => searchTextFieldText = value,
                     ),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
+
+                      //todo move this to search word action
+                      Provider.of<ScreenData>(context, listen: false)
+                          .changeIndex(1);
                     },
-                    child: Text(
+                    child: const Text(
                       "cancel",
                       style: TextStyle(color: Constant.kHyperLinkTextColor),
                     ),

@@ -15,11 +15,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (BuildContext context)=>ScreenData(),
+      create: (BuildContext context) => ScreenData(),
       child: MaterialApp(
         theme: ThemeData(
-            brightness: Brightness.light,
-            textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: AppBarTheme(color: Colors.white),
+          brightness: Brightness.light,
+          textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
         ),
         title: 'Eng Dict',
         home: const NavigationMenu(),

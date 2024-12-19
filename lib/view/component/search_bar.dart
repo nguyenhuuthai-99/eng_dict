@@ -13,7 +13,7 @@ class CustomSearchBar extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SearchScreen()));
+            context, MaterialPageRoute(builder: (c) => SearchScreen()));
       },
       child: Container(
         decoration: BoxDecoration(

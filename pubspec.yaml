@@ -39,6 +39,7 @@ dependencies:
   google_fonts: ^6.2.1
   just_audio: ^0.9.42
   http: ^1.2.2
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
