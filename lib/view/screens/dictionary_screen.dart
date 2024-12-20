@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/model/word_field.dart';
 import 'package:eng_dict/networking/request_handler.dart';
+import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/component/placeholder.dart';
 import 'package:eng_dict/view/component/search_bar.dart';
 import 'package:eng_dict/view/utils/constants.dart';
@@ -12,6 +13,7 @@ import 'package:eng_dict/view/widgets/definition_box.dart';
 import 'package:eng_dict/view/widgets/word_title_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../model/word_form.dart';
@@ -19,19 +21,13 @@ import '../../model/word_form.dart';
 class DictionaryScreen extends StatelessWidget {
   final String screenId = "DictionaryScreen";
   String asdf = 'asdf';
-  late List<Tab> tabList = [
-    Tab(
-      text: "General",
-    )
-  ];
-  late int numberOfTab = 1;
+  late List<Tab> tabList;
+  late int numberOfTab;
   late WordFieldData wordFieldData;
 
-  DictionaryScreen({super.key});
+  DictionaryScreen({super.key}) {}
 
-  Future<void> init() async {
-    wordFieldData = WordFieldData();
-    await wordFieldData.updateWordFieldList("name");
+  void init() {
     tabList = buildTabs(wordFieldData.wordFields);
     numberOfTab = tabList.length;
   }
@@ -105,61 +101,53 @@ class DictionaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    wordFieldData = Provider.of<WordFieldData>(context);
+    init();
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       body: SafeArea(
-        bottom: false,
-        child: FutureBuilder(
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const DictionaryLoadingScreen();
-            } else if (snapshot.hasError) {
-              return const DictionaryErrorScreen();
-            } else {
-              return DefaultTabController(
-                length: numberOfTab,
-                child: NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return [
-                      const SliverAppBar(
-                          pinned: false,
-                          snap: true,
-                          floating: true,
-                          backgroundColor: Colors.white,
-                          surfaceTintColor: Colors.white,
-                          title: CustomSearchBar()),
-                      SliverPersistentHeader(
-                        pinned: true,
-                        delegate: TabBarDelegate(
-                          child: TabBar(
-                            dividerHeight: 2,
-                            tabAlignment: TabAlignment.start,
-                            isScrollable: true,
-                            tabs: tabList,
-                            unselectedLabelColor: Constant.kGreyText,
-                            labelColor: Constant.kPrimaryColor,
-                            padding: EdgeInsets.zero,
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            indicatorColor: Constant.kPrimaryColor,
-                            labelStyle: const TextStyle(
-                              fontSize: 18,
+          bottom: false,
+          child: wordFieldData.isLoading
+              ? const DictionaryLoadingScreen()
+              : DefaultTabController(
+                  length: numberOfTab,
+                  child: NestedScrollView(
+                    headerSliverBuilder:
+                        (BuildContext context, bool innerBoxIsScrolled) {
+                      return [
+                        const SliverAppBar(
+                            pinned: false,
+                            snap: true,
+                            floating: true,
+                            backgroundColor: Colors.white,
+                            surfaceTintColor: Colors.white,
+                            title: CustomSearchBar()),
+                        SliverPersistentHeader(
+                          pinned: true,
+                          delegate: TabBarDelegate(
+                            child: TabBar(
+                              dividerHeight: 2,
+                              tabAlignment: TabAlignment.start,
+                              isScrollable: true,
+                              tabs: tabList,
+                              unselectedLabelColor: Constant.kGreyText,
+                              labelColor: Constant.kPrimaryColor,
+                              padding: EdgeInsets.zero,
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              indicatorColor: Constant.kPrimaryColor,
+                              labelStyle: const TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ];
-                  },
-                  body: TabBarView(
-                      children: buildTabsView(wordFieldData.wordFields)),
-                ),
-              );
-            }
-          },
-          future: init(),
-        ),
-      ),
+                      ];
+                    },
+                    body: TabBarView(
+                        children: buildTabsView(wordFieldData.wordFields)),
+                  ),
+                )),
     );
   }
 }
@@ -284,16 +272,4 @@ class TabBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   OverScrollHeaderStretchConfiguration get stretchConfiguration =>
       OverScrollHeaderStretchConfiguration();
-}
-
-class WordFieldData extends ChangeNotifier {
-  RequestHandler requestHandler = RequestHandler();
-  List<WordField> wordFields = [];
-
-  WordFieldData();
-
-  Future<void>? updateWordFieldList(String word) async {
-    wordFields = await requestHandler.getWordData(word);
-    notifyListeners();
-  }
 }

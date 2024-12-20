@@ -3,6 +3,7 @@ import 'package:eng_dict/view/screens/dictionary_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'model/word_field.dart';
+import 'provider/word_field_data.dart';
 
 void main() async {
   List<Tab> tabList = [];
