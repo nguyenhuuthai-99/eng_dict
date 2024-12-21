@@ -1,7 +1,6 @@
 import 'package:eng_dict/view/screens/search_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../utils/custom_icon.dart';
 
@@ -13,7 +12,7 @@ class CustomSearchBar extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (c) => SearchScreen()));
+            context, MaterialPageRoute(builder: (c) => const SearchScreen()));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -40,7 +39,7 @@ class CustomSearchBar extends StatelessWidget {
                   ),
                 ],
               ),
-              Expanded(child: SizedBox()),
+              const Expanded(child: SizedBox()),
               Padding(
                 padding: const EdgeInsets.only(top: 2.0),
                 child: TextButton(

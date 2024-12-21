@@ -1,5 +1,4 @@
 import 'package:eng_dict/model/word.dart';
-import 'package:flutter/cupertino.dart';
 
 class WordForm {
   String? _formTitle;

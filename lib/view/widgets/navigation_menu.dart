@@ -1,9 +1,6 @@
 import 'dart:ui';
 
 import 'package:eng_dict/provider/screen_data.dart';
-import 'package:eng_dict/view/screens/dictionary_screen.dart';
-import 'package:eng_dict/view/screens/home_screen.dart';
-import 'package:eng_dict/view/screens/vocabulary_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/constants.dart';
@@ -24,7 +21,7 @@ class NavigationMenu extends StatelessWidget {
             filter: ImageFilter.blur(
                 sigmaX: 25, sigmaY: 25, tileMode: TileMode.mirror),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   border: Border(top: BorderSide(color: Constant.kGreyBorder))),
               child: NavigationBar(
                 selectedIndex: data.index,

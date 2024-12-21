@@ -4,14 +4,12 @@ import 'package:eng_dict/provider/screen_data.dart';
 import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
-import 'package:eng_dict/view/widgets/navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'dictionary_screen.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({super.key});
+  const SearchScreen({super.key});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -40,8 +38,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.only(left: 8),
+                          prefixIcon: const Padding(
+                            padding: EdgeInsets.only(left: 8),
                             child: Icon(
                               CustomIcon.search,
                               size: 25,
@@ -86,22 +84,22 @@ class _SearchScreenState extends State<SearchScreen> {
                   buildSearchResult(
                     suggestedWords: suggestedWords,
                   ),
-                  Text(
+                  const Text(
                     "Searched words",
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                         color: Constant.kGreyText),
                   ),
-                  ListTile(
+                  const ListTile(
                     leading: Icon(CustomIcon.history),
                     title: Text("history"),
                   ),
-                  ListTile(
+                  const ListTile(
                     leading: Icon(CustomIcon.history),
                     title: Text("sophisticate"),
                   ),
-                  ListTile(
+                  const ListTile(
                     leading: Icon(CustomIcon.history),
                     title: Text("quantive"),
                   ),
@@ -137,7 +135,7 @@ class buildSearchResult extends StatelessWidget {
               ),
               ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: suggestedWords.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(

@@ -1,11 +1,8 @@
-import 'package:eng_dict/view/screens/dictionary_screen.dart';
 import 'package:eng_dict/view/widgets/navigation_menu.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '';
 import 'provider/screen_data.dart';
 import 'provider/word_field_data.dart';
 
@@ -26,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(color: Colors.white),
+        appBarTheme: const AppBarTheme(color: Colors.white),
         brightness: Brightness.light,
         textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
       ),

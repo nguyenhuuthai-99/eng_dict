@@ -19,7 +19,7 @@ class WordTitleBox extends StatelessWidget {
     return Container(
       color: Constant.kGreyBackground,
       child: Padding(
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
             horizontal: 20, vertical: Constant.kMarginSmall),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,12 +39,12 @@ class WordTitleBox extends StatelessWidget {
                         color: Colors.black.withOpacity(0.9),
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: Constant.kMarginExtraSmall,
                   ),
                   Text(
                     wordForm?.formTitle != null ? wordForm!.formTitle! : "",
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Constant.kGreyText,
                         fontStyle: FontStyle.italic,
                         fontSize: 15),
@@ -68,8 +68,8 @@ class WordTitleBox extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(
+            const Padding(
+              padding: EdgeInsets.only(
                   top: Constant.kMarginExtraSmall, left: 1),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -80,7 +80,7 @@ class WordTitleBox extends StatelessWidget {
                     size: 22,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 2.0),
+                    padding: EdgeInsets.only(bottom: 2.0),
                     child: Text(
                       "  Youglish ",
                       style: TextStyle(
@@ -108,7 +108,7 @@ class IPABox extends StatelessWidget {
   final String IPA;
   String? soundURL;
 
-  IPABox({this.soundURL, required this.accent, required this.IPA}) {
+  IPABox({super.key, this.soundURL, required this.accent, required this.IPA}) {
     if (soundURL != null) {
       canPlay = true;
     }
@@ -141,19 +141,19 @@ class IPABox extends StatelessWidget {
       child: Wrap(
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          CircleAvatar(
+          const CircleAvatar(
+            backgroundColor: Color(0xffe3e3e3),
+            radius: 13,
             child: Icon(
               CustomIcon.speaker,
               color: Constant.kPrimaryColor,
             ),
-            backgroundColor: Color(0xffe3e3e3),
-            radius: 13,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: Constant.kMarginSmall),
+            padding: const EdgeInsets.symmetric(horizontal: Constant.kMarginSmall),
             child: Text(
               accent,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Constant.kPrimaryColor,
                   fontSize: 16,
                   fontFamily: "Inter"),
@@ -161,7 +161,7 @@ class IPABox extends StatelessWidget {
           ),
           Text(
             IPA,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Constant.kPrimaryColor,
                 fontSize: 16,
                 fontFamily: "Inter"),

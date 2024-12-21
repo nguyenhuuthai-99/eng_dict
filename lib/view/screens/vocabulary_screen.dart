@@ -1,4 +1,3 @@
-import 'package:eng_dict/view/component/glass_app_bar.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:eng_dict/view/widgets/vocabulary_box.dart';
@@ -20,9 +19,9 @@ class VocabularyScreen extends StatelessWidget {
             flexibleSpace: AppBar(
               backgroundColor: Colors.white,
               surfaceTintColor: Colors.white,
-              title: Text("Vocabulary"),
+              title: const Text("Vocabulary"),
             ),
-            title: Text("Vocabulary"),
+            title: const Text("Vocabulary"),
             toolbarHeight: kToolbarHeight,
             collapsedHeight: kToolbarHeight,
             expandedHeight: kToolbarHeight,
@@ -37,7 +36,7 @@ class VocabularyScreen extends StatelessWidget {
                       left: 8.0,
                       right: Constant.kMarginMedium,
                       top: Constant.kMarginMedium),
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: Colors.white,
                       border:
                           Border(top: BorderSide(color: Constant.kGreyLine))),
@@ -46,16 +45,16 @@ class VocabularyScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
                     children: [
-                      Icon(
+                      const Icon(
                         CustomIcon.sort,
                         color: Constant.kHyperLinkTextColor,
                         size: 32,
                       ),
-                      Expanded(
+                      const Expanded(
                         child: SizedBox(),
                       ),
                       TextButton(
-                        style: ButtonStyle(),
+                        style: const ButtonStyle(),
                         onPressed: () {
                           print("practice");
                         },
@@ -69,7 +68,7 @@ class VocabularyScreen extends StatelessWidget {
                               fontSize: 20,
                               color: Colors.transparent,
                               shadows: [
-                                Shadow(
+                                const Shadow(
                                     color: Constant.kHyperLinkTextColor,
                                     offset: Offset(0, -5))
                               ]),
@@ -79,7 +78,7 @@ class VocabularyScreen extends StatelessWidget {
                   ),
                 ),
               )),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: Column(
               children: [
                 VocabularyBox(),

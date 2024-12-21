@@ -1,10 +1,8 @@
-import 'dart:ffi';
 
 import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/view/screens/bottom_sheet_dictionary.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,7 +20,7 @@ class DefinitionBox extends StatelessWidget {
   Widget build(BuildContext context) {
     this.context = context;
     if (word == null) {
-      return SizedBox();
+      return const SizedBox();
     }
     if (word!.isPhrase) {
       return buildPhraseBox(context);

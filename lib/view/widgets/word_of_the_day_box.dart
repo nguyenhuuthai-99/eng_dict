@@ -26,10 +26,10 @@ class WordOfTheDayBox extends StatelessWidget {
           style: Constant.kHeadingTextStyle,
         ),
         Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
               horizontal: Constant.kMarginLarge,
               vertical: Constant.kMarginSmall),
-          margin: EdgeInsets.only(top: Constant.kMarginExtraSmall),
+          margin: const EdgeInsets.only(top: Constant.kMarginExtraSmall),
           decoration: BoxDecoration(
               color: Constant.kGreyBackground,
               borderRadius: BorderRadius.circular(Constant.kBorderRadiusSmall)),
@@ -43,25 +43,25 @@ class WordOfTheDayBox extends StatelessWidget {
                   word.wordTitle != null
                       ? Text(
                           word.wordTitle!,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.w600,
                               color: Constant.kPrimaryColor),
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                   const SizedBox(
                     width: 5,
                   ),
                   wordForm.formTitle != null
                       ? Text(
                           wordForm.formTitle!,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontStyle: FontStyle.italic,
                               color: Constant.kHeading2Color),
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                   const Expanded(child: SizedBox()),
-                  Icon(
+                  const Icon(
                     CustomIcon.book_mark,
                     color: Constant.kPrimaryColor,
                     size: 30,
@@ -80,7 +80,7 @@ class WordOfTheDayBox extends StatelessWidget {
                             IPA: wordForm.ukIPA!,
                             soundURL:
                                 "media/english/uk_pron/u/ukd/ukdis/ukdisun030.mp3")
-                        : SizedBox(),
+                        : const SizedBox(),
                     const SizedBox(
                       width: Constant.kMarginMedium,
                     ),
@@ -91,12 +91,12 @@ class WordOfTheDayBox extends StatelessWidget {
                             soundURL:
                                 "media/english/us_pron/e/eus/eus71/eus71340.mp3",
                           )
-                        : SizedBox()
+                        : const SizedBox()
                   ],
                 ),
               ),
               Text(word.definition,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w100,
                       color: Constant.kHeading2Color)),
@@ -165,8 +165,8 @@ class IPAComponents extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         textBaseline: TextBaseline.alphabetic,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 3.0),
+          const Padding(
+            padding: EdgeInsets.only(top: 3.0),
             child: Icon(
               CustomIcon.speaker,
               color: Constant.kHeading2Color,
@@ -174,7 +174,7 @@ class IPAComponents extends StatelessWidget {
           ),
           Padding(
               padding:
-                  EdgeInsets.symmetric(horizontal: Constant.kMarginExtraSmall),
+                  const EdgeInsets.symmetric(horizontal: Constant.kMarginExtraSmall),
               child: Text(
                 accent,
                 style: Constant.kHeading2TextStyle,

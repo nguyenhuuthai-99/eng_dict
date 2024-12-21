@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:eng_dict/model/word_form.dart';
 import 'package:eng_dict/view/component/glass_app_bar.dart';
@@ -77,15 +76,15 @@ class RemoveAdsBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: Constant.kMarginExtraLarge),
+      margin: const EdgeInsets.symmetric(vertical: Constant.kMarginExtraLarge),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(Constant.kMarginSmall)),
         gradient: Constant.kGradient,
       ),
       child: Row(
         children: [
-          Expanded(
-            child: const Padding(
+          const Expanded(
+            child: Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: Constant.kMarginLarge,
                   vertical: Constant.kMarginExtraSmall),
@@ -116,8 +115,8 @@ class RemoveAdsBox extends StatelessWidget {
             ),
           ),
           Container(
-              margin: EdgeInsets.only(right: 30),
-              child: Icon(
+              margin: const EdgeInsets.only(right: 30),
+              child: const Icon(
                 CustomIcon.noads,
                 color: Colors.white,
                 size: 50,

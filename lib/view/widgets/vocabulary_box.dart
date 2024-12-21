@@ -10,12 +10,12 @@ class VocabularyBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
           top: Constant.kMarginExtraSmall,
           left: Constant.kMarginExtraSmall,
           right: Constant.kMarginSmall),
-      margin: EdgeInsets.only(top: Constant.kMarginMedium),
-      decoration: BoxDecoration(
+      margin: const EdgeInsets.only(top: Constant.kMarginMedium),
+      decoration: const BoxDecoration(
           border: Border(top: BorderSide(color: Constant.kGreyVocabBorder))),
       child: Column(
         children: [
@@ -70,7 +70,7 @@ class VocabularyBox extends StatelessWidget {
             onTap: () {
               print("view more");
             },
-            child: Row(
+            child: const Row(
               children: [
                 Expanded(child: SizedBox()),
                 Text(

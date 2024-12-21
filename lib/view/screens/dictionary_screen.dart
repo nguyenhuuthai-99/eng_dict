@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/model/word_field.dart';
-import 'package:eng_dict/networking/request_handler.dart';
 import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/component/placeholder.dart';
 import 'package:eng_dict/view/component/search_bar.dart';
@@ -148,6 +145,7 @@ class DictionaryScreen extends StatelessWidget {
                       ];
                     },
                     body: TabBarView(
+                        physics: const BouncingScrollPhysics(),
                         children: buildTabsView(wordFieldData.wordFields)),
                   ),
                 )),
@@ -166,82 +164,123 @@ class DictionaryErrorScreen extends StatelessWidget {
       appBar: AppBar(
         title: const CustomSearchBar(),
       ),
-      body: SizedBox(
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: Constant.kMarginExtraLarge),
         width: double.infinity,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: Constant.kMarginExtraLarge),
-              child: RichText(
-                text: const TextSpan(
-                  style: TextStyle(fontSize: 16, color: Colors.black),
-                  children: [
-                    TextSpan(
-                      text: "Oops! Something went wrong. Please try again.\n\n",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    TextSpan(
-                      text: "What could have happened?\n",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    TextSpan(
+        child: RefreshIndicator(
+          color: Colors.grey,
+          backgroundColor: Colors.white,
+          onRefresh: () async {
+            await Provider.of<WordFieldData>(context, listen: false).reload();
+          },
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: Constant.kMarginExtraLarge),
+                child: RichText(
+                  text: const TextSpan(
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                    children: [
+                      TextSpan(
                         text:
-                            "- Your internet connection might be unstable or disconnected.\n"),
-                    TextSpan(
+                            "Oops! Something went wrong. Please try again.\n\n",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                      TextSpan(
+                        text: "What could have happened?\n",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      TextSpan(
+                          text:
+                              "- Your internet connection might be unstable or disconnected.\n"),
+                      TextSpan(
+                          text:
+                              "- You might have searched for an invalid word.\n"),
+                      TextSpan(
+                          text:
+                              "- There could be an issue with our server.\n\n"),
+                      TextSpan(
                         text:
-                            "- You might have searched for an invalid word.\n"),
-                    TextSpan(
-                        text: "- There could be an issue with our server.\n\n"),
-                    TextSpan(
-                      text:
-                          "If you believe this is a server issue, please let us know.\n",
-                    ),
-                  ],
+                            "If you believe this is a server issue, please let us know.\n",
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            TextButton(onPressed: () {}, child: const Text("Report"))
-          ],
+              TextButton(onPressed: () {}, child: const Text("Report"))
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class DictionaryLoadingScreen extends StatelessWidget {
+class DictionaryLoadingScreen extends StatefulWidget {
   const DictionaryLoadingScreen({
     super.key,
   });
 
   @override
+  State<DictionaryLoadingScreen> createState() =>
+      _DictionaryLoadingScreenState();
+}
+
+class _DictionaryLoadingScreenState extends State<DictionaryLoadingScreen> {
+  bool isLoading = true;
+
+  Future<void> _loading() async {
+    await Future.delayed(Duration(seconds: 7));
+  }
+
+  Future<void> wait() async {
+    try {
+      await _loading().timeout(Duration(seconds: 6));
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    wait();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const CustomSearchBar(),
-      ),
-      body: Shimmer.fromColors(
-        baseColor: Colors.grey.shade300,
-        highlightColor: Colors.grey.shade100,
-        enabled: true,
-        direction: ShimmerDirection.ltr,
-        child: Column(
-          children: [
-            TabBarPlaceHolder(),
-            WordTitlePlaceholder(),
-            DefinitionPlaceholder(),
-            DefinitionPlaceholder(),
-            Expanded(child: WordTitlePlaceholder()),
-            Expanded(child: WordTitlePlaceholder())
-          ],
-        ),
-      ),
-    );
+    return isLoading
+        ? Scaffold(
+            appBar: AppBar(
+              title: const CustomSearchBar(),
+            ),
+            body: Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              enabled: true,
+              direction: ShimmerDirection.ltr,
+              child: const Column(
+                children: [
+                  TabBarPlaceHolder(),
+                  WordTitlePlaceholder(),
+                  DefinitionPlaceholder(),
+                  DefinitionPlaceholder(),
+                  Expanded(child: WordTitlePlaceholder()),
+                  Expanded(child: WordTitlePlaceholder())
+                ],
+              ),
+            ),
+          )
+        : const DictionaryErrorScreen();
   }
 }
 

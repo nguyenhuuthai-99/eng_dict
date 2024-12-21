@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 const double kLineSpace = 5;
 
 class WordTitlePlaceholder extends StatelessWidget {
+  const WordTitlePlaceholder({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: Constant.kMarginSmall),
+      margin: const EdgeInsets.only(bottom: Constant.kMarginSmall),
       height: 120,
       color: Constant.kGreyBackground,
     );
@@ -15,6 +17,8 @@ class WordTitlePlaceholder extends StatelessWidget {
 }
 
 class DefinitionPlaceholder extends StatelessWidget {
+  const DefinitionPlaceholder({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -88,6 +92,8 @@ class DefinitionPlaceholder extends StatelessWidget {
 }
 
 class TabBarPlaceHolder extends StatelessWidget {
+  const TabBarPlaceHolder({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -101,7 +107,7 @@ class TabBarPlaceHolder extends StatelessWidget {
             width: 100,
           ),
           Container(
-            margin: EdgeInsets.only(left: 20),
+            margin: const EdgeInsets.only(left: 20),
             color: Colors.grey.shade300,
             height: 20,
             width: 100,

@@ -13,7 +13,6 @@ class WordField {
       .._wordForms = (json['wordForms'] as List<dynamic>?)
           ?.map((e) => WordForm.fromJson(e))
           .toList();
-    ;
   }
 
   List<WordForm>? get wordForms => _wordForms;
