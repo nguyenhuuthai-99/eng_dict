@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ScreenData()),
-        ChangeNotifierProvider(create: (_) => WordFieldData()),
+        ChangeNotifierProvider(
+            create: (_) => WordFieldData()..updateWordFieldList("hello")),
       ],
       child: MaterialApp(
         theme: ThemeData(
