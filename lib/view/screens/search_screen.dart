@@ -1,5 +1,7 @@
 import 'package:eng_dict/model/suggested_word.dart';
 import 'package:eng_dict/networking/request_handler.dart';
+import 'package:eng_dict/provider/screen_data.dart';
+import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:eng_dict/view/widgets/navigation_menu.dart';
