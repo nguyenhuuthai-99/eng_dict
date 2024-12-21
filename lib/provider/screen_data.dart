@@ -7,7 +7,9 @@ class ScreenData extends ChangeNotifier {
   int _index = 0;
   final List<Widget> screens = [
     HomeScreen(),
-    DictionaryScreen(),
+    DictionaryScreen(
+      showAppBar: true,
+    ),
     VocabularyScreen(),
   ];
 

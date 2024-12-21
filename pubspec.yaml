@@ -40,6 +40,7 @@ dependencies:
   just_audio: ^0.9.42
   http: ^1.2.2
   shimmer: ^3.0.0
+  modal_bottom_sheet: ^3.0.0
 
 dev_dependencies:
   flutter_test:

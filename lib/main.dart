@@ -12,7 +12,8 @@ import 'provider/word_field_data.dart';
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => ScreenData()),
-    ChangeNotifierProvider(create: (_) => WordFieldData()),
+    ChangeNotifierProvider(
+        create: (_) => WordFieldData()..updateWordFieldList("hello")),
   ], child: const MyApp()));
 }
 

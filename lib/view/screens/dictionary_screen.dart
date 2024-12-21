@@ -24,8 +24,9 @@ class DictionaryScreen extends StatelessWidget {
   late List<Tab> tabList;
   late int numberOfTab;
   late WordFieldData wordFieldData;
+  bool showAppBar;
 
-  DictionaryScreen({super.key}) {}
+  DictionaryScreen({super.key, required this.showAppBar});
 
   void init() {
     tabList = buildTabs(wordFieldData.wordFields);
@@ -116,13 +117,17 @@ class DictionaryScreen extends StatelessWidget {
                     headerSliverBuilder:
                         (BuildContext context, bool innerBoxIsScrolled) {
                       return [
-                        const SliverAppBar(
-                            pinned: false,
-                            snap: true,
-                            floating: true,
-                            backgroundColor: Colors.white,
-                            surfaceTintColor: Colors.white,
-                            title: CustomSearchBar()),
+                        showAppBar
+                            ? const SliverAppBar(
+                                pinned: false,
+                                snap: true,
+                                floating: true,
+                                backgroundColor: Colors.white,
+                                surfaceTintColor: Colors.white,
+                                title: CustomSearchBar())
+                            : const SliverToBoxAdapter(
+                                child: SizedBox(),
+                              ),
                         SliverPersistentHeader(
                           pinned: true,
                           delegate: TabBarDelegate(

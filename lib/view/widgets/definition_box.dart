@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:eng_dict/model/word.dart';
+import 'package:eng_dict/view/screens/bottom_sheet_dictionary.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:flutter/foundation.dart';
@@ -10,6 +11,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 class DefinitionBox extends StatelessWidget {
   Word? word;
+  late BuildContext context;
+
   DefinitionBox({
     required this.word,
     super.key,
@@ -17,6 +20,7 @@ class DefinitionBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    this.context = context;
     if (word == null) {
       return SizedBox();
     }
@@ -201,9 +205,7 @@ class DefinitionBox extends StatelessWidget {
         text: word,
         recognizer: TapGestureRecognizer()
           ..onTap = () {
-            if (kDebugMode) {
-              print(word);
-            }
+            showDictionaryBottomSheet(context, word);
           });
   }
 }

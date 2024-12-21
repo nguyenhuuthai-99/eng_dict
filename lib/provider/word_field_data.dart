@@ -8,9 +8,7 @@ class WordFieldData extends ChangeNotifier {
   List<WordField> wordFields = [];
   late bool _isLoading = true;
 
-  WordFieldData() {
-    updateWordFieldList("hello");
-  }
+  WordFieldData();
 
   Future<void>? updateWordFieldList(String word) async {
     _isLoading = true;
