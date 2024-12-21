@@ -68,31 +68,41 @@ class WordTitleBox extends StatelessWidget {
                 ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.only(
+            Padding(
+              padding: const EdgeInsets.only(
                   top: Constant.kMarginExtraSmall, left: 1),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    CustomIcon.video,
-                    color: Constant.kPrimaryColor,
-                    size: 22,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 2.0),
-                    child: Text(
-                      "  Youglish ",
-                      style: TextStyle(
-                          color: Constant.kPrimaryColor, fontSize: 16),
+              child: GestureDetector(
+                onTap: () {},
+                child: const Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      CustomIcon.video,
+                      color: Constant.kPrimaryColor,
+                      size: 22,
                     ),
-                  ),
-                  Icon(
-                    Icons.help_outline,
-                    size: 17,
-                    color: Colors.grey,
-                  )
-                ],
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 2.0),
+                      child: Text(
+                        "  Youglish ",
+                        style: TextStyle(
+                            color: Constant.kPrimaryColor, fontSize: 16),
+                      ),
+                    ),
+                    Tooltip(
+                      preferBelow: false,
+                      verticalOffset: 10,
+                      triggerMode: TooltipTriggerMode.tap,
+                      message:
+                          "Hear real-world pronunciation and see usage in context.",
+                      child: Icon(
+                        Icons.help_outline,
+                        size: 17,
+                        color: Colors.grey,
+                      ),
+                    )
+                  ],
+                ),
               ),
             )
           ],
@@ -150,7 +160,8 @@ class IPABox extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Constant.kMarginSmall),
+            padding:
+                const EdgeInsets.symmetric(horizontal: Constant.kMarginSmall),
             child: Text(
               accent,
               style: const TextStyle(
