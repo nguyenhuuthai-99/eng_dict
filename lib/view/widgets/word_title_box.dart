@@ -72,7 +72,12 @@ class WordTitleBox extends StatelessWidget {
               padding: const EdgeInsets.only(
                   top: Constant.kMarginExtraSmall, left: 1),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  if (wordForm?.words?[0].wordTitle != null) {
+                    youglishButtonTapped(
+                        context: context, word: wordForm!.words![0].wordTitle!);
+                  }
+                },
                 child: const Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -108,6 +113,19 @@ class WordTitleBox extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void youglishButtonTapped(
+      {required BuildContext context, required String word}) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          color: Colors.white,
+          child: ,
+        );
+      },
     );
   }
 }

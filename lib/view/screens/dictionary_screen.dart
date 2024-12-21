@@ -105,7 +105,7 @@ class DictionaryScreen extends StatelessWidget {
       body: SafeArea(
           bottom: false,
           child: wordFieldData.isLoading
-              ? const DictionaryLoadingScreen()
+              ? DictionaryLoadingScreen()
               : DefaultTabController(
                   length: numberOfTab,
                   child: NestedScrollView(
@@ -222,43 +222,13 @@ class DictionaryErrorScreen extends StatelessWidget {
   }
 }
 
-class DictionaryLoadingScreen extends StatefulWidget {
-  const DictionaryLoadingScreen({
-    super.key,
-  });
-
-  @override
-  State<DictionaryLoadingScreen> createState() =>
-      _DictionaryLoadingScreenState();
-}
-
-class _DictionaryLoadingScreenState extends State<DictionaryLoadingScreen> {
-  bool isLoading = true;
-
-  Future<void> _loading() async {
-    await Future.delayed(Duration(seconds: 7));
-  }
-
-  Future<void> wait() async {
-    try {
-      await _loading().timeout(Duration(seconds: 6));
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    wait();
-  }
+class DictionaryLoadingScreen extends StatelessWidget {
+  late WordFieldData wordFieldData;
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
+    wordFieldData = Provider.of<WordFieldData>(context);
+    return wordFieldData.isLoading
         ? Scaffold(
             appBar: AppBar(
               title: const CustomSearchBar(),

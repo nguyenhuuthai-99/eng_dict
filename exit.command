@@ -1,0 +1,1 @@
+/usr/bin/arch -arm64e xcrun simctl terminate B0B07C1C-EE31-4E49-96FE-01FEE91E40C4 com.example.engDict

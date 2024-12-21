@@ -30,6 +30,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+exit.command
 
 # Symbolication related
 app.*.symbols
