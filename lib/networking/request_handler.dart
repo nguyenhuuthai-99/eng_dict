@@ -11,7 +11,7 @@ class RequestHandler {
 
   Future<List<WordField>> getWordData(String word) async {
     List<WordField> wordFields = [];
-    URL = Uri.parse("http://localhost:8080/dictionary/$word");
+    URL = Uri.parse("http://10.0.2.2:8080/dictionary/$word");
     var response = await http.get(URL);
 
     int responseCode = response.statusCode;
@@ -51,5 +51,10 @@ class RequestHandler {
           .toList();
     }
     return suggestedWords;
+  }
+
+  static String buildYougLishHTML(String word) {
+    return """<a id="yg-widget-0" class="youglish-widget" data-query="great%20power" data-lang="english" data-zones="all,us,uk,aus" data-components="8415" width="1000" data-bkg-color="theme_light"  rel="nofollow" href="https://youglish.com">Visit YouGlish.com</a>
+<script async src="https://youglish.com/public/emb/widget.js" charset="utf-8"></script>""";
   }
 }
