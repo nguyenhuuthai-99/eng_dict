@@ -141,6 +141,8 @@ class WordTitleBox extends StatelessWidget {
         WebViewController.fromPlatformCreationParams(params);
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setUserAgent(
+          "Mozilla/5.0 (Linux; Android 10; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Mobile Safari/537.36")
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -204,15 +206,11 @@ class WordTitleBox extends StatelessWidget {
                 ],
               ),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Constant.kMarginLarge),
-                  child: WebViewWidget(
-                      gestureRecognizers: gestureRecognizers,
-                      controller: _controller
-                        ..loadHtmlString(RequestHandler.buildYougLishHTML(
-                            Utils.URLEncode(word)))),
-                ),
+                child: WebViewWidget(
+                    gestureRecognizers: gestureRecognizers,
+                    controller: _controller
+                      ..loadHtmlString(RequestHandler.buildYougLishHTML(
+                          Utils.URLEncode(word)))),
               ),
             ],
           ),

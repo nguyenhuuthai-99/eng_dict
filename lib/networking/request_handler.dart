@@ -11,7 +11,9 @@ class RequestHandler {
 
   Future<List<WordField>> getWordData(String word) async {
     List<WordField> wordFields = [];
-    URL = Uri.parse("http://10.0.2.2:8080/dictionary/$word");
+    // URL = Uri.parse("http://10.0.2.2:8080/dictionary/$word");
+    // URL = Uri.parse("http://localhost:8080/dictionary/$word");
+    URL = Uri.parse("http://192.168.0.227:8080/dictionary/$word");
     var response = await http.get(URL);
 
     int responseCode = response.statusCode;
@@ -54,7 +56,77 @@ class RequestHandler {
   }
 
   static String buildYougLishHTML(String word) {
-    return """<a id="yg-widget-0" class="youglish-widget" data-query="great%20power" data-lang="english" data-zones="all,us,uk,aus" data-components="8415" width="1000" data-bkg-color="theme_light"  rel="nofollow" href="https://youglish.com">Visit YouGlish.com</a>
+//     return """<!DOCTYPE html>
+// <html>
+// <head>
+//   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//   <style>
+//     body {
+//       font-family: Arial, sans-serif;
+//       margin: 0;
+//       padding: 10px;
+//     }
+//   </style>
+// </head>
+//   <body>
+//     <!-- 1. The widget will replace this <div> tag. -->
+//     <div id="widget-1"></div>
+//
+//
+//     <script>
+//       // 2. This code loads the widget API code asynchronously.
+//       var tag = document.createElement('script');
+//
+//       tag.src = "https://youglish.com/public/emb/widget.js";
+//       var firstScriptTag = document.getElementsByTagName('script')[0];
+//       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+//
+//       // 3. This function creates a widget after the API code downloads.
+//       var widget;
+//       function onYouglishAPIReady(){
+//         widget = new YG.Widget("widget-1", {
+//           components:`, //search box & caption
+//           events: {
+//             'onFetchDone': onFetchDone,
+//             'onVideoChange': onVideoChange,
+//             'onCaptionConsumed': onCaptionConsumed
+//           }
+//         });
+//         // 4. process the query
+//         widget.fetch("$word","english");
+//       }
+//
+//
+//       var views = 0, curTrack = 0, totalTracks = 0;
+//
+//       // 5. The API will call this method when the search is done
+//       function onFetchDone(event){
+//         if (event.totalResult === 0)   alert("No result found");
+//         else totalTracks = event.totalResult;
+//       }
+//
+//       // 6. The API will call this method when switching to a new video.
+//       function onVideoChange(event){
+//         curTrack = event.trackNumber;
+//         views = 0;
+//       }
+//
+//       // 7. The API will call this method when a caption is consumed.
+//       function onCaptionConsumed(event){
+//         if (++views < 2)
+//           widget.replay();
+//         else
+//           if (curTrack < totalTracks)
+//             widget.next();
+//       }
+//     </script>
+//   </body>
+// </html>""";
+    return """
+    <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+    <a id="yg-widget-0" class="youglish-widget" data-query="$word" data-lang="english" data-zones="all,us,uk,aus" data-components="8415"  data-bkg-color="theme_light"  rel="nofollow" href="https://youglish.com">Visit YouGlish.com</a>
 <script async src="https://youglish.com/public/emb/widget.js" charset="utf-8"></script>""";
   }
 }
