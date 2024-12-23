@@ -11,27 +11,27 @@ void main() {
     ChangeNotifierProvider(create: (_) => ScreenData()),
     ChangeNotifierProvider(
         create: (_) => WordFieldData()..updateWordFieldList("hello")),
-  ], child: const MyApp()));
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (context) => context,
-      child: MaterialApp(
-        theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
-          appBarTheme: const AppBarTheme(color: Colors.white),
-          brightness: Brightness.light,
-          textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
-        ),
-        title: 'Eng Dict',
-        home: const NavigationMenu(),
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(color: Colors.white),
+        brightness: Brightness.light,
+        textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
       ),
+      title: 'Eng Dict',
+      home: const NavigationMenu(),
     );
   }
 }

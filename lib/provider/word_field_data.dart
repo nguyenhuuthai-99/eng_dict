@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:eng_dict/main.dart';
 import 'package:eng_dict/networking/request_handler.dart';
+import 'package:eng_dict/view/dialog/error-dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../model/word_field.dart';
@@ -8,6 +10,7 @@ import '../model/word_field.dart';
 class WordFieldData extends ChangeNotifier {
   RequestHandler requestHandler = RequestHandler();
   List<WordField> wordFields = [];
+  BuildContext? context = MyApp.navigatorKey.currentState?.context;
   late String word;
   late bool _isLoading;
   bool _hasError = false;
@@ -27,11 +30,23 @@ class WordFieldData extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     } on TimeoutException {
-      _hasError = true;
-      notifyListeners();
+      if (context != null) {
+        showDialog(
+          context: context!,
+          builder: (context) => const TimeOutDialog(),
+        );
+        _hasError = true;
+        notifyListeners();
+      }
     } on FormatException {
-      _hasError = true;
-      notifyListeners();
+      if (context != null) {
+        showDialog(
+          context: context!,
+          builder: (context) => const NoInternetDialog(),
+        );
+        _hasError = true;
+        notifyListeners();
+      }
     }
   }
 
