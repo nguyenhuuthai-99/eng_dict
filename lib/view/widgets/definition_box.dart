@@ -1,4 +1,5 @@
 import 'package:eng_dict/model/word.dart';
+import 'package:eng_dict/view/component/toggle_save_button.dart';
 import 'package:eng_dict/view/screens/bottom_sheet_dictionary.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
@@ -48,7 +49,9 @@ class DefinitionBox extends StatelessWidget {
                     fontSize: 20,
                     color: Constant.kPrimaryColor),
               )),
-              ToggleSaveButton()
+              ToggleSaveButton(
+                word: word,
+              )
             ],
           ),
           buildDefinitionText(word!.definition),
@@ -102,9 +105,8 @@ class DefinitionBox extends StatelessWidget {
                       child: word!.phraseTitle != null
                           ? buildPhraseTitle(word!.phraseTitle!)
                           : const SizedBox()),
-                  const Icon(
-                    CustomIcon.book_mark,
-                    color: Constant.kAccentColor,
+                  ToggleSaveButton(
+                    word: word,
                   )
                 ],
               ),
@@ -200,36 +202,5 @@ class DefinitionBox extends StatelessWidget {
           ..onTap = () {
             showDictionaryBottomSheet(context, word);
           });
-  }
-}
-
-class ToggleSaveButton extends StatefulWidget {
-  ToggleSaveButton({
-    super.key,
-  });
-
-  @override
-  State<ToggleSaveButton> createState() => _ToggleSaveButtonState();
-}
-
-class _ToggleSaveButtonState extends State<ToggleSaveButton> {
-  bool isClicked = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => setState(() {
-        isClicked = !isClicked;
-      }),
-      child: isClicked
-          ? const Icon(
-              CustomIcon.book_mark_filled,
-              color: Constant.kPrimaryColor,
-            )
-          : const Icon(
-              CustomIcon.book_mark,
-              color: Colors.black38,
-            ),
-    );
   }
 }
