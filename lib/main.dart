@@ -20,15 +20,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(color: Colors.white),
-        brightness: Brightness.light,
-        textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
+    return Provider(
+      create: (context) => context,
+      child: MaterialApp(
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: const AppBarTheme(color: Colors.white),
+          brightness: Brightness.light,
+          textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
+        ),
+        title: 'Eng Dict',
+        home: const NavigationMenu(),
       ),
-      title: 'Eng Dict',
-      home: const NavigationMenu(),
     );
   }
 }

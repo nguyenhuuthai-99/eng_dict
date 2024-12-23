@@ -165,7 +165,8 @@ class DictionaryErrorScreen extends StatelessWidget {
         title: const CustomSearchBar(),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: Constant.kMarginExtraLarge),
+        padding:
+            const EdgeInsets.symmetric(horizontal: Constant.kMarginExtraLarge),
         width: double.infinity,
         child: RefreshIndicator(
           color: Colors.grey,
@@ -228,7 +229,7 @@ class DictionaryLoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     wordFieldData = Provider.of<WordFieldData>(context);
-    return wordFieldData.isLoading
+    return !wordFieldData.hasError
         ? Scaffold(
             appBar: AppBar(
               title: const CustomSearchBar(),

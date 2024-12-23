@@ -12,8 +12,8 @@ class RequestHandler {
   Future<List<WordField>> getWordData(String word) async {
     List<WordField> wordFields = [];
     // URL = Uri.parse("http://10.0.2.2:8080/dictionary/$word");
-    // URL = Uri.parse("http://localhost:8080/dictionary/$word");
-    URL = Uri.parse("http://192.168.0.227:8080/dictionary/$word");
+    URL = Uri.parse("http://localhost:8080/dictionary/$word");
+    // URL = Uri.parse("http://192.168.0.227:8080/dictionary/$word");
     var response = await http.get(URL);
 
     int responseCode = response.statusCode;

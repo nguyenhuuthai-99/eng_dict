@@ -3,6 +3,13 @@ import 'package:eng_dict/view/screens/home_screen.dart';
 import 'package:eng_dict/view/screens/vocabulary_screen.dart';
 import 'package:flutter/material.dart';
 
+enum Screens {
+  homeScreen,
+  dictionaryLoadingScreen,
+  dictionaryErrorScreen,
+  vocabularyScreen
+}
+
 class ScreenData extends ChangeNotifier {
   int _index = 0;
   final List<Widget> screens = [
