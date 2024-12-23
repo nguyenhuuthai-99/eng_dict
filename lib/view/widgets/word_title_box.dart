@@ -184,7 +184,7 @@ class WordTitleBox extends StatelessWidget {
 
     initWebController();
 
-    showCupertinoModalBottomSheet(
+    showModalBottomSheet(
       enableDrag: false,
       backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
@@ -250,7 +250,7 @@ class IPABox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return canPlay && IPA.isNotEmpty ?GestureDetector(
       onTap: () async {
         if (canPlay) {
           await playSound();
@@ -287,6 +287,6 @@ class IPABox extends StatelessWidget {
           )
         ],
       ),
-    );
+    ) : const SizedBox();
   }
 }
