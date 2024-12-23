@@ -68,6 +68,7 @@ class YouglishWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(word);
     final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers = {
       Factory(() => EagerGestureRecognizer())
     };

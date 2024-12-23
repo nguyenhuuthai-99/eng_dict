@@ -25,7 +25,7 @@ class WordFieldData extends ChangeNotifier {
 
     try {
       wordFields = await requestHandler
-          .getWordDataFromSearch(url)
+          .getWordData(word)
           .timeout(const Duration(seconds: 6));
       _isLoading = false;
       notifyListeners();
@@ -57,7 +57,7 @@ class WordFieldData extends ChangeNotifier {
 
     try {
       wordFields = await requestHandler
-          .getWordData(word)
+          .getWordDataFromSearch(url)
           .timeout(const Duration(seconds: 6));
       _isLoading = false;
       notifyListeners();

@@ -7,7 +7,6 @@ import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -143,7 +142,9 @@ class buildSearchResult extends StatelessWidget {
                       Navigator.pop(context);
 
                       Provider.of<WordFieldData>(context, listen: false)
-                          .updateWordFieldList(suggestedWords[index].wordTitle);
+                          .updateWordFieldListFromSearch(
+                              suggestedWords[index].wordTitle,
+                              suggestedWords[index].url);
                       Provider.of<ScreenData>(context, listen: false)
                           .changeIndex(1);
                     },
