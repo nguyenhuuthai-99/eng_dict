@@ -42,6 +42,8 @@ dependencies:
   shimmer: ^3.0.0
   modal_bottom_sheet: ^3.0.0
   webview_flutter: ^4.10.0
+  connectivity_plus: ^6.1.1
+  internet_connection_checker: ^3.0.1
 
 dev_dependencies:
   flutter_test:

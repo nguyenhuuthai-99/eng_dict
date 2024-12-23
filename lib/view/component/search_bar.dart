@@ -1,5 +1,7 @@
+import 'package:eng_dict/view/dialog/error-dialog.dart';
 import 'package:eng_dict/view/screens/search_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
+import 'package:eng_dict/view/utils/internet_checker.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/custom_icon.dart';
@@ -10,9 +12,16 @@ class CustomSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => const SearchScreen()));
+        bool isConnected = await InternetChecker.checkInternet();
+        if (!isConnected) {
+          showDialog(
+            context: context,
+            builder: (context) => NoInternetDialog(),
+          );
+        }
       },
       child: Container(
         decoration: BoxDecoration(
