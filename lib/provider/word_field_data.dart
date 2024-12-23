@@ -25,6 +25,38 @@ class WordFieldData extends ChangeNotifier {
 
     try {
       wordFields = await requestHandler
+          .getWordDataFromSearch(url)
+          .timeout(const Duration(seconds: 6));
+      _isLoading = false;
+      notifyListeners();
+    } on TimeoutException {
+      if (context != null) {
+        showDialog(
+          context: context!,
+          builder: (context) => const TimeOutDialog(),
+        );
+        _hasError = true;
+        notifyListeners();
+      }
+    } on FormatException {
+      if (context != null) {
+        showDialog(
+          context: context!,
+          builder: (context) => const NoInternetDialog(),
+        );
+        _hasError = true;
+        notifyListeners();
+      }
+    }
+  }
+
+  Future<void>? updateWordFieldListFromSearch(String word, String url) async {
+    this.word = word;
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      wordFields = await requestHandler
           .getWordData(word)
           .timeout(const Duration(seconds: 6));
       _isLoading = false;

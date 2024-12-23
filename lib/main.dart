@@ -22,7 +22,7 @@ Future<void> checkInternet() async {
   if (!isConnected) {
     if (context.mounted) {
       showDialog(
-        context: MyApp.navigatorKey.currentState!.context!,
+        context: MyApp.navigatorKey.currentState!.context,
         builder: (context) => const NoInternetDialog(),
       );
     }
