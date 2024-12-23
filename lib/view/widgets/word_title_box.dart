@@ -224,7 +224,7 @@ class IPABox extends StatelessWidget {
   bool canPlay = false;
   final String accent;
   final String IPA;
-  String? soundURL;
+  final String? soundURL;
 
   IPABox({super.key, this.soundURL, required this.accent, required this.IPA}) {
     if (soundURL != null) {
