@@ -1,5 +1,5 @@
-
 import 'package:eng_dict/model/word.dart';
+import 'package:eng_dict/view/component/toggle_save_button.dart';
 import 'package:eng_dict/view/screens/bottom_sheet_dictionary.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
@@ -49,10 +49,8 @@ class DefinitionBox extends StatelessWidget {
                     fontSize: 20,
                     color: Constant.kPrimaryColor),
               )),
-              const Icon(
-                //todo: add action for save button
-                CustomIcon.book_mark,
-                color: Colors.redAccent,
+              ToggleSaveButton(
+                word: word,
               )
             ],
           ),
@@ -107,9 +105,8 @@ class DefinitionBox extends StatelessWidget {
                       child: word!.phraseTitle != null
                           ? buildPhraseTitle(word!.phraseTitle!)
                           : const SizedBox()),
-                  const Icon(
-                    CustomIcon.book_mark,
-                    color: Constant.kAccentColor,
+                  ToggleSaveButton(
+                    word: word,
                   )
                 ],
               ),
