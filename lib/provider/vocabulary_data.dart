@@ -15,7 +15,6 @@ class VocabularyData extends ChangeNotifier {
   VocabularyData(this.databaseHelper);
   Future<void> getVocabulary() async {
     isLoading = true;
-    notifyListeners();
 
     vocabularyList = await databaseHelper.getVocabulary();
 

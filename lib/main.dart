@@ -18,7 +18,7 @@ void main() async {
   await databaseHelper.initializeDatabase();
 
   VocabularyData vocabularyData = VocabularyData(databaseHelper);
-  await vocabularyData.initializeVocabulary();
+  await vocabularyData.getVocabulary();
 
   runApp(MultiProvider(providers: [
     Provider(

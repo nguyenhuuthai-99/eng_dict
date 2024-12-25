@@ -17,7 +17,7 @@ class ScreenData extends ChangeNotifier {
     DictionaryScreen(
       showAppBar: true,
     ),
-    const VocabularyScreen(),
+    VocabularyScreen(),
   ];
 
   int get index => _index;

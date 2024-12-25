@@ -1,15 +1,20 @@
+import 'package:eng_dict/model/vocabulary.dart';
+import 'package:eng_dict/provider/vocabulary_data.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:eng_dict/view/widgets/vocabulary_box.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class VocabularyScreen extends StatelessWidget {
   final String screenId = "VocabularyScreen";
-  const VocabularyScreen({super.key});
+  VocabularyScreen({super.key});
+  late List<Vocabulary> vocabularyList;
 
   @override
   Widget build(BuildContext context) {
+    vocabularyList = Provider.of<VocabularyData>(context).vocabularyList;
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
@@ -30,7 +35,7 @@ class VocabularyScreen extends StatelessWidget {
           ),
           SliverPersistentHeader(
               pinned: true,
-              delegate: toolBarDelegate(
+              delegate: ToolBarDelegate(
                 Container(
                   padding: const EdgeInsets.only(
                       left: 8.0,
@@ -78,29 +83,32 @@ class VocabularyScreen extends StatelessWidget {
                   ),
                 ),
               )),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                VocabularyBox(),
-                VocabularyBox(),
-                VocabularyBox(),
-                VocabularyBox(),
-                VocabularyBox(),
-                VocabularyBox(),
-                VocabularyBox(),
-              ],
-            ),
+          SliverList.builder(
+            itemCount: vocabularyList.length,
+            itemBuilder: (context, index) {
+              return VocabularyBox(
+                vocabulary: vocabularyList[index],
+              );
+            },
           ),
+
+          // SliverToBoxAdapter(
+          //   child: ListView.builder(
+          //     physics: const NeverScrollableScrollPhysics(),
+          //     shrinkWrap: true,
+          //
+          //   ),
+          // ),
         ],
       ),
     );
   }
 }
 
-class toolBarDelegate extends SliverPersistentHeaderDelegate {
+class ToolBarDelegate extends SliverPersistentHeaderDelegate {
   Widget child;
 
-  toolBarDelegate(this.child);
+  ToolBarDelegate(this.child);
 
   @override
   Widget build(
