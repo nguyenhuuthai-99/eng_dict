@@ -62,11 +62,12 @@ class WordTitleBox extends StatelessWidget {
               spacing: 20, // Space between children
               runSpacing: 8.0, // Space between rows
               children: [
-                IPABox(
-                  IPA: wordForm?.usIPA != null ? wordForm!.usIPA! : "",
-                  accent: "US",
-                  soundURL: wordForm?.usIPASoundURL,
-                ),
+                if (wordForm?.usIPASoundURL != null || wordForm?.usIPA != null)
+                  IPABox(
+                    IPA: wordForm?.usIPA != null ? wordForm!.usIPA! : "",
+                    accent: "US",
+                    soundURL: wordForm?.usIPASoundURL,
+                  ),
                 IPABox(
                   IPA: wordForm?.ukIPA != null ? wordForm!.ukIPA! : "",
                   accent: "UK",
@@ -166,7 +167,7 @@ class IPABox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return canPlay && IPA.isNotEmpty
+    return canPlay || IPA.isNotEmpty
         ? GestureDetector(
             onTap: () async {
               if (canPlay) {

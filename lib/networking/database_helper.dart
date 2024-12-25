@@ -32,8 +32,8 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> insertVocabulary(Vocabulary vocabulary) async {
-    await database.insert(
+  Future<int> insertVocabulary(Vocabulary vocabulary) async {
+    return await database.insert(
         "vocabulary",
         {
           "word_title": vocabulary.wordTitle,

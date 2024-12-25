@@ -9,8 +9,10 @@ import 'package:provider/provider.dart';
 class VocabularyData extends ChangeNotifier {
   // late BuildContext context;
   late List<Vocabulary> vocabularyList;
+  List<int> newVocabularyList = [];
   late DatabaseHelper databaseHelper;
   late bool isLoading;
+  bool isSorted = false;
 
   VocabularyData(this.databaseHelper);
   Future<void> getVocabulary() async {
@@ -30,5 +32,33 @@ class VocabularyData extends ChangeNotifier {
   Future<void> deleteVocabulary(int id) async {
     databaseHelper.deleteVocabulary(id);
     getVocabulary();
+  }
+
+  void sortToggle() {
+    isSorted = !isSorted;
+
+    if (isSorted) {
+      sortVocabularyByName();
+    } else {
+      sortVocabularyByID();
+    }
+    notifyListeners();
+  }
+
+  void sortVocabularyByID() {
+    vocabularyList.sort(
+      (a, b) => a.id.compareTo(b.id),
+    );
+  }
+
+  void sortVocabularyByName() {
+    vocabularyList.sort(
+      (a, b) => a.wordTitle.codeUnitAt(0).compareTo(b.wordTitle.codeUnitAt(0)),
+    );
+  }
+
+  void resetNewVocabularyList() {
+    newVocabularyList.clear();
+    notifyListeners();
   }
 }

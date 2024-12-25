@@ -52,10 +52,15 @@ class VocabularyScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        const Icon(
-                          CustomIcon.sort,
-                          color: Constant.kHyperLinkTextColor,
-                          size: 32,
+                        GestureDetector(
+                          onTap: () => Provider.of<VocabularyData>(context,
+                                  listen: false)
+                              .sortToggle(),
+                          child: const Icon(
+                            CustomIcon.sort,
+                            color: Constant.kHyperLinkTextColor,
+                            size: 32,
+                          ),
                         ),
                         const Expanded(
                           child: SizedBox(),
