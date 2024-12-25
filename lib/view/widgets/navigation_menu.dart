@@ -1,16 +1,20 @@
 import 'dart:ui';
 
 import 'package:eng_dict/provider/screen_data.dart';
+import 'package:eng_dict/provider/vocabulary_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/constants.dart';
 import '../utils/custom_icon.dart';
 
 class NavigationMenu extends StatelessWidget {
-  const NavigationMenu({super.key});
+  bool isNewWordCheck = false;
+  late VocabularyData vocabularyData;
+  NavigationMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
+    vocabularyData = Provider.of<VocabularyData>(context);
     ScreenData data = Provider.of<ScreenData>(context);
     return Scaffold(
       extendBody: true,
@@ -28,14 +32,30 @@ class NavigationMenu extends StatelessWidget {
                 indicatorColor: Colors.transparent,
                 backgroundColor: Colors.white.withOpacity(0.6),
                 height: 70,
-                onDestinationSelected: (index) => data.changeIndex(index),
-                destinations: const [
-                  NavigationDestination(
+                onDestinationSelected: (index) {
+                  if (index == 2) {
+                    isNewWordCheck = true;
+                  } else {
+                    if (isNewWordCheck == true) {
+                      vocabularyData.resetNewVocabularyList();
+                      isNewWordCheck = false;
+                    }
+                  }
+                  data.changeIndex(index);
+                },
+                destinations: [
+                  const NavigationDestination(
                       icon: Icon(CustomIcon.house), label: "Home"),
-                  NavigationDestination(
+                  const NavigationDestination(
                       icon: Icon(CustomIcon.book), label: "Dictionary"),
                   NavigationDestination(
-                      icon: Icon(CustomIcon.vocabulary), label: "Vocabulary"),
+                      icon: Badge(
+                          isLabelVisible:
+                              vocabularyData.newVocabularyList.isNotEmpty,
+                          label: Text(vocabularyData.newVocabularyList.length
+                              .toString()),
+                          child: const Icon(CustomIcon.vocabulary)),
+                      label: "Vocabulary"),
                 ],
               ),
             ),

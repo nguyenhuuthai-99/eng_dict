@@ -34,10 +34,13 @@ class VocabularyBox extends StatelessWidget {
                 CustomIcon.dot,
                 color: Colors.red,
               ),
-              const Icon(
-                CustomIcon.new_icon,
-                color: Colors.blue,
-              ),
+              if (Provider.of<VocabularyData>(context, listen: false)
+                  .newVocabularyList
+                  .contains(vocabulary.id))
+                const Icon(
+                  CustomIcon.new_icon,
+                  color: Colors.blue,
+                ),
               if (vocabulary.phraseTitle.isNotEmpty)
                 const Text(
                   "     phrase",

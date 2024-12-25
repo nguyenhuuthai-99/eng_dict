@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
       ),
       title: 'Eng Dict',
-      home: const NavigationMenu(),
+      home: NavigationMenu(),
     );
   }
 }

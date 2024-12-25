@@ -7,9 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class VocabularyData extends ChangeNotifier {
-  // late BuildContext context;
   late List<Vocabulary> vocabularyList;
-  List<int> newVocabularyList = [];
+  Set<int> newVocabularyList = {1, 2, 3, 4};
   late DatabaseHelper databaseHelper;
   late bool isLoading;
   bool isSorted = false;
@@ -19,13 +18,15 @@ class VocabularyData extends ChangeNotifier {
     isLoading = true;
 
     vocabularyList = await databaseHelper.getVocabulary();
+    sortVocabularyByID();
 
     isLoading = false;
     notifyListeners();
   }
 
   Future<void> insertVocabulary(Vocabulary vocabulary) async {
-    databaseHelper.insertVocabulary(vocabulary);
+    int id = await databaseHelper.insertVocabulary(vocabulary);
+    addNewWord(id);
     getVocabulary();
   }
 
@@ -47,7 +48,7 @@ class VocabularyData extends ChangeNotifier {
 
   void sortVocabularyByID() {
     vocabularyList.sort(
-      (a, b) => a.id.compareTo(b.id),
+      (a, b) => b.id.compareTo(a.id),
     );
   }
 
@@ -60,5 +61,9 @@ class VocabularyData extends ChangeNotifier {
   void resetNewVocabularyList() {
     newVocabularyList.clear();
     notifyListeners();
+  }
+
+  void addNewWord(int id) {
+    newVocabularyList.add(id);
   }
 }

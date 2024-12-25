@@ -98,18 +98,6 @@ class VocabularyScreen extends StatelessWidget {
                 );
               },
             ),
-            // SliverToBoxAdapter(
-            //   child: ListView.builder(
-            //     physics: const NeverScrollableScrollPhysics(),
-            //     shrinkWrap: true,
-            //     itemCount: vocabularyList.length,
-            //     itemBuilder: (context, index) {
-            //       return VocabularyBox(
-            //         vocabulary: vocabularyList[index],
-            //       );
-            //     },
-            //   ),
-            // ),
           ],
         ),
       ),
