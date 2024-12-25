@@ -17,89 +17,96 @@ class VocabularyScreen extends StatelessWidget {
     vocabularyList = Provider.of<VocabularyData>(context).vocabularyList;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar.medium(
-            pinned: true,
-            flexibleSpace: AppBar(
-              backgroundColor: Colors.white,
-              surfaceTintColor: Colors.white,
-              title: const Text("Vocabulary"),
-            ),
-            title: const Text("Vocabulary"),
-            toolbarHeight: kToolbarHeight,
-            collapsedHeight: kToolbarHeight,
-            expandedHeight: kToolbarHeight,
-            surfaceTintColor: Colors.white,
-            backgroundColor: Colors.white,
-          ),
-          SliverPersistentHeader(
+      body: SafeArea(
+        top: false,
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar.medium(
               pinned: true,
-              delegate: ToolBarDelegate(
-                Container(
-                  padding: const EdgeInsets.only(
-                      left: 8.0,
-                      right: Constant.kMarginMedium,
-                      top: Constant.kMarginMedium),
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      border:
-                          Border(top: BorderSide(color: Constant.kGreyLine))),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      const Icon(
-                        CustomIcon.sort,
-                        color: Constant.kHyperLinkTextColor,
-                        size: 32,
-                      ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
-                      TextButton(
-                        style: const ButtonStyle(),
-                        onPressed: () {
-                          print("practice");
-                        },
-                        child: Text(
-                          "Practice now",
-                          style: GoogleFonts.openSans(
-                              decoration: TextDecoration.underline,
-                              decorationThickness: 2,
-                              decorationColor: Constant.kHyperLinkTextColor,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 20,
-                              color: Colors.transparent,
-                              shadows: [
-                                const Shadow(
-                                    color: Constant.kHyperLinkTextColor,
-                                    offset: Offset(0, -5))
-                              ]),
+              flexibleSpace: AppBar(
+                backgroundColor: Colors.white,
+                surfaceTintColor: Colors.white,
+                title: const Text("Vocabulary"),
+              ),
+              title: const Text("Vocabulary"),
+              toolbarHeight: kToolbarHeight,
+              collapsedHeight: kToolbarHeight,
+              expandedHeight: kToolbarHeight,
+              surfaceTintColor: Colors.white,
+              backgroundColor: Colors.white,
+            ),
+            SliverPersistentHeader(
+                pinned: true,
+                delegate: ToolBarDelegate(
+                  Container(
+                    padding: const EdgeInsets.only(
+                        left: 8.0,
+                        right: Constant.kMarginMedium,
+                        top: Constant.kMarginMedium),
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        border:
+                            Border(top: BorderSide(color: Constant.kGreyLine))),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        const Icon(
+                          CustomIcon.sort,
+                          color: Constant.kHyperLinkTextColor,
+                          size: 32,
                         ),
-                      )
-                    ],
+                        const Expanded(
+                          child: SizedBox(),
+                        ),
+                        TextButton(
+                          style: const ButtonStyle(),
+                          onPressed: () {
+                            print("practice");
+                          },
+                          child: Text(
+                            "Practice now",
+                            style: GoogleFonts.openSans(
+                                decoration: TextDecoration.underline,
+                                decorationThickness: 2,
+                                decorationColor: Constant.kHyperLinkTextColor,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 20,
+                                color: Colors.transparent,
+                                shadows: [
+                                  const Shadow(
+                                      color: Constant.kHyperLinkTextColor,
+                                      offset: Offset(0, -5))
+                                ]),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              )),
-          SliverList.builder(
-            itemCount: vocabularyList.length,
-            itemBuilder: (context, index) {
-              return VocabularyBox(
-                vocabulary: vocabularyList[index],
-              );
-            },
-          ),
-
-          // SliverToBoxAdapter(
-          //   child: ListView.builder(
-          //     physics: const NeverScrollableScrollPhysics(),
-          //     shrinkWrap: true,
-          //
-          //   ),
-          // ),
-        ],
+                )),
+            SliverList.builder(
+              itemCount: vocabularyList.length,
+              itemBuilder: (context, index) {
+                return VocabularyBox(
+                  vocabulary: vocabularyList[index],
+                );
+              },
+            ),
+            // SliverToBoxAdapter(
+            //   child: ListView.builder(
+            //     physics: const NeverScrollableScrollPhysics(),
+            //     shrinkWrap: true,
+            //     itemCount: vocabularyList.length,
+            //     itemBuilder: (context, index) {
+            //       return VocabularyBox(
+            //         vocabulary: vocabularyList[index],
+            //       );
+            //     },
+            //   ),
+            // ),
+          ],
+        ),
       ),
     );
   }
