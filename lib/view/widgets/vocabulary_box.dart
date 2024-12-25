@@ -1,14 +1,20 @@
+import 'package:eng_dict/model/vocabulary.dart';
+import 'package:eng_dict/provider/vocabulary_data.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class VocabularyBox extends StatelessWidget {
-  const VocabularyBox({
+  late List<Vocabulary> vocabularyList;
+  VocabularyBox({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
+    vocabularyList = Provider.of<VocabularyData>(context).vocabularyList;
+
     return Container(
       padding: const EdgeInsets.only(
           top: Constant.kMarginExtraSmall,

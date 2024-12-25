@@ -78,7 +78,7 @@ class VocabularyScreen extends StatelessWidget {
                   ),
                 ),
               )),
-          const SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: Column(
               children: [
                 VocabularyBox(),

@@ -18,7 +18,6 @@ class RequestHandler {
     var response = await http.get(URL);
 
     int responseCode = response.statusCode;
-    log(response.body);
     if (responseCode == HttpStatus.ok) {
       List<dynamic> jsonResult = jsonDecode(response.body);
 
@@ -42,7 +41,6 @@ class RequestHandler {
     var response = await http.get(URL);
 
     int responseCode = response.statusCode;
-    log(response.body);
     if (responseCode == HttpStatus.ok) {
       List<dynamic> jsonResult = jsonDecode(response.body);
 
@@ -140,11 +138,5 @@ class RequestHandler {
     </script>
   </body>
 </html>""";
-    return """
-    <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-    <a id="yg-widget-0" class="youglish-widget" data-query="$word" data-lang="english" data-zones="all,us,uk,aus" data-components="8415"  data-bkg-color="theme_light"  rel="nofollow" href="https://youglish.com">Visit YouGlish.com</a>
-<script async src="https://youglish.com/public/emb/widget.js" charset="utf-8"></script>""";
   }
 }

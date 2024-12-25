@@ -10,6 +10,9 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - sqflite_darwin (0.0.4):
+    - Flutter
+    - FlutterMacOS
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -20,6 +23,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
 EXTERNAL SOURCES:
@@ -33,6 +37,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/just_audio/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  sqflite_darwin:
+    :path: ".symlinks/plugins/sqflite_darwin/darwin"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
@@ -42,6 +48,7 @@ SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
+  sqflite_darwin: 5a7236e3b501866c1c9befc6771dfd73ffb8702d
   webview_flutter_wkwebview: 0982481e3d9c78fd5c6f62a002fcd24fc791f1e4
 
 PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
