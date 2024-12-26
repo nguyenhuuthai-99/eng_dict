@@ -2,6 +2,7 @@ import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/provider/vocabulary_data.dart';
 import 'package:eng_dict/view/dialog/error-dialog.dart';
 import 'package:eng_dict/view/screens/vocabulary_screen.dart';
+import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/internet_checker.dart';
 import 'package:eng_dict/view/widgets/navigation_menu.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: navigatorKey,
       theme: ThemeData(
+        colorScheme: ColorScheme.light(primary: Constant.kPrimaryColor),
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(color: Colors.white),
         brightness: Brightness.light,

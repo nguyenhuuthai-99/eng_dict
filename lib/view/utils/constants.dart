@@ -7,6 +7,9 @@ class Constant {
   static const Color kAccentColor = Color(0xffFF3B30);
 
   //Decorative Colors
+  static const Color kRedDotColor = Color(0xffFF3B30);
+  static const Color kGreenDotColor = Color(0xff34C759);
+  static const Color kYellowDotColor = Color(0xffFFCC00);
   static const Color kGreyBackground = Color(0xffF2F2F2);
   static const Color kGreyBorder = Color(0x1F767680);
   static const Color kGreyLine = Color(0xffE2E2E2);

@@ -1,5 +1,6 @@
 import 'package:eng_dict/model/vocabulary.dart';
 import 'package:eng_dict/provider/vocabulary_data.dart';
+import 'package:eng_dict/view/dialog/alertDialog.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:flutter/material.dart';
@@ -7,19 +8,29 @@ import 'package:provider/provider.dart';
 
 class VocabularyBox extends StatelessWidget {
   Vocabulary vocabulary;
+  Color dotColor = Constant.kRedDotColor;
   VocabularyBox({
     required this.vocabulary,
     super.key,
   });
 
+  void pickDotColor() {
+    if (vocabulary.fluencyLevel == 2) {
+      dotColor = Colors.yellow;
+    } else if (vocabulary.fluencyLevel == 3) {
+      dotColor = Colors.green;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    pickDotColor();
     return Container(
       padding: const EdgeInsets.only(
-          top: Constant.kMarginExtraSmall,
+          top: Constant.kMarginSmall,
+          bottom: Constant.kMarginSmall,
           left: Constant.kMarginExtraSmall,
           right: Constant.kMarginSmall),
-      margin: const EdgeInsets.only(top: Constant.kMarginMedium),
       decoration: BoxDecoration(
           color: vocabulary.phraseTitle.isNotEmpty
               ? Constant.kGreyBackground
@@ -30,10 +41,16 @@ class VocabularyBox extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(
+              Icon(
                 CustomIcon.dot,
-                color: Colors.red,
+                color: dotColor,
               ),
+              if (vocabulary.phraseTitle.isNotEmpty)
+                const Text(
+                  " phrase   ",
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic, color: Constant.kGreyText),
+                ),
               if (Provider.of<VocabularyData>(context, listen: false)
                   .newVocabularyList
                   .contains(vocabulary.id))
@@ -41,17 +58,19 @@ class VocabularyBox extends StatelessWidget {
                   CustomIcon.new_icon,
                   color: Colors.blue,
                 ),
-              if (vocabulary.phraseTitle.isNotEmpty)
-                const Text(
-                  "     phrase",
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic, color: Constant.kGreyText),
-                ),
               const Expanded(child: SizedBox()),
-              const Icon(
-                CustomIcon.more,
-                color: Constant.kButtonUnselectedColor,
-                size: 30,
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => DeleteWordAlert(vocabulary.id),
+                  );
+                },
+                child: const Icon(
+                  Icons.close,
+                  color: Constant.kButtonUnselectedColor,
+                  size: 20,
+                ),
               )
             ],
           ),
@@ -83,7 +102,9 @@ class VocabularyBox extends StatelessWidget {
                   Text(
                     vocabulary.phraseTitle,
                     style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w600),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Constant.kPrimaryColor),
                   ),
                 Text(
                   vocabulary.wordDefinition,
