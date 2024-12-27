@@ -40,6 +40,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           prefixIcon: const Padding(
                             padding: EdgeInsets.only(left: 8),
                             child: Icon(
+                              color: Constant.kGreyText,
                               CustomIcon.search,
                               size: 25,
                             ),
@@ -83,31 +84,43 @@ class _SearchScreenState extends State<SearchScreen> {
                   buildSearchResult(
                     suggestedWords: suggestedWords,
                   ),
-                  const Text(
-                    "Searched words",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Constant.kGreyText),
-                  ),
-                  const ListTile(
-                    leading: Icon(CustomIcon.history),
-                    title: Text("history"),
-                  ),
-                  const ListTile(
-                    leading: Icon(CustomIcon.history),
-                    title: Text("sophisticate"),
-                  ),
-                  const ListTile(
-                    leading: Icon(CustomIcon.history),
-                    title: Text("quantive"),
-                  ),
+                  buildHistoryBox(),
                 ],
               ),
             )
           ],
         ),
       )),
+    );
+  }
+
+  Widget buildHistoryBox() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Searched words",
+          style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Constant.kGreyText),
+        ),
+        const ListTile(
+          leading: Icon(
+            CustomIcon.history,
+            color: Constant.kGreyText,
+          ),
+          title: Text("history"),
+        ),
+        const ListTile(
+          leading: Icon(CustomIcon.history),
+          title: Text("sophisticate"),
+        ),
+        const ListTile(
+          leading: Icon(CustomIcon.history),
+          title: Text("quantive"),
+        ),
+      ],
     );
   }
 }
@@ -150,7 +163,10 @@ class buildSearchResult extends StatelessWidget {
                     },
                     child: ListTile(
                       title: Text(suggestedWords[index].wordTitle),
-                      leading: const Icon(CustomIcon.search),
+                      leading: const Icon(
+                        CustomIcon.search,
+                        color: Constant.kGreyText,
+                      ),
                     ),
                   );
                 },

@@ -128,6 +128,7 @@ class DictionaryScreen extends StatelessWidget {
                           delegate: TabBarDelegate(
                             child: TabBar(
                               dividerHeight: 2,
+                              dividerColor: Constant.kGreyLine,
                               tabAlignment: TabAlignment.start,
                               isScrollable: true,
                               tabs: tabList,

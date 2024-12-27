@@ -58,7 +58,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: navigatorKey,
       theme: ThemeData(
-        colorScheme: ColorScheme.light(primary: Constant.kPrimaryColor),
+        colorScheme: const ColorScheme.light(
+          primary: Constant.kPrimaryColor,
+        ),
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(color: Colors.white),
         brightness: Brightness.light,
