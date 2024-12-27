@@ -6,6 +6,7 @@ class NoInternetDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       title: const Text("No Internet"),
       content: const Text("Please check your connection and try again."),
       actions: [

@@ -53,6 +53,27 @@ class RequestHandler {
     return wordFields;
   }
 
+  Future<List<WordField>> getWordDataFromURL(String url) async {
+    List<WordField> wordFields = [];
+    // URL = Uri.parse("http://10.0.2.2:8080/dictionary/$word");
+    URL = Uri.parse("http://localhost:8080/dictionary/")
+        .replace(queryParameters: {"url": url});
+    // URL = Uri.parse("http://192.168.0.227:8080/dictionary/$word");
+    var response = await http.get(URL);
+
+    int responseCode = response.statusCode;
+    if (responseCode == HttpStatus.ok) {
+      List<dynamic> jsonResult = jsonDecode(response.body);
+
+      wordFields = jsonResult
+          .map(
+            (e) => WordField.fromJson(e),
+          )
+          .toList();
+    }
+    return wordFields;
+  }
+
   Future<List<SuggestedWord>> getSuggestedWord(String prefix) async {
     List<SuggestedWord> suggestedWords = [];
 

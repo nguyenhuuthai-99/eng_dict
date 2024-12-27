@@ -1,5 +1,7 @@
 import 'package:eng_dict/model/vocabulary.dart';
+import 'package:eng_dict/provider/screen_data.dart';
 import 'package:eng_dict/provider/vocabulary_data.dart';
+import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/dialog/alertDialog.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
@@ -116,7 +118,10 @@ class VocabularyBox extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              print("view more");
+              // print(vocabulary.URL);
+              Provider.of<WordFieldData>(context, listen: false)
+                  .loadWordFromURL(vocabulary.URL);
+              Provider.of<ScreenData>(context, listen: false).changeIndex(1);
             },
             child: const Row(
               children: [

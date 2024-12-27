@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 class VocabularyData extends ChangeNotifier {
   late List<Vocabulary> vocabularyList;
-  Set<int> newVocabularyList = {1, 2, 3, 4};
+  Set<int> newVocabularyList = {};
   late DatabaseHelper databaseHelper;
   late bool isLoading;
   bool isSorted = false;
