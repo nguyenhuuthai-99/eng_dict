@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:eng_dict/model/searched_word.dart';
 import 'package:eng_dict/model/vocabulary.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
@@ -11,14 +12,12 @@ class DatabaseHelper {
 
   Future<void> initializeDatabase() async {
     final databasePath = await getDatabasesPath();
-    final path = join(databasePath, "app.db");
-
+    final path = join(databasePath, "atp.db");
     database = await openDatabase(
       path,
       version: 1,
-      onCreate: (db, version) {
-        print("asdf");
-        db.execute('''
+      onCreate: (db, version) async {
+        await db.execute('''
           CREATE TABLE IF NOT EXISTS vocabulary(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           word_title TEXT,
@@ -28,8 +27,40 @@ class DatabaseHelper {
           fluency_level int,
           url text
         )''');
+
+        await db.execute('''
+          CREATE TABLE IF NOT EXISTS searched_word(
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          word_title TEXT,
+          url text,
+          timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+        )''');
       },
     );
+  }
+
+  Future<void> insertSearchedWord(SearchedWord word) async {
+    int rowCount = Sqflite.firstIntValue(
+            await database.rawQuery('SELECT COUNT(*) FROM searched_word')) ??
+        0;
+
+    if (rowCount >= 10) {
+      await database.rawQuery(
+          'DELETE FROM words WHERE id = (SELECT id FROM searched_word ORDER BY timestamp ASC LIMIT 1)');
+    }
+
+    await database.insert(
+        "searched_word", {"word_title": word.wordTitle, "url": word.url});
+  }
+
+  Future<List<SearchedWord>> getSearchedWord() async {
+    List<Map<String, dynamic>> result =
+        await database.query("searched_word", orderBy: "timestamp desc");
+    return result
+        .map(
+          (e) => SearchedWord.fromMap(e),
+        )
+        .toList();
   }
 
   Future<int> insertVocabulary(Vocabulary vocabulary) async {

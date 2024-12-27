@@ -1,3 +1,4 @@
+import 'package:eng_dict/model/searched_word.dart';
 import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/provider/vocabulary_data.dart';
 import 'package:eng_dict/view/dialog/error-dialog.dart';
@@ -47,7 +48,7 @@ Future<void> checkInternet(BuildContext context) async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
 

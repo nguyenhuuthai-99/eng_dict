@@ -1,4 +1,7 @@
+import 'package:eng_dict/main.dart';
+import 'package:eng_dict/model/searched_word.dart';
 import 'package:eng_dict/model/suggested_word.dart';
+import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/networking/request_handler.dart';
 import 'package:eng_dict/provider/screen_data.dart';
 import 'package:eng_dict/provider/word_field_data.dart';
@@ -17,10 +20,18 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   RequestHandler requestHandler = RequestHandler();
   List<SuggestedWord> suggestedWords = [];
+  late List<SearchedWord> searchedWords;
   String searchTextFieldText = "";
+
+  Future<List<SearchedWord>> initSearchedWords() async {
+    searchedWords =
+        await Provider.of<DatabaseHelper>(context).getSearchedWord();
+    return searchedWords;
+  }
 
   @override
   Widget build(BuildContext context) {
+    initSearchedWords();
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -81,10 +92,20 @@ class _SearchScreenState extends State<SearchScreen> {
             Expanded(
               child: ListView(
                 children: [
-                  buildSearchResult(
+                  BuildSearchResult(
                     suggestedWords: suggestedWords,
                   ),
-                  buildHistoryBox(),
+                  FutureBuilder(
+                    future: initSearchedWords(),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<void> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done &&
+                          searchedWords.isNotEmpty) {
+                        return buildHistoryBox();
+                      }
+                      return const SizedBox();
+                    },
+                  )
                 ],
               ),
             )
@@ -105,29 +126,34 @@ class _SearchScreenState extends State<SearchScreen> {
               fontWeight: FontWeight.w600,
               color: Constant.kGreyText),
         ),
-        const ListTile(
-          leading: Icon(
-            CustomIcon.history,
-            color: Constant.kGreyText,
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: searchedWords.length,
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+              Provider.of<WordFieldData>(context, listen: false)
+                  .updateWordFieldListFromSearch(
+                      searchedWords[index].wordTitle, searchedWords[index].url);
+              Provider.of<ScreenData>(context, listen: false).changeIndex(1);
+            },
+            child: ListTile(
+                leading: const Icon(
+                  CustomIcon.history,
+                  color: Constant.kGreyText,
+                ),
+                title: Text(searchedWords[index].wordTitle)),
           ),
-          title: Text("history"),
-        ),
-        const ListTile(
-          leading: Icon(CustomIcon.history),
-          title: Text("sophisticate"),
-        ),
-        const ListTile(
-          leading: Icon(CustomIcon.history),
-          title: Text("quantive"),
         ),
       ],
     );
   }
 }
 
-class buildSearchResult extends StatelessWidget {
+class BuildSearchResult extends StatelessWidget {
   List<SuggestedWord> suggestedWords;
-  buildSearchResult({
+  BuildSearchResult({
     required this.suggestedWords,
     super.key,
   });
@@ -153,13 +179,17 @@ class buildSearchResult extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
-
                       Provider.of<WordFieldData>(context, listen: false)
                           .updateWordFieldListFromSearch(
                               suggestedWords[index].wordTitle,
                               suggestedWords[index].url);
                       Provider.of<ScreenData>(context, listen: false)
                           .changeIndex(1);
+
+                      Provider.of<DatabaseHelper>(context, listen: false)
+                          .insertSearchedWord(SearchedWord(
+                              wordTitle: suggestedWords[index].wordTitle,
+                              url: suggestedWords[index].url));
                     },
                     child: ListTile(
                       title: Text(suggestedWords[index].wordTitle),
