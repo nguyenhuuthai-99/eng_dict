@@ -31,8 +31,6 @@ class RequestHandler {
   }
 
   Future<List<WordField>> getWordDataFromSearch(String url) async {
-    String convertedURL = Utils.URLEncode(url);
-
     List<WordField> wordFields = [];
     // URL = Uri.parse("http://10.0.2.2:8080/dictionary/$word");
     URL = Uri.parse("http://localhost:8080/dictionary/suggested/")

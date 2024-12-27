@@ -46,7 +46,7 @@ class DatabaseHelper {
 
     if (rowCount >= 10) {
       await database.rawQuery(
-          'DELETE FROM words WHERE id = (SELECT id FROM searched_word ORDER BY timestamp ASC LIMIT 1)');
+          'DELETE FROM searched_word WHERE id = (SELECT id FROM searched_word ORDER BY timestamp ASC LIMIT 1)');
     }
 
     await database.insert(
