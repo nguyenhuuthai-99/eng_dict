@@ -180,7 +180,9 @@ class DefinitionBox extends StatelessWidget {
     List<TextSpan> words = [];
     String curString = '';
     for (int char in textCodes) {
-      if ((char >= 97 && char <= 122) || (char >= 65 && char <= 90)) {
+      if ((char >= 97 && char <= 122) ||
+          (char >= 65 && char <= 90) ||
+          char == 39) {
         curString += String.fromCharCode(char);
       } else {
         if (curString.isNotEmpty) {
