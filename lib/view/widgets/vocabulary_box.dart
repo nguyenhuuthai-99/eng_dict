@@ -43,10 +43,11 @@ class VocabularyBox extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                CustomIcon.dot,
-                color: dotColor,
-              ),
+              if (vocabulary.fluencyLevel == 0)
+                Icon(
+                  CustomIcon.dot,
+                  color: dotColor,
+                ),
               if (vocabulary.phraseTitle.isNotEmpty)
                 const Text(
                   " phrase   ",

@@ -122,16 +122,13 @@ class ToolBarDelegate extends SliverPersistentHeaderDelegate {
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
-    // TODO: implement build
     return child;
   }
 
   @override
-  // TODO: implement maxExtent
   double get maxExtent => kToolbarHeight;
 
   @override
-  // TODO: implement minExtent
   double get minExtent => kToolbarHeight;
 
   @override
