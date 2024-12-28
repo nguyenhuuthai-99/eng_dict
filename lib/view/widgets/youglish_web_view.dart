@@ -7,15 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
-class YouglishWebView extends StatelessWidget {
+class YouglishWebView extends StatefulWidget {
   String word;
-  YouglishWebView({required this.word, super.key}) {
-    initWebController();
-  }
+
+  YouglishWebView({required this.word, super.key});
+
+  @override
+  State<YouglishWebView> createState() => _YouglishWebViewState();
+}
+
+class _YouglishWebViewState extends State<YouglishWebView> {
+  bool isLoading = true;
 
   late WebViewController _controller;
 
-  void initWebController() {
+  @override
+  void initState() {
+    initWebController();
+    super.initState();
+  }
+
+  Future<void> initWebController() async {
     late final PlatformWebViewControllerCreationParams params;
 
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
@@ -39,6 +51,11 @@ class YouglishWebView extends StatelessWidget {
             debugPrint('WebView is loading (progress : $progress%)');
           },
           onPageStarted: (String url) {
+            if (isLoading) {
+              setState(() {
+                isLoading = false;
+              });
+            }
             debugPrint('Page started loading: $url');
           },
           onPageFinished: (String url) {
@@ -68,7 +85,6 @@ class YouglishWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(word);
     final Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers = {
       Factory(() => EagerGestureRecognizer())
     };
@@ -88,11 +104,19 @@ class YouglishWebView extends StatelessWidget {
             ],
           ),
           Expanded(
-            child: WebViewWidget(
-                gestureRecognizers: gestureRecognizers,
-                controller: _controller
-                  ..loadHtmlString(
-                      RequestHandler.buildYougLishHTML(Utils.URLEncode(word)))),
+            child: Stack(
+              children: [
+                WebViewWidget(
+                  gestureRecognizers: gestureRecognizers,
+                  controller: _controller
+                    ..loadHtmlString(
+                      RequestHandler.buildYougLishHTML(
+                          Utils.URLEncode(widget.word)),
+                    ),
+                ),
+                if (isLoading) const Center(child: CircularProgressIndicator())
+              ],
+            ),
           ),
         ],
       ),

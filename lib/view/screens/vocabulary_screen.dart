@@ -66,28 +66,29 @@ class VocabularyScreen extends StatelessWidget {
                             const Expanded(
                               child: SizedBox(),
                             ),
-                            TextButton(
-                              style: const ButtonStyle(),
-                              onPressed: () {
-                                print("practice");
-                              },
-                              child: Text(
-                                "Practice now",
-                                style: GoogleFonts.openSans(
-                                    decoration: TextDecoration.underline,
-                                    decorationThickness: 2,
-                                    decorationColor:
-                                        Constant.kHyperLinkTextColor,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 20,
-                                    color: Colors.transparent,
-                                    shadows: [
-                                      const Shadow(
-                                          color: Constant.kHyperLinkTextColor,
-                                          offset: Offset(0, -5))
-                                    ]),
-                              ),
-                            )
+                            // TextButton(
+                            //   style: const ButtonStyle(),
+                            //   onPressed: () {
+                            //     print("practice");
+                            //   },
+                            //   child: Text(
+                            //     "Practice now",
+                            //     style: GoogleFonts.openSans(
+                            //         decoration: TextDecoration.underline,
+                            //         decorationThickness: 2,
+                            //         decorationColor:
+                            //             Constant.kHyperLinkTextColor,
+                            //         fontWeight: FontWeight.w400,
+                            //         fontSize: 20,
+                            //         color: Colors.transparent,
+                            //         shadows: [
+                            //           const Shadow(
+                            //               color: Constant.kHyperLinkTextColor,
+                            //               offset: Offset(0, -5))
+                            //         ]),
+                            //   ),
+                            // )
+                            Container()
                           ],
                         ),
                       ),
