@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:eng_dict/model/searched_word.dart';
 import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/provider/vocabulary_data.dart';

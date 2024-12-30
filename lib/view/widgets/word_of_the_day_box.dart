@@ -1,9 +1,13 @@
 import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/model/word_form.dart';
+import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:provider/provider.dart';
+
+import '../../provider/screen_data.dart';
 
 class WordOfTheDayBox extends StatelessWidget {
   final WordForm wordForm;
@@ -78,8 +82,7 @@ class WordOfTheDayBox extends StatelessWidget {
                         ? IPAComponents(
                             accent: "UK",
                             IPA: wordForm.ukIPA!,
-                            soundURL:
-                                "media/english/uk_pron/u/ukd/ukdis/ukdisun030.mp3")
+                            soundURL: wordForm.ukIPASoundURL)
                         : const SizedBox(),
                     const SizedBox(
                       width: Constant.kMarginMedium,
@@ -88,8 +91,7 @@ class WordOfTheDayBox extends StatelessWidget {
                         ? IPAComponents(
                             accent: "US",
                             IPA: wordForm.usIPA!,
-                            soundURL:
-                                "media/english/us_pron/e/eus/eus71/eus71340.mp3",
+                            soundURL: wordForm.usIPASoundURL,
                           )
                         : const SizedBox()
                   ],
@@ -100,24 +102,32 @@ class WordOfTheDayBox extends StatelessWidget {
                       fontSize: 18,
                       fontWeight: FontWeight.w100,
                       color: Constant.kHeading2Color)),
-              const Padding(
-                padding: EdgeInsets.only(top: Constant.kMarginMedium),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text("view more",
-                        style: TextStyle(
-                            color: Constant.kLightGreyText, fontSize: 15)),
-                    Padding(
-                      padding: EdgeInsets.only(top: 2.0, left: 6),
-                      child: Icon(
-                        CustomIcon.arrow,
-                        color: Constant.kLightGreyText,
-                        size: 16,
-                      ),
-                    )
-                  ],
+              Padding(
+                padding: const EdgeInsets.only(top: Constant.kMarginMedium),
+                child: GestureDetector(
+                  onTap: () {
+                    Provider.of<WordFieldData>(context, listen: false)
+                        .loadWordFromURL(wordForm.words![0].url);
+                    Provider.of<ScreenData>(context, listen: false)
+                        .changeIndex(1);
+                  },
+                  child: const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text("view more",
+                          style: TextStyle(
+                              color: Constant.kLightGreyText, fontSize: 15)),
+                      Padding(
+                        padding: EdgeInsets.only(top: 2.0, left: 6),
+                        child: Icon(
+                          CustomIcon.arrow,
+                          color: Constant.kLightGreyText,
+                          size: 16,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               )
             ],
@@ -141,11 +151,10 @@ class IPAComponents extends StatelessWidget {
   }
 
   Future<void> playSound() async {
+    if (!canPlay) return;
     final AudioPlayer audioPlayer = AudioPlayer();
-    String prefix = "https://dictionary.cambridge.org/";
-    String url = prefix + soundURL!;
     try {
-      await audioPlayer.setUrl(url);
+      await audioPlayer.setUrl(soundURL!);
       await audioPlayer.play();
       await audioPlayer.dispose();
     } on PlayerException catch (e) {
@@ -173,8 +182,8 @@ class IPAComponents extends StatelessWidget {
             ),
           ),
           Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: Constant.kMarginExtraSmall),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: Constant.kMarginExtraSmall),
               child: Text(
                 accent,
                 style: Constant.kHeading2TextStyle,

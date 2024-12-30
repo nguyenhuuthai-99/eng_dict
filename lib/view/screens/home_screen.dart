@@ -1,10 +1,13 @@
-
+import 'package:eng_dict/model/word_field.dart';
 import 'package:eng_dict/model/word_form.dart';
+import 'package:eng_dict/networking/request_handler.dart';
 import 'package:eng_dict/view/component/glass_app_bar.dart';
 import 'package:eng_dict/view/utils/constants.dart';
+import 'package:eng_dict/view/utils/utils.dart';
 import 'package:eng_dict/view/widgets/readings_box.dart';
 import 'package:eng_dict/view/widgets/word_of_the_day_box.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../model/word.dart';
 import '../utils/custom_icon.dart';
 import '../component/search_bar.dart';
@@ -15,30 +18,20 @@ class HomeScreen extends StatelessWidget {
   late WordForm wordForm;
 
   HomeScreen({super.key}) {
-    init();
+    // init();
   }
 
-  init() {
+  init() async {
     //Get Word of the day
-    wordForm = getWordOfTheDay();
+    wordForm = await getWordOfTheDay();
   }
 
-  WordForm getWordOfTheDay() {
-    WordForm wordForm = WordForm();
-    wordForm.formTitle = "noun";
-    wordForm.usIPA = "/dɪˈvɝː.sə.t̬i/";
-    wordForm.ukIPA = "/daɪˈvɜː.sə.ti/";
+  Future<WordForm> getWordOfTheDay() async {
+    String word = Utils.getWordOfTheDay();
 
-    List<Word> words = [];
-    Word word = Word();
-    word.wordTitle = "diversity";
-    word.definition =
-        "the fact of many different types of things or people being included in something; a range of different things or people:";
-    word.url = "";
-    words.add(word);
-    wordForm.words = words;
+    List<WordField> wordFields = await RequestHandler().getWordData(word);
 
-    return wordForm;
+    return wordFields[0].wordForms![0];
   }
 
   @override
@@ -55,8 +48,31 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: Constant.kMarginExtraLarge,
             ),
-            WordOfTheDayBox(
-              wordForm: wordForm,
+            // WordOfTheDayBox(
+            //   wordForm: wordForm,
+            // ),
+            FutureBuilder(
+              future: init(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return WordOfTheDayBox(
+                    wordForm: wordForm,
+                  );
+                } else {
+                  return Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    enabled: true,
+                    direction: ShimmerDirection.ltr,
+                    child: Container(
+                      decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Constant.kRadiusSmall),
+                          color: Colors.grey),
+                      height: 190,
+                    ),
+                  );
+                }
+              },
             ),
             const SizedBox(
               height: Constant.kMarginExtraLarge,
