@@ -28,6 +28,7 @@ class HomeScreen extends StatelessWidget {
 
   Future<WordForm> getWordOfTheDay() async {
     String word = Utils.getWordOfTheDay();
+    word = "good";
 
     List<WordField> wordFields = await RequestHandler().getWordData(word);
 
@@ -77,7 +78,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: Constant.kMarginExtraLarge,
             ),
-            const ReadingsBox(),
+            // const ReadingsBox(),
             const RemoveAdsBox()
           ],
         ),

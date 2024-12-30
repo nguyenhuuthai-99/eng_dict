@@ -64,12 +64,6 @@ class WordOfTheDayBox extends StatelessWidget {
                               color: Constant.kHeading2Color),
                         )
                       : const SizedBox(),
-                  const Expanded(child: SizedBox()),
-                  const Icon(
-                    CustomIcon.book_mark,
-                    color: Constant.kPrimaryColor,
-                    size: 30,
-                  )
                 ],
               ),
               Padding(

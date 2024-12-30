@@ -27,12 +27,14 @@ class CustomSearchBar extends StatelessWidget {
         decoration: BoxDecoration(
             color: Constant.kGreyBackground,
             borderRadius: BorderRadius.circular(Constant.kBorderRadiusSmall)),
-        child: Padding(
-          padding: const EdgeInsets.only(left: Constant.kMarginLarge),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: Constant.kMarginLarge,
+              vertical: Constant.kMarginMedium),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Row(
+              Row(
                 children: [
                   Icon(
                     CustomIcon.search,
@@ -48,18 +50,14 @@ class CustomSearchBar extends StatelessWidget {
                   ),
                 ],
               ),
-              const Expanded(child: SizedBox()),
+              Expanded(child: SizedBox()),
               Padding(
-                padding: const EdgeInsets.only(top: 2.0),
-                child: TextButton(
-                    onPressed: () {
-                      print("history");
-                    },
-                    child: const Icon(
-                      CustomIcon.history,
-                      color: Constant.kGreyText,
-                      size: 25,
-                    )),
+                padding: EdgeInsets.only(top: 2.0),
+                child: Icon(
+                  CustomIcon.history,
+                  color: Constant.kGreyText,
+                  size: 25,
+                ),
               ),
             ],
           ),

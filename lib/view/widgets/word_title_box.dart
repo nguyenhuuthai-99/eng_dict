@@ -105,8 +105,7 @@ class WordTitleBox extends StatelessWidget {
                       preferBelow: false,
                       verticalOffset: 10,
                       triggerMode: TooltipTriggerMode.tap,
-                      message:
-                          "Hear real-world pronunciation and see usage in context.",
+                      message: "Real-world pronunciation in context.",
                       child: Icon(
                         Icons.help_outline,
                         size: 17,
