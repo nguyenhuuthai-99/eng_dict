@@ -18,16 +18,11 @@ class VocabularyScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        top: false,
+        top: true,
         child: CustomScrollView(
           slivers: [
-            SliverAppBar.medium(
-              pinned: true,
-              flexibleSpace: AppBar(
-                backgroundColor: Colors.white,
-                surfaceTintColor: Colors.white,
-                title: const Text("Vocabulary"),
-              ),
+            SliverAppBar(
+              pinned: false,
               title: const Text("Vocabulary"),
               toolbarHeight: kToolbarHeight,
               collapsedHeight: kToolbarHeight,

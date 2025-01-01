@@ -14,18 +14,19 @@ class WordFieldData extends ChangeNotifier {
   late String word;
   late bool _isLoading;
   bool _hasError = false;
-  late bool _timedOut;
+  final int _timeout = 60;
 
   WordFieldData();
 
   Future<void>? loadWordFromURL(String url) async {
     _isLoading = true;
+    _hasError = false;
     notifyListeners();
 
     try {
       wordFields = await requestHandler
           .getWordDataFromURL(url)
-          .timeout(const Duration(seconds: 6));
+          .timeout(Duration(seconds: _timeout));
       _isLoading = false;
       notifyListeners();
     } on TimeoutException {
@@ -52,12 +53,13 @@ class WordFieldData extends ChangeNotifier {
   Future<void>? updateWordFieldList(String word) async {
     this.word = word;
     _isLoading = true;
+    _hasError = false;
     notifyListeners();
 
     try {
       wordFields = await requestHandler
           .getWordData(word)
-          .timeout(const Duration(seconds: 6));
+          .timeout(Duration(seconds: _timeout));
       _isLoading = false;
       notifyListeners();
     } on TimeoutException {
@@ -84,12 +86,13 @@ class WordFieldData extends ChangeNotifier {
   Future<void>? updateWordFieldListFromSearch(String word, String url) async {
     this.word = word;
     _isLoading = true;
+    _hasError = false;
     notifyListeners();
 
     try {
       wordFields = await requestHandler
           .getWordDataFromSearch(url)
-          .timeout(const Duration(seconds: 6));
+          .timeout(Duration(seconds: _timeout));
       _isLoading = false;
       notifyListeners();
     } on TimeoutException {

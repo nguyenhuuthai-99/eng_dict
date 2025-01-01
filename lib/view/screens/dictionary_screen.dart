@@ -240,15 +240,18 @@ class DictionaryLoadingScreen extends StatelessWidget {
               highlightColor: Colors.grey.shade100,
               enabled: true,
               direction: ShimmerDirection.ltr,
-              child: const Column(
-                children: [
-                  TabBarPlaceHolder(),
-                  WordTitlePlaceholder(),
-                  DefinitionPlaceholder(),
-                  DefinitionPlaceholder(),
-                  Expanded(child: WordTitlePlaceholder()),
-                  Expanded(child: WordTitlePlaceholder())
-                ],
+              child: const SingleChildScrollView(
+                physics: NeverScrollableScrollPhysics(),
+                child: Column(
+                  children: [
+                    TabBarPlaceHolder(),
+                    WordTitlePlaceholder(),
+                    DefinitionPlaceholder(),
+                    DefinitionPlaceholder(),
+                    WordTitlePlaceholder(),
+                    WordTitlePlaceholder()
+                  ],
+                ),
               ),
             ),
           )

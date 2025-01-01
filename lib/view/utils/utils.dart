@@ -41,7 +41,7 @@ class Utils {
       position += daysInMonths[i];
     }
     position += now.day;
-    return 0;
+    return position;
   }
 
   static List<String> words = [

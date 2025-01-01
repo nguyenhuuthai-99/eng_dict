@@ -1,4 +1,4 @@
-package com.example.eng_dict;
+package com.vieducation.engdict;
 
 import io.flutter.embedding.android.FlutterActivity;
 

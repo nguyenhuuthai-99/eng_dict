@@ -15,7 +15,7 @@ import '../component/search_bar.dart';
 class HomeScreen extends StatelessWidget {
   final String screenId = "HomeScreen";
 
-  late WordForm wordForm;
+  late WordForm wordForm = WordForm();
 
   HomeScreen({super.key}) {
     // init();
@@ -28,7 +28,6 @@ class HomeScreen extends StatelessWidget {
 
   Future<WordForm> getWordOfTheDay() async {
     String word = Utils.getWordOfTheDay();
-    word = "good";
 
     List<WordField> wordFields = await RequestHandler().getWordData(word);
 
@@ -116,7 +115,7 @@ class RemoveAdsBox extends StatelessWidget {
                         color: Colors.white),
                   ),
                   Text(
-                    "Enjoy searching words without distraction ad asdf asf ",
+                    "Enjoy searching words without distraction",
                     style: TextStyle(
                         color: Colors.white,
                         fontStyle: FontStyle.italic,

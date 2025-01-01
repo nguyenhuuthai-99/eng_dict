@@ -1,20 +1,18 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:eng_dict/model/suggested_word.dart';
-import 'package:eng_dict/view/utils/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:eng_dict/model/word_field.dart';
 
 class RequestHandler {
+  final String _domain = "https://engdictbackend-1.onrender.com";
+
   late Uri URL;
 
   Future<List<WordField>> getWordData(String word) async {
     List<WordField> wordFields = [];
-    // URL = Uri.parse("http://10.0.2.2:8080/dictionary/$word");
-    URL = Uri.parse("http://localhost:8080/dictionary/$word");
-    // URL = Uri.parse("http://192.168.0.227:8080/dictionary/$word");
+    URL = Uri.parse("$_domain/dictionary/$word");
     var response = await http.get(URL);
 
     int responseCode = response.statusCode;
@@ -32,10 +30,8 @@ class RequestHandler {
 
   Future<List<WordField>> getWordDataFromSearch(String url) async {
     List<WordField> wordFields = [];
-    // URL = Uri.parse("http://10.0.2.2:8080/dictionary/$word");
-    URL = Uri.parse("http://localhost:8080/dictionary/suggested/")
+    URL = Uri.parse("$_domain/dictionary/suggested/")
         .replace(queryParameters: {"url": url});
-    // URL = Uri.parse("http://192.168.0.227:8080/dictionary/$word");
     var response = await http.get(URL);
 
     int responseCode = response.statusCode;
@@ -53,10 +49,8 @@ class RequestHandler {
 
   Future<List<WordField>> getWordDataFromURL(String url) async {
     List<WordField> wordFields = [];
-    // URL = Uri.parse("http://10.0.2.2:8080/dictionary/$word");
-    URL = Uri.parse("http://localhost:8080/dictionary/")
+    URL = Uri.parse("$_domain/dictionary/")
         .replace(queryParameters: {"url": url});
-    // URL = Uri.parse("http://192.168.0.227:8080/dictionary/$word");
     var response = await http.get(URL);
 
     int responseCode = response.statusCode;
