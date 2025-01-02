@@ -2,7 +2,6 @@ import 'package:eng_dict/model/word_form.dart';
 
 class WordField {
   String? _fieldTitle;
-  String? _wordTitle;
   List<WordForm>? _wordForms;
 
   WordField();

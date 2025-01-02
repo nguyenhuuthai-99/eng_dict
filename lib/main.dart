@@ -1,10 +1,7 @@
-import 'dart:developer';
 
-import 'package:eng_dict/model/searched_word.dart';
 import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/provider/vocabulary_data.dart';
 import 'package:eng_dict/view/dialog/error-dialog.dart';
-import 'package:eng_dict/view/screens/vocabulary_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/internet_checker.dart';
 import 'package:eng_dict/view/widgets/navigation_menu.dart';
@@ -34,7 +31,7 @@ void main() async {
     ChangeNotifierProvider(create: (_) => ScreenData()),
     ChangeNotifierProvider(
         create: (_) => WordFieldData()..updateWordFieldList("hello")),
-  ], child: MyApp()));
+  ], child: const MyApp()));
 }
 
 Future<void> checkInternet(BuildContext context) async {

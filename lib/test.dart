@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'model/word_field.dart';
-import 'provider/word_field_data.dart';
 import 'dart:math';
 
 void main() async {

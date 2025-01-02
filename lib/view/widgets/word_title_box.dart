@@ -1,14 +1,9 @@
-import 'package:eng_dict/networking/request_handler.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
-import 'package:eng_dict/view/utils/utils.dart';
 import 'package:eng_dict/view/widgets/youglish_web_view.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../model/word_form.dart';
 

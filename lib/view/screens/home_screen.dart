@@ -4,11 +4,9 @@ import 'package:eng_dict/networking/request_handler.dart';
 import 'package:eng_dict/view/component/glass_app_bar.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/utils.dart';
-import 'package:eng_dict/view/widgets/readings_box.dart';
 import 'package:eng_dict/view/widgets/word_of_the_day_box.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../model/word.dart';
 import '../utils/custom_icon.dart';
 import '../component/search_bar.dart';
 
