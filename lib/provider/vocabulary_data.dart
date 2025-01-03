@@ -1,10 +1,6 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:eng_dict/model/vocabulary.dart';
 import 'package:eng_dict/networking/database_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class VocabularyData extends ChangeNotifier {
   late List<Vocabulary> vocabularyList;

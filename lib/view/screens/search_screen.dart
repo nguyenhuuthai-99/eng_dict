@@ -1,4 +1,3 @@
-import 'package:eng_dict/main.dart';
 import 'package:eng_dict/model/searched_word.dart';
 import 'package:eng_dict/model/suggested_word.dart';
 import 'package:eng_dict/networking/database_helper.dart';

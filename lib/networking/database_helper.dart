@@ -1,8 +1,6 @@
-import 'dart:convert';
 
 import 'package:eng_dict/model/searched_word.dart';
 import 'package:eng_dict/model/vocabulary.dart';
-import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:path/path.dart';

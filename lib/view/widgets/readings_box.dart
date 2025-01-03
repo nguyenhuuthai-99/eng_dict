@@ -14,7 +14,7 @@ class ReadingsBox extends StatelessWidget {
           margin: const EdgeInsets.only(top: Constant.kMarginExtraSmall),
           child: GestureDetector(
             onTap: (){
-              print("Go to reading");
+              debugPrint("Go to reading");
             },
             child: Stack(
               children: [

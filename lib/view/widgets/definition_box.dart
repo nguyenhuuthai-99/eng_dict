@@ -4,7 +4,6 @@ import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/view/component/toggle_save_button.dart';
 import 'package:eng_dict/view/screens/bottom_sheet_dictionary.dart';
 import 'package:eng_dict/view/utils/constants.dart';
-import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

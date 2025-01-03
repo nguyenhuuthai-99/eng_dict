@@ -1,10 +1,10 @@
 import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/model/word_form.dart';
 import 'package:eng_dict/provider/word_field_data.dart';
+import 'package:eng_dict/view/component/ipa_component.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/screen_data.dart';
@@ -71,23 +71,20 @@ class WordOfTheDayBox extends StatelessWidget {
                     top: Constant.kMarginExtraSmall,
                     bottom: Constant.kMarginSmall),
                 child: Wrap(
+                  spacing: 20, // Space between children
+                  runSpacing: 8.0,
                   children: [
-                    wordForm.ukIPA != null
-                        ? IPAComponents(
-                            accent: "UK",
-                            IPA: wordForm.ukIPA!,
-                            soundURL: wordForm.ukIPASoundURL)
-                        : const SizedBox(),
-                    const SizedBox(
-                      width: Constant.kMarginMedium,
+                    if (wordForm.usIPASoundURL != null || wordForm.usIPA != null)
+                      IPABox(
+                        IPA: wordForm.usIPA != null ? wordForm.usIPA! : "",
+                        accent: "US",
+                        soundURL: wordForm.usIPASoundURL,
+                      ),
+                    IPABox(
+                      IPA: wordForm.ukIPA != null ? wordForm.ukIPA! : "",
+                      accent: "UK",
+                      soundURL: wordForm.ukIPASoundURL,
                     ),
-                    wordForm.usIPA != null
-                        ? IPAComponents(
-                            accent: "US",
-                            IPA: wordForm.usIPA!,
-                            soundURL: wordForm.usIPASoundURL,
-                          )
-                        : const SizedBox()
                   ],
                 ),
               ),
@@ -128,67 +125,6 @@ class WordOfTheDayBox extends StatelessWidget {
           ),
         )
       ],
-    );
-  }
-}
-
-class IPAComponents extends StatelessWidget {
-  bool canPlay = false;
-  String accent;
-  String IPA;
-  String? soundURL;
-  IPAComponents(
-      {super.key, required this.accent, required this.IPA, this.soundURL}) {
-    if (soundURL != null) {
-      canPlay = true;
-    }
-  }
-
-  Future<void> playSound() async {
-    if (!canPlay) return;
-    final AudioPlayer audioPlayer = AudioPlayer();
-    soundURL = "https://dictionary.cambridge.org/media/english/us_pron_ogg/i/imp/imper/imperious.ogg";
-    try {
-      await audioPlayer.setUrl(soundURL!, preload: true);
-      await audioPlayer.play();
-      await audioPlayer.dispose();
-    } on PlayerException catch (e) {
-      print(e.message);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        if (canPlay) {
-          await playSound();
-        }
-      },
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        textBaseline: TextBaseline.alphabetic,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 3.0),
-            child: Icon(
-              CustomIcon.speaker,
-              color: Constant.kHeading2Color,
-            ),
-          ),
-          Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: Constant.kMarginExtraSmall),
-              child: Text(
-                accent,
-                style: Constant.kHeading2TextStyle,
-              )),
-          Text(
-            IPA,
-            style: Constant.kIPATextStyle,
-          )
-        ],
-      ),
     );
   }
 }
