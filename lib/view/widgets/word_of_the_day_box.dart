@@ -70,7 +70,7 @@ class WordOfTheDayBox extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     top: Constant.kMarginExtraSmall,
                     bottom: Constant.kMarginSmall),
-                child: Row(
+                child: Wrap(
                   children: [
                     wordForm.ukIPA != null
                         ? IPAComponents(
@@ -147,8 +147,9 @@ class IPAComponents extends StatelessWidget {
   Future<void> playSound() async {
     if (!canPlay) return;
     final AudioPlayer audioPlayer = AudioPlayer();
+    soundURL = "https://dictionary.cambridge.org/media/english/us_pron_ogg/i/imp/imper/imperious.ogg";
     try {
-      await audioPlayer.setUrl(soundURL!);
+      await audioPlayer.setUrl(soundURL!, preload: true);
       await audioPlayer.play();
       await audioPlayer.dispose();
     } on PlayerException catch (e) {
