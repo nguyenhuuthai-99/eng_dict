@@ -4,6 +4,7 @@ import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:eng_dict/view/widgets/vocabulary_box.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +20,8 @@ class VocabularyScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         top: true,
-        child: CustomScrollView(
+        child: vocabularyList.isNotEmpty
+            ? CustomScrollView(
           slivers: [
             SliverAppBar(
               pinned: false,
@@ -30,8 +32,7 @@ class VocabularyScreen extends StatelessWidget {
               surfaceTintColor: Colors.white,
               backgroundColor: Colors.white,
             ),
-            vocabularyList.isNotEmpty
-                ? SliverPersistentHeader(
+            SliverPersistentHeader(
                     pinned: true,
                     delegate: ToolBarDelegate(
                       Container(
@@ -87,14 +88,7 @@ class VocabularyScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ))
-                : const SliverToBoxAdapter(
-                    child: Center(
-                      child: Text(
-                          textAlign: TextAlign.center,
-                          "Your vocabulary list is empty. Please add a some words and try later."),
-                    ),
-                  ),
+                    )),
             SliverList.builder(
               itemCount: vocabularyList.length,
               itemBuilder: (context, index) {
@@ -104,6 +98,18 @@ class VocabularyScreen extends StatelessWidget {
               },
             ),
           ],
+        ) : const SizedBox(
+          width: double.infinity,
+          child:  Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(child: SizedBox()),
+              Text(
+                "Your vocabulary list is empty", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              Text("Please add some words and try later."),
+              Expanded(child: SizedBox())
+            ],
+          ),
         ),
       ),
     );
