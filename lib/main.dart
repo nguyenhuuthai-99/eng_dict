@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     checkInternet(context);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       theme: ThemeData(
         colorScheme: const ColorScheme.light(
