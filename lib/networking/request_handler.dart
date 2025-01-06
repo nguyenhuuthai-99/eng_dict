@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:flutter/cupertino.dart';
+import "package:path_provider/path_provider.dart";
 import 'package:eng_dict/model/suggested_word.dart';
 import 'package:http/http.dart' as http;
 import 'package:eng_dict/model/word_field.dart';
@@ -151,5 +152,29 @@ class RequestHandler {
     </script>
   </body>
 </html>""";
+  }
+
+  static Future<String> downloadSoundForAndroid(String url) async {
+    try{
+      final response = await http.get(Uri.parse(url), headers: {
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 13; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Mobile Safari/537.36'
+      });
+
+      //Get cache directory
+      final directory = await getTemporaryDirectory();
+
+      // file path to save mp3
+      final filePath = '${directory.path}/ipa.mp3';
+
+      //save the file
+      final file = File(filePath);
+      await file.writeAsBytes(response.bodyBytes);
+
+      debugPrint("file downloaded to: $filePath");
+      return filePath;
+    }catch (e){
+      debugPrint("Download failed: $e");
+      rethrow;
+    }
   }
 }

@@ -1,8 +1,10 @@
+import 'package:eng_dict/networking/request_handler.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'dart:io' show File, Platform;
 
 class IPABox extends StatelessWidget {
   bool canPlay = false;
@@ -21,6 +23,14 @@ class IPABox extends StatelessWidget {
       return;
     }
     final AudioPlayer audioPlayer = AudioPlayer();
+    if(Platform.isIOS){
+      playSoundOnIOS(audioPlayer);
+    }else{
+      playSoundOnAndroid(audioPlayer);
+    }
+  }
+
+  Future<void> playSoundOnIOS(audioPlayer) async{
     try {
       await audioPlayer.setUrl(soundURL!);
       await audioPlayer.play();
@@ -29,6 +39,26 @@ class IPABox extends StatelessWidget {
       if (kDebugMode) {
         print(e.message);
       }
+    }
+  }
+
+  Future<void> playSoundOnAndroid(audioPlayer) async {
+    String filePath = await RequestHandler.downloadSoundForAndroid(soundURL!);
+
+    try {
+      await audioPlayer.setAudioSource(AudioSource.uri(Uri.file(filePath)));
+      await audioPlayer.play();
+      debugPrint("Playing audio");
+
+      await audioPlayer.processingStateStream.firstWhere((element) => element == ProcessingState.completed,);
+
+      final file = File(filePath);
+      if (await file.exists()){
+    await file.delete();
+    debugPrint("file deleted: $filePath");
+    }
+    }catch (e) {
+    debugPrint("Playback error: $e");
     }
   }
 
