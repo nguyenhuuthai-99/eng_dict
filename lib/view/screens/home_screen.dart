@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import '../utils/custom_icon.dart';
 import '../component/search_bar.dart';
+import '../widgets/readings_box.dart';
 
 class HomeScreen extends StatelessWidget {
   final String screenId = "HomeScreen";
@@ -75,7 +76,11 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: Constant.kMarginExtraLarge,
             ),
-            // const ReadingsBox(),
+            GestureDetector(
+              onTap: (){
+
+              },
+              child: const ReadingsBox()),
           ],
         ),
       ),
