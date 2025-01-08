@@ -3,6 +3,7 @@ import 'package:eng_dict/model/word_field.dart';
 import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/component/placeholder.dart';
 import 'package:eng_dict/view/component/search_bar.dart';
+import 'package:eng_dict/view/component/tap_word_notification.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/widgets/definition_box.dart';
 import 'package:eng_dict/view/widgets/word_title_box.dart';
@@ -142,6 +143,9 @@ class DictionaryScreen extends StatelessWidget {
                               ),
                             ),
                           ),
+                        ),
+                        const SliverToBoxAdapter(
+                          child: TapWordNotification(),
                         ),
                       ];
                     },

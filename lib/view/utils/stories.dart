@@ -6,6 +6,7 @@ class Stories {
         title: "Moonzia and the Gingerbread House Mystery",
         author: "Jasmine",
         reference: "moonzia.com",
+        summary: """Moonzia, a mischievous little moon, sets off on a quest to find her missing friend, Shinnyshine, a mischievous shooting star. Following a trail of stardust, Moonzia embarks on an unexpected adventure and learns to bake the most magical gingerbread house.""",
         genre: "Fantasy",
         content: '''
         Moonzia, a little moon with a mischievous twinkle in her eyes, was searching for her best friend, Shinnyshine. Shinnyshine, a shooting star with a trail of shimmering stardust, was a whirlwind of excitement, always zipping across the night sky. But lately, Shinnyshine had vanished, and Moonzia was worried.
@@ -30,11 +31,12 @@ class Stories {
         Feeling a little happier, Moonzia thanked the baker and continued her search for Shinnyshine. She knew her friend was out there, somewhere in the vast universe, leaving a trail of stardust and spreading joy wherever she went. And Moonzia, with her own little gingerbread house as a reminder of their friendship, knew she would find her again soon.
         ''',
         level: StoryLevel.beginner),
-     Story(
+    Story(
         title: "The Fox and the Grapes",
         author: "Jasmine",
         reference: "moonzia.com",
-         genre: "	Fantasy, Fairy tale",
+        summary: """A hungry fox spots a bunch of juicy grapes hanging high on a branch. He leaps and jumps, but can’t reach them. Will he find a way to get the grapes?""",
+        genre: "	Fantasy, Fairy tale",
         content: '''
         On a beautiful sunny day, a fox was strolling along, deep in thought about his foxy affairs. He decided it would be best to enjoy his lunch under the shade of a tree. After all, he was quite hungry and thirsty.
         
@@ -57,12 +59,14 @@ class Stories {
         And so, dear children, remember that sometimes, when we can’t have something, we may try to convince ourselves that we didn’t want it in the first place. Just like our friend the fox!
         ''',
         level: StoryLevel.beginner),
-     Story(
+    Story(
         title: "The Tortoise and the Hare",
         author: "Jasmine",
         reference: "moonzia.com",
-         genre: "The Tortoise and the Hare",
-        content: """All the animals in the forest knew that the hare is the fastest among them. He could run through long roads without any hard effort.
+        summary: """The Hare always mocks Tortoise because he is really slow. But which one will win in an actual competition?""",
+        genre: "The Tortoise and the Hare",
+        content:
+            """All the animals in the forest knew that the hare is the fastest among them. He could run through long roads without any hard effort.
         
         One day, the hare saw a tortoise who was laboriously making his way in the forest. The hare stopped and started mocking the poor tortoise:
         
@@ -104,12 +108,14 @@ class Stories {
         
         All the animals of the forest congratulated the turtle and celebrated the incredible victory together with him!""",
         level: StoryLevel.beginner),
-     Story(
+    Story(
         title: "The Wonderful Wizard of Oz",
         author: "Jasmine",
         reference: "moonzia.com",
-         genre: "Fairy tale",
-        content: """In the distant past, in a remote village, a girl named Dorothy lived with her uncle and her uncle’s wife. Dorothy also had a small dog that started barking whenever anyone came near their house. One day when everyone was working a big tornado was approaching in the distance. Uncle told Dorothy to come home early. Dorothy started running towards the house.
+        summary: """A tornado whisks Dorothy away to the magical land of Oz. With a talking scarecrow, a tin man, and a cowardly lion by her side, she embarks on a journey to find the Wizard of Oz and return home.""",
+        genre: "Fairy tale",
+        content:
+            """In the distant past, in a remote village, a girl named Dorothy lived with her uncle and her uncle’s wife. Dorothy also had a small dog that started barking whenever anyone came near their house. One day when everyone was working a big tornado was approaching in the distance. Uncle told Dorothy to come home early. Dorothy started running towards the house.
 
 Dorothy went home to be safe from the tornado, but the tornado was coming straight towards their house. Dorothy looked out the window and then ducked under the table. Dorothy screamed for help but no one could hear her.
 
@@ -214,12 +220,14 @@ He told her that you helped us a lot by destroying the witch of the East and the
 
 """,
         level: StoryLevel.intermediate),
-     Story(
+    Story(
         title: "The Firebird and the Grey Wolf!",
         author: "Russia fairy tale",
-        reference: "moonzia.com",
-         genre: "Fairy Tale",
-        content: """In a faraway kingdom, there was a tsar named Vyslav Andronovich. He had three sons: Dmitry, Vasily, and the youngest, Ivan. The tsar owned a garden so grand that there was no garden in any country in the world that could compare with it. In the middle of the garden stood his most precious tree, one that grew golden apples.
+        reference: "storynory.com",
+        summary: "Prince Ivan, guided by a clever grey wolf, embarks on a quest to capture the magical Firebird, facing trials and rescuing Princess Elena. He returns home victorious, marries Elena, and lives happily ever after.",
+        genre: "Fairy Tale",
+        content:
+            """In a faraway kingdom, there was a tsar named Vyslav Andronovich. He had three sons: Dmitry, Vasily, and the youngest, Ivan. The tsar owned a garden so grand that there was no garden in any country in the world that could compare with it. In the middle of the garden stood his most precious tree, one that grew golden apples.
 
 But then a Firebird became a regular visitor to Tsar Vyslav's garden; it had golden feathers, and its eyes were like oriental crystals. This magical bird flew to the garden every night and sat on Tsar Vyslav's favourite apple tree. It sat for a while, lighting up the garden with a golden glow, before nibbling at some apples. The Firebird then plucked a particularly large one, gripped it tightly in its talons, and flew away.
 
@@ -320,19 +328,14 @@ And that was the tale of the Firebird and the Gray Wolf, from Russia.
 
 """,
         level: StoryLevel.intermediate),
-     Story(
+    Story(
         title: "The Golden Fish",
         author: "Brothers Grimm",
-        reference: "moonzia.com",
-         genre: "Fairy Tale",
-        content: """A fisherman catches a golden fish. When the fish announces that he is a prince under an evil spell, the fisherman throws him back into the sea. On his return to his hovel, his wife tells him that he should have asked the magical creature to grant him a wish, and so the fisherman returns to the sea to call out to the fish and ask that the lives of the impoverished couple should be transformed - but the better life that ensues is not quite enough for them.
-
-This story of over-reaching greed and ambition is known well in many countries including Germany and Russia, but not so much in the English speaking world. It's told with the Brothers Grimm's usual insight into human frailty.
-
-Read by Natasha. Duration 19.30
-Proofread by Claire Deakin.
-
-
+        reference: "storynory.com",
+        summary: "A fisherman catches a golden fish. When the fish announces that he is a prince under an evil spell, the fisherman throws him back into the sea. On his return to his hovel, his wife tells him that he should have asked the magical creature to grant him a wish, and so the fisherman returns to the sea to call out to the fish and ask that the lives of the impoverished couple should be transformed - but the better life that ensues is not quite enough for them.",
+        genre: "Fairy Tale",
+        content:
+            """
 There was once a fisherman who lived with his wife in a pigsty, close by the seaside. The fisherman used to go out all day long a-fishing; and one day, as he sat on the shore with his rod, looking at the sparkling waves and watching his line, all of a sudden his float was dragged away deep into the water. When he reeled in his line, he pulled out a golden fish. But the fish said, "Pray let me live! I am not a real fish. I am an enchanted prince. Put me in the water again, and let me go!"
 
 "Oh, ho!" Said the man. "You need not go on much more about the matter. I will have nothing to do with a fish that can talk, so swim away, sir, as soon as you please!" Then he put him back into the water, and the fish darted straight down to the bottom, and left a long streak of blood behind him on the wave.
