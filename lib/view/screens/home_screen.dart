@@ -2,7 +2,6 @@ import 'package:eng_dict/model/word_field.dart';
 import 'package:eng_dict/model/word_form.dart';
 import 'package:eng_dict/networking/request_handler.dart';
 import 'package:eng_dict/view/component/glass_app_bar.dart';
-import 'package:eng_dict/view/screens/reading_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/utils.dart';
 import 'package:eng_dict/view/widgets/word_of_the_day_box.dart';

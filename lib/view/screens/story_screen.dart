@@ -2,10 +2,8 @@ import 'package:eng_dict/model/story.dart';
 import 'package:eng_dict/view/component/tap_word_notification.dart';
 import 'package:eng_dict/view/utils/build_clickable_text.dart';
 import 'package:eng_dict/view/utils/constants.dart';
-import 'package:eng_dict/view/utils/setting_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 
 
 
