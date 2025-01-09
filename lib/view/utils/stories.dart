@@ -35,7 +35,7 @@ Feeling a little happier, Moonzia thanked the baker and continued her search for
         author: "Jasmine",
         reference: "moonzia.com",
         summary: """A hungry fox spots a bunch of juicy grapes hanging high on a branch. He leaps and jumps, but can’t reach them. Will he find a way to get the grapes?""",
-        genre: "	Fantasy, Fairy tale",
+        genre: "	Fable",
         content: '''On a beautiful sunny day, a fox was strolling along, deep in thought about his foxy affairs. He decided it would be best to enjoy his lunch under the shade of a tree. After all, he was quite hungry and thirsty.
         
 However, to his dismay, he realized he had forgotten his delicious lunch at home!
@@ -62,7 +62,7 @@ And so, dear children, remember that sometimes, when we can’t have something, 
         author: "Jasmine",
         reference: "moonzia.com",
         summary: """The Hare always mocks Tortoise because he is really slow. But which one will win in an actual competition?""",
-        genre: "The Tortoise and the Hare",
+        genre: "Fable",
         content:
             """All the animals in the forest knew that the hare is the fastest among them. He could run through long roads without any hard effort.
         

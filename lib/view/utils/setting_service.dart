@@ -20,7 +20,6 @@ class SettingsService {
       final file = await _getSettingsFile();
       if (file.existsSync()) {
         final contents = await file.readAsString();
-        print(jsonDecode(contents));
         return jsonDecode(contents);
       } else {
         writeSettings(settings);

@@ -1,3 +1,4 @@
+import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/setting_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,10 @@ class _TapWordNotificationState extends State<TapWordNotification> {
       color: const Color(0xff414141),
       child: Row(
         children: [
-          const Expanded(child: Text("   Tap any word you don’t know to see its definition!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),)),
+          const Expanded(child: Padding(
+            padding: EdgeInsets.only(left: Constant.kMarginSmall),
+            child: Text("Tap any word you don’t know to see its definition!", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+          )),
           IconButton(onPressed: () async{
             setState(() {
               closed = true;
