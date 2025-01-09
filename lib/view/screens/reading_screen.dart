@@ -1,7 +1,11 @@
+import 'package:eng_dict/model/story.dart';
+import 'package:eng_dict/view/utils/stories.dart';
+import 'package:eng_dict/view/widgets/reading_item_box.dart';
 import 'package:flutter/material.dart';
 
 class ReadingScreen extends StatelessWidget {
-  const ReadingScreen({super.key});
+  ReadingScreen({super.key});
+  List<Story> stories = Stories.stories;
 
   @override
   Widget build(BuildContext context) {
@@ -9,9 +13,11 @@ class ReadingScreen extends StatelessWidget {
       appBar: AppBar(
         title:const Text("Readings"),
       ),
-      body: ListView.builder(itemBuilder: (context, index) => null,),
+      body: ListView.builder(itemBuilder: (context, index) => ReadingItemBox(story: stories[index],),
+      itemCount: stories.length,
+      ),
     );
   }
-
-
 }
+
+

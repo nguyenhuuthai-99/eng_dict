@@ -9,5 +9,5 @@ class Story {
   late String content;
   late StoryLevel level;
 
-  Story({required this.title, required this.author, required this.reference,required summary, required this.genre, required this.content, required this.level});
+  Story({required this.title, required this.author, required this.reference,required this.summary, required this.genre, required this.content, required this.level});
 }

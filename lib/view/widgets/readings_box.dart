@@ -1,3 +1,4 @@
+import 'package:eng_dict/view/screens/reading_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class ReadingsBox extends StatelessWidget {
           margin: const EdgeInsets.only(top: Constant.kMarginExtraSmall),
           child: GestureDetector(
             onTap: (){
-              debugPrint("Go to reading");
+              Navigator.push(context, MaterialPageRoute(builder: (context) => ReadingScreen(),));
             },
             child: Stack(
               children: [

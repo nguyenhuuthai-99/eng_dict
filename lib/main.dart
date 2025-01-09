@@ -4,6 +4,7 @@ import 'package:eng_dict/provider/vocabulary_data.dart';
 import 'package:eng_dict/view/dialog/error-dialog.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/internet_checker.dart';
+import 'package:eng_dict/view/utils/setting_service.dart';
 import 'package:eng_dict/view/widgets/navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,6 +23,7 @@ void main() async {
   await vocabularyData.getVocabulary();
 
   runApp(MultiProvider(providers: [
+    Provider(create: (context) => SettingsService(),),
     Provider(
       create: (context) => databaseHelper,
     ),

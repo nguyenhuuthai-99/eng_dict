@@ -8,27 +8,26 @@ class Stories {
         reference: "moonzia.com",
         summary: """Moonzia, a mischievous little moon, sets off on a quest to find her missing friend, Shinnyshine, a mischievous shooting star. Following a trail of stardust, Moonzia embarks on an unexpected adventure and learns to bake the most magical gingerbread house.""",
         genre: "Fantasy",
-        content: '''
-        Moonzia, a little moon with a mischievous twinkle in her eyes, was searching for her best friend, Shinnyshine. Shinnyshine, a shooting star with a trail of shimmering stardust, was a whirlwind of excitement, always zipping across the night sky. But lately, Shinnyshine had vanished, and Moonzia was worried.
+        content: '''Moonzia, a little moon with a mischievous twinkle in her eyes, was searching for her best friend, Shinnyshine. Shinnyshine, a shooting star with a trail of shimmering stardust, was a whirlwind of excitement, always zipping across the night sky. But lately, Shinnyshine had vanished, and Moonzia was worried.
         
-        She peeked down at Earth, her silvery glow illuminating the sleeping world. Suddenly, she spotted something sparkling – stardust! It wasn’t just any stardust, though. This stardust was scattered on top of the most delicious-looking gingerbread houses in a little candy store window.
-        Moonzia’s heart leaped. “Shinnyshine!” she whispered. “You mischievous star, you’ve been here!”
-        
-        Excitedly, she floated down to Earth, her light guiding her to the candy store. Inside, the air was sweet with the smell of gingerbread and frosting. A kind baker with flour dusting his apron smiled at her.
-        
-        “Hello,” Moonzia said, “Have you seen my friend? She’s a shooting star, and she leaves a trail of stardust wherever she goes.”
-        
-        The baker chuckled. “A shooting star? Why, yes! A lovely young star came in a few days ago. She was quite the baker! Made the most magnificent gingerbread house. And look!” He pointed to a particularly sparkly gingerbread house. “She even sprinkled stardust on it!”
-        
-        Moonzia gasped. It was beautiful! The gingerbread house was decorated with shimmering stars, glittering moon crescents, and even a tiny candy ladder for the moon to climb.
-        
-        “Would you like to learn how to make a gingerbread house?” the baker offered, his eyes twinkling.
-        
-        Moonzia, still a little sad that she missed her friend, nodded eagerly. The baker patiently showed her how to mix the dough, cut out the walls and roof, and bake the gingerbread pieces until they were golden brown.
-        
-        Then came the fun part – decorating! Moonzia learned to pipe frosting like a pro, creating intricate swirls and delicate designs. She added colorful candies, gumdrops, and, of course, a generous sprinkle of stardust. Her gingerbread house turned out even more magical than she could have imagined.
-        
-        Feeling a little happier, Moonzia thanked the baker and continued her search for Shinnyshine. She knew her friend was out there, somewhere in the vast universe, leaving a trail of stardust and spreading joy wherever she went. And Moonzia, with her own little gingerbread house as a reminder of their friendship, knew she would find her again soon.
+She peeked down at Earth, her silvery glow illuminating the sleeping world. Suddenly, she spotted something sparkling – stardust! It wasn’t just any stardust, though. This stardust was scattered on top of the most delicious-looking gingerbread houses in a little candy store window.
+Moonzia’s heart leaped. “Shinnyshine!” she whispered. “You mischievous star, you’ve been here!”
+
+Excitedly, she floated down to Earth, her light guiding her to the candy store. Inside, the air was sweet with the smell of gingerbread and frosting. A kind baker with flour dusting his apron smiled at her.
+
+“Hello,” Moonzia said, “Have you seen my friend? She’s a shooting star, and she leaves a trail of stardust wherever she goes.”
+
+The baker chuckled. “A shooting star? Why, yes! A lovely young star came in a few days ago. She was quite the baker! Made the most magnificent gingerbread house. And look!” He pointed to a particularly sparkly gingerbread house. “She even sprinkled stardust on it!”
+
+Moonzia gasped. It was beautiful! The gingerbread house was decorated with shimmering stars, glittering moon crescents, and even a tiny candy ladder for the moon to climb.
+
+“Would you like to learn how to make a gingerbread house?” the baker offered, his eyes twinkling.
+
+Moonzia, still a little sad that she missed her friend, nodded eagerly. The baker patiently showed her how to mix the dough, cut out the walls and roof, and bake the gingerbread pieces until they were golden brown.
+
+Then came the fun part – decorating! Moonzia learned to pipe frosting like a pro, creating intricate swirls and delicate designs. She added colorful candies, gumdrops, and, of course, a generous sprinkle of stardust. Her gingerbread house turned out even more magical than she could have imagined.
+
+Feeling a little happier, Moonzia thanked the baker and continued her search for Shinnyshine. She knew her friend was out there, somewhere in the vast universe, leaving a trail of stardust and spreading joy wherever she went. And Moonzia, with her own little gingerbread house as a reminder of their friendship, knew she would find her again soon.
         ''',
         level: StoryLevel.beginner),
     Story(
@@ -37,26 +36,25 @@ class Stories {
         reference: "moonzia.com",
         summary: """A hungry fox spots a bunch of juicy grapes hanging high on a branch. He leaps and jumps, but can’t reach them. Will he find a way to get the grapes?""",
         genre: "	Fantasy, Fairy tale",
-        content: '''
-        On a beautiful sunny day, a fox was strolling along, deep in thought about his foxy affairs. He decided it would be best to enjoy his lunch under the shade of a tree. After all, he was quite hungry and thirsty.
+        content: '''On a beautiful sunny day, a fox was strolling along, deep in thought about his foxy affairs. He decided it would be best to enjoy his lunch under the shade of a tree. After all, he was quite hungry and thirsty.
         
-        However, to his dismay, he realized he had forgotten his delicious lunch at home!
-        
-        “How could I have been so forgetful?” he exclaimed.
-        
-        Suddenly, his eyes fell upon a sight that made him forget his troubles. Hanging from a branch above, swaying gently in the breeze, were the most magnificent grapes he had ever seen! They were plump, juicy, and glistening in the sunlight. The fox’s mouth watered at the sight.
-        
-        “I must have those grapes!” he declared. “Just one bite of that sweet fruit…”
-        
-        But the grapes hung high on the branch, well beyond his reach. He leaped and stretched, but to no avail. He backed up, ran, and jumped again, but still, the grapes remained tantalizingly out of reach.
-        
-        Exhausted and frustrated after numerous failed attempts, he collapsed beneath the tree.
-        
-        “What a foolish fox I am!” he grumbled. “Jumping and straining for these sour grapes on this hot day! Who even wants these sour grapes anyway?”
-        
-        With a flick of his tail, the fox turned and headed home, defeated.
-        
-        And so, dear children, remember that sometimes, when we can’t have something, we may try to convince ourselves that we didn’t want it in the first place. Just like our friend the fox!
+However, to his dismay, he realized he had forgotten his delicious lunch at home!
+
+“How could I have been so forgetful?” he exclaimed.
+
+Suddenly, his eyes fell upon a sight that made him forget his troubles. Hanging from a branch above, swaying gently in the breeze, were the most magnificent grapes he had ever seen! They were plump, juicy, and glistening in the sunlight. The fox’s mouth watered at the sight.
+
+“I must have those grapes!” he declared. “Just one bite of that sweet fruit…”
+
+But the grapes hung high on the branch, well beyond his reach. He leaped and stretched, but to no avail. He backed up, ran, and jumped again, but still, the grapes remained tantalizingly out of reach.
+
+Exhausted and frustrated after numerous failed attempts, he collapsed beneath the tree.
+
+“What a foolish fox I am!” he grumbled. “Jumping and straining for these sour grapes on this hot day! Who even wants these sour grapes anyway?”
+
+With a flick of his tail, the fox turned and headed home, defeated.
+
+And so, dear children, remember that sometimes, when we can’t have something, we may try to convince ourselves that we didn’t want it in the first place. Just like our friend the fox!
         ''',
         level: StoryLevel.beginner),
     Story(
@@ -68,45 +66,45 @@ class Stories {
         content:
             """All the animals in the forest knew that the hare is the fastest among them. He could run through long roads without any hard effort.
         
-        One day, the hare saw a tortoise who was laboriously making his way in the forest. The hare stopped and started mocking the poor tortoise:
-        
-        OH! you’ve got such short feet and a heavy shell! You must be the slowest animal in all the forest! I think it’s possible for you to fall asleep when you are walking!
-        
-        The tortoise was not offended by the hare’s words. Slowly, she continued to put one foot in front of the other.
-        
-        I really have to look very closely to tell if you are moving or standing still. How long does it take you to walk ten yards? A whole day? The hare continued the rude laugh!
-        
-        And then he put his hands on his belly and burst out laughing. In that very moment, the tortoise stopped and smirked:
-        
-        Go ahead and make fun of me! Until this day, I have always managed to arrive at my destination. And when I think about it carefully, I even think that it’s possible for me to beat you in a race!
-        
-        The hare passed out from laughing when he heard this! After a few moments, when he finally succeeded to stop the laugh, he said:
-        
-        OK! I agree! So I’ll see you in competition day!
-        
-        The two quickly agreed on the fox as the referee and met a day later by a brich tree. They decide to assign the starting point of the race to the tree. The fox announced.
-        
-        Whoever arrives first at the big pond has won the race! Are you ready? Three, two, one – go!
-        
-        The hair jumped as a lightning and disappeared after a few seconds. After a short time he had already finished half the race. He turned around and found that the tortoise had only took a few steps. He whispered:
-        
-        Ok! It’s an easy one! I have got plenty of time left! I can go to the carrot field for a short trip.
-        
-        Then he hobbled straight to the big field and nibbled a few carrots with relish. When he returned, he saw that the tortoise is still close to the starting line. He was trying to walk with difficulty and make his way! He souted:
-        
-        Oh you lazy! try harder! Come on!
-        
-        All the birds and animals were cheering for the hare! Prompted by the applause of the audience, the hare performed several tricks and daredevil jumps.
-        
-        But those carrots and doing tricks made him exhausted. So just before the finish line, he lay down in the grass and took a nap! And the nap turned into a deep sleep!
-        
-        Suddenly, he woke up from that sweet sleep by loud cheers and applause. He opened his eyes and could hardly believe what he saw. The turtle set foot over the finish line and had won the race.
-        
-        The fox shouted:
-        
-        Congratulations, dear turtle. You have won the race!
-        
-        All the animals of the forest congratulated the turtle and celebrated the incredible victory together with him!""",
+One day, the hare saw a tortoise who was laboriously making his way in the forest. The hare stopped and started mocking the poor tortoise:
+
+OH! you’ve got such short feet and a heavy shell! You must be the slowest animal in all the forest! I think it’s possible for you to fall asleep when you are walking!
+
+The tortoise was not offended by the hare’s words. Slowly, she continued to put one foot in front of the other.
+
+I really have to look very closely to tell if you are moving or standing still. How long does it take you to walk ten yards? A whole day? The hare continued the rude laugh!
+
+And then he put his hands on his belly and burst out laughing. In that very moment, the tortoise stopped and smirked:
+
+Go ahead and make fun of me! Until this day, I have always managed to arrive at my destination. And when I think about it carefully, I even think that it’s possible for me to beat you in a race!
+
+The hare passed out from laughing when he heard this! After a few moments, when he finally succeeded to stop the laugh, he said:
+
+OK! I agree! So I’ll see you in competition day!
+
+The two quickly agreed on the fox as the referee and met a day later by a brich tree. They decide to assign the starting point of the race to the tree. The fox announced.
+
+Whoever arrives first at the big pond has won the race! Are you ready? Three, two, one – go!
+
+The hair jumped as a lightning and disappeared after a few seconds. After a short time he had already finished half the race. He turned around and found that the tortoise had only took a few steps. He whispered:
+
+Ok! It’s an easy one! I have got plenty of time left! I can go to the carrot field for a short trip.
+
+Then he hobbled straight to the big field and nibbled a few carrots with relish. When he returned, he saw that the tortoise is still close to the starting line. He was trying to walk with difficulty and make his way! He souted:
+
+Oh you lazy! try harder! Come on!
+
+All the birds and animals were cheering for the hare! Prompted by the applause of the audience, the hare performed several tricks and daredevil jumps.
+
+But those carrots and doing tricks made him exhausted. So just before the finish line, he lay down in the grass and took a nap! And the nap turned into a deep sleep!
+
+Suddenly, he woke up from that sweet sleep by loud cheers and applause. He opened his eyes and could hardly believe what he saw. The turtle set foot over the finish line and had won the race.
+
+The fox shouted:
+
+Congratulations, dear turtle. You have won the race!
+
+All the animals of the forest congratulated the turtle and celebrated the incredible victory together with him!""",
         level: StoryLevel.beginner),
     Story(
         title: "The Wonderful Wizard of Oz",

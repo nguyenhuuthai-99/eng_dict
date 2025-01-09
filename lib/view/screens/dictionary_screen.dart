@@ -5,6 +5,7 @@ import 'package:eng_dict/view/component/placeholder.dart';
 import 'package:eng_dict/view/component/search_bar.dart';
 import 'package:eng_dict/view/component/tap_word_notification.dart';
 import 'package:eng_dict/view/utils/constants.dart';
+import 'package:eng_dict/view/utils/setting_service.dart';
 import 'package:eng_dict/view/widgets/definition_box.dart';
 import 'package:eng_dict/view/widgets/word_title_box.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +17,10 @@ import '../../model/word_form.dart';
 
 class DictionaryScreen extends StatelessWidget {
   final String screenId = "DictionaryScreen";
-  String asdf = 'asdf';
   late List<Tab> tabList;
   late int numberOfTab;
   late WordFieldData wordFieldData;
+  late bool canNotify;
   bool showAppBar;
 
   DictionaryScreen({super.key, required this.showAppBar});
@@ -96,9 +97,14 @@ class DictionaryScreen extends StatelessWidget {
     ];
   }
 
+  Future<void> checkUserSetting(SettingsService setting)async{
+    canNotify =  (await setting.readSettings())["notification_dictionary_screen"];
+  }
+
   @override
   Widget build(BuildContext context) {
     wordFieldData = Provider.of<WordFieldData>(context);
+    checkUserSetting(Provider.of<SettingsService>(context, listen: false));
     init();
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -144,8 +150,8 @@ class DictionaryScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SliverToBoxAdapter(
-                          child: TapWordNotification(),
+                        if (canNotify) SliverToBoxAdapter(
+                          child: TapWordNotification(setting: "notification_dictionary_screen"),
                         ),
                       ];
                     },

@@ -3,6 +3,7 @@ import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/view/component/toggle_save_button.dart';
 import 'package:eng_dict/view/screens/bottom_sheet_dictionary.dart';
+import 'package:eng_dict/view/utils/build_clickable_text.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -147,7 +148,7 @@ class DefinitionBox extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
                 color: Constant.kPrimaryColor),
-            children: buildClickableTextSpan(text: title)));
+            children: BuildClickableText.buildClickableTextSpan(text: title, context: context)));
   }
 
   RichText buildDefinitionText(String text) {
@@ -157,11 +158,11 @@ class DefinitionBox extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
                 color: Constant.kHeading1Color),
-            children: buildClickableTextSpan(text: text)));
+            children: BuildClickableText.buildClickableTextSpan(text: text, context: context)));
   }
 
   RichText buildExample(String text) {
-    List<TextSpan> children = buildClickableTextSpan(text: text);
+    List<TextSpan> children = BuildClickableText.buildClickableTextSpan(text: text, context: context);
     children.insert(
         0, const TextSpan(style: TextStyle(fontSize: 18), text: "• "));
     return RichText(
@@ -172,44 +173,5 @@ class DefinitionBox extends StatelessWidget {
                 height: 1.5,
                 color: Colors.black87),
             children: children));
-  }
-
-  List<TextSpan> buildClickableTextSpan({required String text}) {
-    List<int> textCodes = text.codeUnits;
-    List<TextSpan> words = [];
-    String curString = '';
-    for (int char in textCodes) {
-      if ((char >= 97 && char <= 122) ||
-          (char >= 65 && char <= 90) ||
-          char == 39) {
-        curString += String.fromCharCode(char);
-      } else {
-        if (curString.isNotEmpty) {
-          words.add(buildClickableWord(curString));
-          curString = '';
-        }
-        words.add(buildCharacter(String.fromCharCode(char)));
-      }
-    }
-    if (curString.isNotEmpty) words.add(buildClickableWord(curString));
-    return words;
-  }
-
-  TextSpan buildCharacter(String char) {
-    return TextSpan(text: char);
-  }
-
-  TextSpan buildClickableWord(String word) {
-    return TextSpan(
-        text: word,
-        recognizer: TapGestureRecognizer()
-          ..onTap = () {
-            Provider.of<DatabaseHelper>(context, listen: false)
-                .insertSearchedWord(SearchedWord(
-              wordTitle: word,
-              url: "/search/direct/?datasetsearch=english&q=$word",
-            ));
-            showDictionaryBottomSheet(context, word);
-          });
   }
 }

@@ -38,7 +38,7 @@ class VocabularyBox extends StatelessWidget {
               ? Constant.kGreyBackground
               : Colors.white,
           border:
-              const Border(top: BorderSide(color: Constant.kGreyVocabBorder))),
+              const Border(top: BorderSide(color: Constant.kGreyDivider))),
       child: Column(
         children: [
           Row(
