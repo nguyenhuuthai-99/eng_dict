@@ -6,6 +6,7 @@ import 'package:eng_dict/provider/screen_data.dart';
 import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
+import 'package:eng_dict/view/widgets/banner_ads_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -93,6 +94,10 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   BuildSearchResult(
                     suggestedWords: suggestedWords,
+                  ),
+                  const BannerAdsBox(),
+                  const SizedBox(
+                    height: Constant.kMarginMedium,
                   ),
                   FutureBuilder(
                     future: initSearchedWords(),
