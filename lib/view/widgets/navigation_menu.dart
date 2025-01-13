@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:eng_dict/provider/screen_data.dart';
 import 'package:eng_dict/provider/vocabulary_data.dart';
+import 'package:eng_dict/view/widgets/banner_ads_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/constants.dart';
@@ -20,46 +21,53 @@ class NavigationMenu extends StatelessWidget {
       extendBody: true,
       bottomNavigationBar: NavigationBarTheme(
         data: buildNavigationBarThemeData(),
-        child: ClipRRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-                sigmaX: 25, sigmaY: 25, tileMode: TileMode.mirror),
-            child: Container(
-              decoration: const BoxDecoration(
-                  border: Border(top: BorderSide(color: Constant.kGreyBorder))),
-              child: NavigationBar(
-                selectedIndex: data.index,
-                indicatorColor: Colors.transparent,
-                backgroundColor: Colors.white.withOpacity(0.6),
-                height: 70,
-                onDestinationSelected: (index) {
-                  if (index == 2) {
-                    isNewWordCheck = true;
-                  } else {
-                    if (isNewWordCheck == true) {
-                      vocabularyData.resetNewVocabularyList();
-                      isNewWordCheck = false;
-                    }
-                  }
-                  data.changeIndex(index);
-                },
-                destinations: [
-                  const NavigationDestination(
-                      icon: Icon(CustomIcon.house), label: "Home"),
-                  const NavigationDestination(
-                      icon: Icon(CustomIcon.book), label: "Dictionary"),
-                  NavigationDestination(
-                      icon: Badge(
-                          isLabelVisible:
-                              vocabularyData.newVocabularyList.isNotEmpty,
-                          label: Text(vocabularyData.newVocabularyList.length
-                              .toString()),
-                          child: const Icon(CustomIcon.vocabulary)),
-                      label: "Vocabulary"),
-                ],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                    sigmaX: 25, sigmaY: 25, tileMode: TileMode.mirror),
+                child: Container(
+                  decoration: const BoxDecoration(
+                      border:
+                          Border(top: BorderSide(color: Constant.kGreyBorder))),
+                  child: NavigationBar(
+                    selectedIndex: data.index,
+                    indicatorColor: Colors.transparent,
+                    backgroundColor: Colors.white.withOpacity(0.6),
+                    height: 70,
+                    onDestinationSelected: (index) {
+                      if (index == 2) {
+                        isNewWordCheck = true;
+                      } else {
+                        if (isNewWordCheck == true) {
+                          vocabularyData.resetNewVocabularyList();
+                          isNewWordCheck = false;
+                        }
+                      }
+                      data.changeIndex(index);
+                    },
+                    destinations: [
+                      const NavigationDestination(
+                          icon: Icon(CustomIcon.house), label: "Home"),
+                      const NavigationDestination(
+                          icon: Icon(CustomIcon.book), label: "Dictionary"),
+                      NavigationDestination(
+                          icon: Badge(
+                              isLabelVisible:
+                                  vocabularyData.newVocabularyList.isNotEmpty,
+                              label: Text(vocabularyData
+                                  .newVocabularyList.length
+                                  .toString()),
+                              child: const Icon(CustomIcon.vocabulary)),
+                          label: "Vocabulary"),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
       body: IndexedStack(

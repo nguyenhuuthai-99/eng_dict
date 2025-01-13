@@ -1,4 +1,3 @@
-
 import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/provider/vocabulary_data.dart';
 import 'package:eng_dict/view/dialog/error-dialog.dart';
@@ -8,6 +7,7 @@ import 'package:eng_dict/view/utils/setting_service.dart';
 import 'package:eng_dict/view/widgets/navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 import 'provider/screen_data.dart';
@@ -15,6 +15,7 @@ import 'provider/word_field_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
 
   DatabaseHelper databaseHelper = DatabaseHelper();
   await databaseHelper.initializeDatabase();
@@ -23,7 +24,9 @@ void main() async {
   await vocabularyData.getVocabulary();
 
   runApp(MultiProvider(providers: [
-    Provider(create: (context) => SettingsService(),),
+    Provider(
+      create: (context) => SettingsService(),
+    ),
     Provider(
       create: (context) => databaseHelper,
     ),

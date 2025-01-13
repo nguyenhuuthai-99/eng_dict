@@ -4,6 +4,7 @@ import 'package:eng_dict/networking/request_handler.dart';
 import 'package:eng_dict/view/component/glass_app_bar.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/utils.dart';
+import 'package:eng_dict/view/widgets/banner_ads_box.dart';
 import 'package:eng_dict/view/widgets/word_of_the_day_box.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -47,9 +48,6 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: Constant.kMarginExtraLarge,
             ),
-            // WordOfTheDayBox(
-            //   wordForm: wordForm,
-            // ),
             FutureBuilder(
               future: init(),
               builder: (context, snapshot) {
@@ -77,6 +75,10 @@ class HomeScreen extends StatelessWidget {
               height: Constant.kMarginExtraLarge,
             ),
             const ReadingsBox(),
+            const SizedBox(
+              height: Constant.kMarginExtraLarge,
+            ),
+            BannerAdsBox()
           ],
         ),
       ),

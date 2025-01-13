@@ -143,7 +143,8 @@ class DefinitionBox extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
                 color: Constant.kPrimaryColor),
-            children: BuildClickableText.buildClickableTextSpan(text: title, context: context)));
+            children: BuildClickableText.buildClickableTextSpan(
+                text: title, context: context)));
   }
 
   RichText buildDefinitionText(String text) {
@@ -153,11 +154,13 @@ class DefinitionBox extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
                 color: Constant.kHeading1Color),
-            children: BuildClickableText.buildClickableTextSpan(text: text, context: context)));
+            children: BuildClickableText.buildClickableTextSpan(
+                text: text, context: context)));
   }
 
   RichText buildExample(String text) {
-    List<TextSpan> children = BuildClickableText.buildClickableTextSpan(text: text, context: context);
+    List<TextSpan> children =
+        BuildClickableText.buildClickableTextSpan(text: text, context: context);
     children.insert(
         0, const TextSpan(style: TextStyle(fontSize: 18), text: "• "));
     return RichText(
