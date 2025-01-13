@@ -13,7 +13,7 @@ class WordTitleBox extends StatelessWidget {
   WordTitleBox({
     required this.wordForm,
     super.key,
-  }) {}
+  });
 
   @override
   Widget build(BuildContext context) {
