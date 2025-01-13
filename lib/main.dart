@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
       ),
-      title: 'Eng Dict',
+      title: 'EngDict',
       home: NavigationMenu(),
     );
   }
