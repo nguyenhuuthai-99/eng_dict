@@ -3,19 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class BannerAdsBox extends StatefulWidget {
-  final BannerAdsState bannerAdsState = BannerAdsState();
   BannerAdsBox({super.key});
 
   @override
   State<BannerAdsBox> createState() => _BannerAdsBoxState();
 }
 
-class _BannerAdsBoxState extends State<BannerAdsBox> {
-  late final BannerAdsState bannerAdsState;
+class _BannerAdsBoxState extends State<BannerAdsBox>
+    with AutomaticKeepAliveClientMixin {
+  final BannerAdsState bannerAdsState = BannerAdsState();
 
   @override
   void didChangeDependencies() {
-    bannerAdsState = widget.bannerAdsState;
     super.didChangeDependencies();
     loadAd(bannerAdsState);
   }
@@ -74,4 +73,13 @@ class _BannerAdsBoxState extends State<BannerAdsBox> {
       ),
     )..load();
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bannerAdsState.bannerAd.dispose();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }
