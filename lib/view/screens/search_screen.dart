@@ -70,7 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         FocusManager.instance.primaryFocus?.unfocus();
                       },
                       onChanged: (value) async {
-                        if (value.length > 2) {
+                        if (value.length > 1) {
                           suggestedWords =
                               await requestHandler.getSuggestedWord(value);
                         }

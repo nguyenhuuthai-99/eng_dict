@@ -5,7 +5,6 @@ import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:eng_dict/view/widgets/banner_ads_box.dart';
 import 'package:eng_dict/view/widgets/vocabulary_box.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 class VocabularyScreen extends StatelessWidget {
@@ -90,22 +89,22 @@ class VocabularyScreen extends StatelessWidget {
                           ),
                         ),
                       )),
-                  SliverAppBar(
-                    surfaceTintColor: Colors.white,
-                    pinned: true,
-                    title: null,
-                    flexibleSpace: BannerAdsBox(
-                      key: UniqueKey(),
-                    ),
-                  ),
                   SliverList.builder(
                     itemCount: vocabularyList.length,
                     itemBuilder: (context, index) {
-                      return VocabularyBox(
-                        vocabulary: vocabularyList[index],
-                      );
+                      if ((index + 1) % 15 == 0) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            VocabularyBox(vocabulary: vocabularyList[index]),
+                            const BannerAdsBox()
+                          ],
+                        );
+                      } else {
+                        return VocabularyBox(vocabulary: vocabularyList[index]);
+                      }
                     },
-                  ),
+                  )
                 ],
               )
             : const SizedBox(

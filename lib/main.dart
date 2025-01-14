@@ -41,8 +41,7 @@ void main() async {
       create: (context) => vocabularyData,
     ),
     ChangeNotifierProvider(create: (_) => ScreenData()),
-    ChangeNotifierProvider(
-        create: (_) => WordFieldData()..updateWordFieldList("hello")),
+    ChangeNotifierProvider(create: (_) => WordFieldData()),
   ], child: const MyApp()));
 }
 

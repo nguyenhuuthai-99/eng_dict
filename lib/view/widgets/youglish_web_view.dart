@@ -119,7 +119,7 @@ class _YouglishWebViewState extends State<YouglishWebView> {
               ],
             ),
           ),
-          BannerAdsBox(key: UniqueKey())
+          SafeArea(child: BannerAdsBox(key: UniqueKey()))
         ],
       ),
     );

@@ -23,17 +23,19 @@ class BottomSheetDictionary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: DictionaryScreen(
-            showAppBar: false,
+    return SafeArea(
+      child: Column(
+        children: [
+          Expanded(
+            child: DictionaryScreen(
+              showAppBar: false,
+            ),
           ),
-        ),
-        BannerAdsBox(
-          key: UniqueKey(),
-        )
-      ],
+          BannerAdsBox(
+            key: UniqueKey(),
+          )
+        ],
+      ),
     );
   }
 }

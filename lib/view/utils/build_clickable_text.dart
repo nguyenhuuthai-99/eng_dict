@@ -5,8 +5,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BuildClickableText{
-  static List<TextSpan> buildClickableTextSpan({required String text, required BuildContext context}) {
+import '../../provider/action_counter.dart';
+
+class BuildClickableText {
+  static List<TextSpan> buildClickableTextSpan(
+      {required String text, required BuildContext context}) {
     List<int> textCodes = text.codeUnits;
     List<TextSpan> words = [];
     String curString = '';
@@ -32,6 +35,12 @@ class BuildClickableText{
         text: word,
         recognizer: TapGestureRecognizer()
           ..onTap = () {
+            try {
+              Provider.of<ActionCounter>(context, listen: false)
+                  .incrementCounter();
+            } catch (e) {
+              debugPrint(e.toString());
+            }
             Provider.of<DatabaseHelper>(context, listen: false)
                 .insertSearchedWord(SearchedWord(
               wordTitle: word,
