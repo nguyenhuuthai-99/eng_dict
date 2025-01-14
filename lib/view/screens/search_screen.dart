@@ -140,6 +140,12 @@ class _SearchScreenState extends State<SearchScreen> {
           itemBuilder: (context, index) => GestureDetector(
             onTap: () {
               Navigator.pop(context);
+              try {
+                Provider.of<ActionCounter>(context, listen: false)
+                    .incrementCounter();
+              } catch (e) {
+                debugPrint(e.toString());
+              }
               Provider.of<WordFieldData>(context, listen: false)
                   .updateWordFieldListFromSearch(
                       searchedWords[index].wordTitle, searchedWords[index].url);
@@ -186,8 +192,13 @@ class BuildSearchResult extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
-                      Provider.of<ActionCounter>(context, listen: false)
-                          .incrementCounter();
+                      try {
+                        Provider.of<ActionCounter>(context, listen: false)
+                            .incrementCounter();
+                      } catch (e) {
+                        debugPrint(e.toString());
+                      }
+
                       Provider.of<WordFieldData>(context, listen: false)
                           .updateWordFieldListFromSearch(
                               suggestedWords[index].wordTitle,
