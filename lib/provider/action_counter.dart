@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:eng_dict/view/widgets/interstitial_ads_box.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -12,14 +14,18 @@ class ActionCounter {
     return File('${directory.path}/counter.json');
   }
 
-  Future<void> _getCounter() async {
+  Future<void> getCounter() async {
     try {
       final file = await _getCounterFile();
       if (await file.exists()) {
         final content = await file.readAsString();
         final data = jsonDecode(content);
         counter = data['counter'] ?? 0;
+      } else {
+        counter = 0;
+        _saveCounter();
       }
+      debugPrint("counter loaded $counter");
     } catch (e) {
       // Handle any errors
       print('Error loading counter: $e');
@@ -37,14 +43,19 @@ class ActionCounter {
     }
   }
 
-  int _incrementCounter() {
+  void incrementCounter() {
     counter++;
     _saveCounter();
 
+    debugPrint(counter.toString());
     // // Show interstitial ad if divisible by 20
-    // if (counter % 20 == 0) {
-    //   _showInterstitialAd();
-    // }
-    return counter;
+    if (counter % 20 == 0) {
+      _showInterstitialAd();
+    }
+  }
+
+  void _showInterstitialAd() async {
+    InterstitialAdsBox interstitialAdsBox = InterstitialAdsBox();
+    await interstitialAdsBox.loadAd();
   }
 }

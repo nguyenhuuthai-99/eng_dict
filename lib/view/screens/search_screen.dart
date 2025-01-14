@@ -2,6 +2,7 @@ import 'package:eng_dict/model/searched_word.dart';
 import 'package:eng_dict/model/suggested_word.dart';
 import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/networking/request_handler.dart';
+import 'package:eng_dict/provider/action_counter.dart';
 import 'package:eng_dict/provider/screen_data.dart';
 import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/utils/constants.dart';
@@ -183,6 +184,8 @@ class BuildSearchResult extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
+                      Provider.of<ActionCounter>(context, listen: false)
+                          .incrementCounter();
                       Provider.of<WordFieldData>(context, listen: false)
                           .updateWordFieldListFromSearch(
                               suggestedWords[index].wordTitle,

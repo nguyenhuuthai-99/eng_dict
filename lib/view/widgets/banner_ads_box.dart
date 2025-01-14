@@ -34,7 +34,9 @@ class _BannerAdsBoxState extends State<BannerAdsBox>
                       child: SizedBox(
                     width: bannerAdsState.bannerAd.size.width.toDouble(),
                     height: bannerAdsState.bannerAd.size.height.toDouble(),
-                    child: AdWidget(ad: bannerAdsState.bannerAd),
+                    child: AdWidget(
+                      ad: bannerAdsState.bannerAd,
+                    ),
                   )),
                 )
             ],
@@ -64,6 +66,7 @@ class _BannerAdsBoxState extends State<BannerAdsBox>
             bannerAdsState.isLoaded = true;
           });
         },
+        onAdClosed: (ad) => ad.dispose(),
         // Called when an ad request failed.
         onAdFailedToLoad: (ad, err) {
           debugPrint('BannerAd failed to load: $err');

@@ -1,4 +1,5 @@
 import 'package:eng_dict/networking/database_helper.dart';
+import 'package:eng_dict/provider/action_counter.dart';
 import 'package:eng_dict/provider/vocabulary_data.dart';
 import 'package:eng_dict/view/dialog/error-dialog.dart';
 import 'package:eng_dict/view/utils/constants.dart';
@@ -23,7 +24,13 @@ void main() async {
   VocabularyData vocabularyData = VocabularyData(databaseHelper);
   await vocabularyData.getVocabulary();
 
+  ActionCounter actionCounter = ActionCounter();
+  await actionCounter.getCounter();
+
   runApp(MultiProvider(providers: [
+    Provider(
+      create: (context) => actionCounter,
+    ),
     Provider(
       create: (context) => SettingsService(),
     ),

@@ -19,7 +19,7 @@ class WordTitleBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        BannerAdsBox(),
+        const BannerAdsBox(),
         Container(
           color: Constant.kGreyBackground,
           child: Padding(
@@ -30,28 +30,33 @@ class WordTitleBox extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(bottom: Constant.kMarginSmall),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    // textBaseline: TextBaseline.alphabetic,
                     children: [
                       Text(
                         wordForm?.words?[0].wordTitle != null
                             ? wordForm!.words![0].wordTitle!
                             : "",
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 24,
-                            color: Colors.black.withOpacity(0.9),
+                            color: Colors.black87,
                             fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(
                         width: Constant.kMarginExtraSmall,
                       ),
-                      Text(
-                        wordForm?.formTitle != null ? wordForm!.formTitle! : "",
-                        style: const TextStyle(
-                            color: Constant.kGreyText,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 15),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6.0),
+                        child: Text(
+                          wordForm?.formTitle != null
+                              ? wordForm!.formTitle!
+                              : "",
+                          style: const TextStyle(
+                              color: Constant.kGreyText,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 15),
+                        ),
                       )
                     ],
                   ),

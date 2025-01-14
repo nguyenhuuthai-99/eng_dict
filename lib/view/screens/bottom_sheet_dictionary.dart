@@ -30,7 +30,9 @@ class BottomSheetDictionary extends StatelessWidget {
             showAppBar: false,
           ),
         ),
-        const BannerAdsBox()
+        BannerAdsBox(
+          key: UniqueKey(),
+        )
       ],
     );
   }
