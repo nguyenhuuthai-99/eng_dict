@@ -24,7 +24,9 @@ class ReadingScreen extends StatelessWidget {
               itemCount: stories.length,
             ),
           ),
-          const BannerAdsBox()
+          BannerAdsBox(
+            key: UniqueKey(),
+          )
         ],
       ),
     );

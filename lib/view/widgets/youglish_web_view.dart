@@ -119,7 +119,7 @@ class _YouglishWebViewState extends State<YouglishWebView> {
               ],
             ),
           ),
-          const BannerAdsBox()
+          BannerAdsBox(key: UniqueKey())
         ],
       ),
     );

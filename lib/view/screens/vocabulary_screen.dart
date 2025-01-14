@@ -94,7 +94,9 @@ class VocabularyScreen extends StatelessWidget {
                     surfaceTintColor: Colors.white,
                     pinned: true,
                     title: null,
-                    flexibleSpace: BannerAdsBox(),
+                    flexibleSpace: BannerAdsBox(
+                      key: UniqueKey(),
+                    ),
                   ),
                   SliverList.builder(
                     itemCount: vocabularyList.length,

@@ -96,7 +96,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   BuildSearchResult(
                     suggestedWords: suggestedWords,
                   ),
-                  const BannerAdsBox(),
+                  BannerAdsBox(
+                    key: UniqueKey(),
+                  ),
                   const SizedBox(
                     height: Constant.kMarginMedium,
                   ),

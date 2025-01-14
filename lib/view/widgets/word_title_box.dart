@@ -19,7 +19,7 @@ class WordTitleBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const BannerAdsBox(),
+        BannerAdsBox(key: UniqueKey()),
         Container(
           color: Constant.kGreyBackground,
           child: Padding(

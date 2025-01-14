@@ -78,7 +78,9 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               height: Constant.kMarginExtraLarge,
             ),
-            const BannerAdsBox()
+            BannerAdsBox(
+              key: UniqueKey(),
+            )
           ],
         ),
       ),

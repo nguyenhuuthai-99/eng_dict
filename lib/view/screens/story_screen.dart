@@ -46,7 +46,9 @@ class StoryScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const BannerAdsBox()
+              BannerAdsBox(
+                key: UniqueKey(),
+              )
             ],
           ),
         ));
