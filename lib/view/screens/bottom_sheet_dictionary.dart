@@ -29,7 +29,7 @@ class BottomSheetDictionary extends StatelessWidget {
           Expanded(
             child: DictionaryScreen(
               showAppBar: false,
-            ),
+            )..isBottom = true,
           ),
           BannerAdsBox(
             key: UniqueKey(),

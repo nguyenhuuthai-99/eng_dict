@@ -12,7 +12,7 @@ class WordFieldData extends ChangeNotifier {
   List<WordField> wordFields = [];
   BuildContext? context = MyApp.navigatorKey.currentState?.context;
   late String word;
-  bool? _isLoading;
+  bool _isLoading = false;
   bool _hasError = false;
   final int _timeout = 60;
 

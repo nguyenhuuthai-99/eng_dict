@@ -24,6 +24,7 @@ class DictionaryScreen extends StatelessWidget {
   late int numberOfTab;
   late WordFieldData wordFieldData;
   late bool canNotify;
+  bool isBottom = false;
   bool showAppBar;
 
   DictionaryScreen({super.key, required this.showAppBar});
@@ -105,6 +106,16 @@ class DictionaryScreen extends StatelessWidget {
         (await setting.readSettings())["notification_dictionary_screen"];
   }
 
+  bool canShowInformationLabel() {
+    if (isBottom) {
+      return false;
+    }
+    if (wordFieldData.wordFields.isEmpty) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     wordFieldData = Provider.of<WordFieldData>(context);
@@ -112,14 +123,14 @@ class DictionaryScreen extends StatelessWidget {
     init();
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: wordFieldData.wordFields.isEmpty
+      appBar: canShowInformationLabel()
           ? AppBar(
               backgroundColor: Colors.white,
               title: const CustomSearchBar(),
             )
           : null,
       backgroundColor: Colors.white,
-      body: wordFieldData.wordFields.isNotEmpty
+      body: !canShowInformationLabel()
           ? SafeArea(
               bottom: false,
               child: wordFieldData.isLoading
@@ -130,17 +141,14 @@ class DictionaryScreen extends StatelessWidget {
                         headerSliverBuilder:
                             (BuildContext context, bool innerBoxIsScrolled) {
                           return [
-                            showAppBar
-                                ? const SliverAppBar(
-                                    pinned: false,
-                                    snap: true,
-                                    floating: true,
-                                    backgroundColor: Colors.white,
-                                    surfaceTintColor: Colors.white,
-                                    title: CustomSearchBar())
-                                : const SliverToBoxAdapter(
-                                    child: SizedBox(),
-                                  ),
+                            if (!isBottom)
+                              const SliverAppBar(
+                                  pinned: false,
+                                  snap: true,
+                                  floating: true,
+                                  backgroundColor: Colors.white,
+                                  surfaceTintColor: Colors.white,
+                                  title: CustomSearchBar()),
                             SliverPersistentHeader(
                               pinned: true,
                               delegate: TabBarDelegate(
