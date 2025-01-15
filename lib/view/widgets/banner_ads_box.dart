@@ -1,48 +1,47 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:eng_dict/model/banner_ads_state.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class BannerAdsBox extends StatefulWidget {
-  final BannerAdsState bannerAdsState = BannerAdsState();
-  BannerAdsBox({super.key});
+  const BannerAdsBox({super.key});
 
   @override
   State<BannerAdsBox> createState() => _BannerAdsBoxState();
 }
 
-class _BannerAdsBoxState extends State<BannerAdsBox> {
-  late final BannerAdsState bannerAdsState;
+class _BannerAdsBoxState extends State<BannerAdsBox>
+    with AutomaticKeepAliveClientMixin {
+  late BannerAd bannerAd;
+  bool isLoaded = false;
+
+  String get adUnitId => Platform.isAndroid
+      ? 'ca-app-pub-3940256099942544/9214589741'
+      : 'ca-app-pub-3940256099942544/2435281174';
 
   @override
   void didChangeDependencies() {
-    bannerAdsState = widget.bannerAdsState;
     super.didChangeDependencies();
-    loadAd(bannerAdsState);
+    loadAd();
   }
 
   @override
   Widget build(BuildContext context) {
-    return !bannerAdsState.isLoaded
+    super.build(context);
+    return !isLoaded
         ? const SizedBox(
             height: 65,
           )
-        : Stack(
-            children: [
-              if (bannerAdsState.isLoaded && bannerAdsState.isLoaded)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SafeArea(
-                      child: SizedBox(
-                    width: bannerAdsState.bannerAd.size.width.toDouble(),
-                    height: bannerAdsState.bannerAd.size.height.toDouble(),
-                    child: AdWidget(ad: bannerAdsState.bannerAd),
-                  )),
-                )
-            ],
+        : SizedBox(
+            width: bannerAd.size.width.toDouble(),
+            height: bannerAd.size.height.toDouble(),
+            child: AdWidget(ad: bannerAd),
           );
   }
 
-  void loadAd(BannerAdsState bannerAdsState) async {
+  void loadAd() async {
     if (!mounted) {
       return;
     }
@@ -53,8 +52,8 @@ class _BannerAdsBoxState extends State<BannerAdsBox> {
 
     if (size == null) return;
 
-    bannerAdsState.bannerAd = BannerAd(
-      adUnitId: bannerAdsState.adUnitId,
+    bannerAd = BannerAd(
+      adUnitId: adUnitId,
       request: const AdRequest(),
       size: size,
       listener: BannerAdListener(
@@ -62,8 +61,12 @@ class _BannerAdsBoxState extends State<BannerAdsBox> {
         onAdLoaded: (ad) {
           debugPrint('$ad loaded.');
           setState(() {
-            bannerAdsState.isLoaded = true;
+            isLoaded = true;
           });
+        },
+        onAdClosed: (ad) {
+          ad.dispose();
+          debugPrint("$ad closed");
         },
         // Called when an ad request failed.
         onAdFailedToLoad: (ad, err) {
@@ -74,4 +77,13 @@ class _BannerAdsBoxState extends State<BannerAdsBox> {
       ),
     )..load();
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+    bannerAd.dispose();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }

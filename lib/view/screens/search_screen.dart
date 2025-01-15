@@ -2,10 +2,12 @@ import 'package:eng_dict/model/searched_word.dart';
 import 'package:eng_dict/model/suggested_word.dart';
 import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/networking/request_handler.dart';
+import 'package:eng_dict/provider/action_counter.dart';
 import 'package:eng_dict/provider/screen_data.dart';
 import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
+import 'package:eng_dict/view/widgets/banner_ads_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -68,7 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         FocusManager.instance.primaryFocus?.unfocus();
                       },
                       onChanged: (value) async {
-                        if (value.length > 2) {
+                        if (value.length > 1) {
                           suggestedWords =
                               await requestHandler.getSuggestedWord(value);
                         }
@@ -93,6 +95,12 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   BuildSearchResult(
                     suggestedWords: suggestedWords,
+                  ),
+                  BannerAdsBox(
+                    key: UniqueKey(),
+                  ),
+                  const SizedBox(
+                    height: Constant.kMarginMedium,
                   ),
                   FutureBuilder(
                     future: initSearchedWords(),
@@ -132,6 +140,12 @@ class _SearchScreenState extends State<SearchScreen> {
           itemBuilder: (context, index) => GestureDetector(
             onTap: () {
               Navigator.pop(context);
+              try {
+                Provider.of<ActionCounter>(context, listen: false)
+                    .incrementCounter();
+              } catch (e) {
+                debugPrint(e.toString());
+              }
               Provider.of<WordFieldData>(context, listen: false)
                   .updateWordFieldListFromSearch(
                       searchedWords[index].wordTitle, searchedWords[index].url);
@@ -178,6 +192,13 @@ class BuildSearchResult extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
+                      try {
+                        Provider.of<ActionCounter>(context, listen: false)
+                            .incrementCounter();
+                      } catch (e) {
+                        debugPrint(e.toString());
+                      }
+
                       Provider.of<WordFieldData>(context, listen: false)
                           .updateWordFieldListFromSearch(
                               suggestedWords[index].wordTitle,

@@ -4,10 +4,13 @@ import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/component/placeholder.dart';
 import 'package:eng_dict/view/component/search_bar.dart';
 import 'package:eng_dict/view/component/tap_word_notification.dart';
+import 'package:eng_dict/view/screens/search_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
+import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:eng_dict/view/utils/setting_service.dart';
 import 'package:eng_dict/view/widgets/definition_box.dart';
 import 'package:eng_dict/view/widgets/word_title_box.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
@@ -21,12 +24,13 @@ class DictionaryScreen extends StatelessWidget {
   late int numberOfTab;
   late WordFieldData wordFieldData;
   late bool canNotify;
+  bool isBottom = false;
   bool showAppBar;
 
   DictionaryScreen({super.key, required this.showAppBar});
 
   void init() {
-    tabList = buildTabs(wordFieldData.wordFields);
+    tabList = buildTabs(wordFieldData.wordFields!);
     numberOfTab = tabList.length;
   }
 
@@ -97,8 +101,19 @@ class DictionaryScreen extends StatelessWidget {
     ];
   }
 
-  Future<void> checkUserSetting(SettingsService setting)async{
-    canNotify =  (await setting.readSettings())["notification_dictionary_screen"];
+  Future<void> checkUserSetting(SettingsService setting) async {
+    canNotify =
+        (await setting.readSettings())["notification_dictionary_screen"];
+  }
+
+  bool canShowInformationLabel() {
+    if (isBottom) {
+      return false;
+    }
+    if (wordFieldData.wordFields.isEmpty) {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -108,58 +123,112 @@ class DictionaryScreen extends StatelessWidget {
     init();
     return Scaffold(
       extendBodyBehindAppBar: true,
+      appBar: canShowInformationLabel()
+          ? AppBar(
+              backgroundColor: Colors.white,
+              title: const CustomSearchBar(),
+            )
+          : null,
       backgroundColor: Colors.white,
-      body: SafeArea(
-          bottom: false,
-          child: wordFieldData.isLoading
-              ? DictionaryLoadingScreen()
-              : DefaultTabController(
-                  length: numberOfTab,
-                  child: NestedScrollView(
-                    headerSliverBuilder:
-                        (BuildContext context, bool innerBoxIsScrolled) {
-                      return [
-                        showAppBar
-                            ? const SliverAppBar(
-                                pinned: false,
-                                snap: true,
-                                floating: true,
-                                backgroundColor: Colors.white,
-                                surfaceTintColor: Colors.white,
-                                title: CustomSearchBar())
-                            : const SliverToBoxAdapter(
-                                child: SizedBox(),
-                              ),
-                        SliverPersistentHeader(
-                          pinned: true,
-                          delegate: TabBarDelegate(
-                            child: TabBar(
-                              dividerHeight: 2,
-                              dividerColor: Constant.kGreyLine,
-                              tabAlignment: TabAlignment.start,
-                              isScrollable: true,
-                              tabs: tabList,
-                              unselectedLabelColor: Constant.kGreyText,
-                              labelColor: Constant.kPrimaryColor,
-                              padding: EdgeInsets.zero,
-                              indicatorSize: TabBarIndicatorSize.tab,
-                              indicatorColor: Constant.kPrimaryColor,
-                              labelStyle: const TextStyle(
-                                fontSize: 18,
+      body: !canShowInformationLabel()
+          ? SafeArea(
+              bottom: false,
+              child: wordFieldData.isLoading
+                  ? DictionaryLoadingScreen()
+                  : DefaultTabController(
+                      length: numberOfTab,
+                      child: NestedScrollView(
+                        headerSliverBuilder:
+                            (BuildContext context, bool innerBoxIsScrolled) {
+                          return [
+                            if (!isBottom)
+                              const SliverAppBar(
+                                  pinned: false,
+                                  snap: true,
+                                  floating: true,
+                                  backgroundColor: Colors.white,
+                                  surfaceTintColor: Colors.white,
+                                  title: CustomSearchBar()),
+                            SliverPersistentHeader(
+                              pinned: true,
+                              delegate: TabBarDelegate(
+                                child: TabBar(
+                                  dividerHeight: 2,
+                                  dividerColor: Constant.kGreyLine,
+                                  tabAlignment: TabAlignment.start,
+                                  isScrollable: true,
+                                  tabs: tabList,
+                                  unselectedLabelColor: Constant.kGreyText,
+                                  labelColor: Constant.kPrimaryColor,
+                                  padding: EdgeInsets.zero,
+                                  indicatorSize: TabBarIndicatorSize.tab,
+                                  indicatorColor: Constant.kPrimaryColor,
+                                  labelStyle: const TextStyle(
+                                    fontSize: 18,
+                                  ),
+                                ),
                               ),
                             ),
+                            if (canNotify)
+                              SliverToBoxAdapter(
+                                child: TapWordNotification(
+                                    setting: "notification_dictionary_screen"),
+                              ),
+                          ];
+                        },
+                        body: TabBarView(
+                            physics: const BouncingScrollPhysics(),
+                            children: buildTabsView(wordFieldData.wordFields!)),
+                      ),
+                    ))
+          : SafeArea(
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      "Start by searching for a word!",
+                      style: TextStyle(
+                          color: Constant.kPrimaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22),
+                    ),
+                    const Text(
+                      "What word are you curious about today?",
+                      style: TextStyle(color: Colors.black87, fontSize: 18),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SearchScreen(),
                           ),
-                        ),
-                        if (canNotify) SliverToBoxAdapter(
-                          child: TapWordNotification(setting: "notification_dictionary_screen"),
-                        ),
-                      ];
-                    },
-                    body: TabBarView(
-                        physics: const BouncingScrollPhysics(),
-                        children: buildTabsView(wordFieldData.wordFields)),
-                  ),
-                )),
+                        );
+                      },
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Search now ",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: CupertinoColors.activeBlue,
+                              fontFamily: "Open Sans",
+                            ),
+                          ),
+                          Icon(
+                            CupertinoIcons.search,
+                            size: 18,
+                            color: CupertinoColors.activeBlue,
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 }

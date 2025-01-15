@@ -1,5 +1,6 @@
 import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/screens/dictionary_screen.dart';
+import 'package:eng_dict/view/widgets/banner_ads_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -22,8 +23,19 @@ class BottomSheetDictionary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DictionaryScreen(
-      showAppBar: false,
+    return SafeArea(
+      child: Column(
+        children: [
+          Expanded(
+            child: DictionaryScreen(
+              showAppBar: false,
+            )..isBottom = true,
+          ),
+          BannerAdsBox(
+            key: UniqueKey(),
+          )
+        ],
+      ),
     );
   }
 }

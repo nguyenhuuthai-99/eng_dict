@@ -24,6 +24,7 @@ class NavigationMenu extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const BannerAdsBox(),
             ClipRRect(
               child: BackdropFilter(
                 filter: ImageFilter.blur(

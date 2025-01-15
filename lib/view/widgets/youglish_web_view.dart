@@ -1,6 +1,7 @@
 import 'package:eng_dict/networking/request_handler.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/utils.dart';
+import 'package:eng_dict/view/widgets/banner_ads_box.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -118,6 +119,7 @@ class _YouglishWebViewState extends State<YouglishWebView> {
               ],
             ),
           ),
+          SafeArea(child: BannerAdsBox(key: UniqueKey()))
         ],
       ),
     );
