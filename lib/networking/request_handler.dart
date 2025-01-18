@@ -7,7 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:eng_dict/model/word_field.dart';
 
 class RequestHandler {
-  final String _domain = "https://engdictbackend-1.onrender.com";
+  // final String _domain = "https://engdictbackend-1.onrender.com";
+  final String _domain =
+      Platform.isIOS ? "http://localhost:8080" : "http://10.0.2.2:8080";
 
   late Uri URL;
 
@@ -155,9 +157,10 @@ class RequestHandler {
   }
 
   static Future<String> downloadSoundForAndroid(String url) async {
-    try{
+    try {
       final response = await http.get(Uri.parse(url), headers: {
-        'User-Agent': 'Mozilla/5.0 (Linux; Android 13; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Mobile Safari/537.36'
+        'User-Agent':
+            'Mozilla/5.0 (Linux; Android 13; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Mobile Safari/537.36'
       });
 
       //Get cache directory
@@ -172,7 +175,7 @@ class RequestHandler {
 
       debugPrint("file downloaded to: $filePath");
       return filePath;
-    }catch (e){
+    } catch (e) {
       debugPrint("Download failed: $e");
       rethrow;
     }

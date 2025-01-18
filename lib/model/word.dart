@@ -1,3 +1,4 @@
+import 'package:eng_dict/model/example.dart';
 import 'package:eng_dict/model/linked_word.dart';
 
 class Word {
@@ -9,7 +10,7 @@ class Word {
   String? _level;
   String? _code;
   late String _definition;
-  List<String>? _examples;
+  List<Example>? _examples;
   late String _url;
   List<LinkedWord>? _synonyms;
   List<LinkedWord>? _compare;
@@ -27,7 +28,7 @@ class Word {
       .._level = json['level']
       .._definition = json['definition']
       .._examples = (json['examples'] as List<dynamic>?)
-          ?.map((e) => e.toString())
+          ?.map((e) => Example.fromJson(e))
           .toList()
       .._url = json['url'];
   }
@@ -52,9 +53,9 @@ class Word {
     _url = value;
   }
 
-  List<String>? get examples => _examples;
+  List<Example>? get examples => _examples;
 
-  set examples(List<String>? value) {
+  set examples(List<Example>? value) {
     _examples = value;
   }
 

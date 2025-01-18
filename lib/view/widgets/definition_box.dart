@@ -5,6 +5,8 @@ import 'package:eng_dict/view/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../model/example.dart';
+
 class DefinitionBox extends StatelessWidget {
   Word? word;
   late BuildContext context;
@@ -75,7 +77,7 @@ class DefinitionBox extends StatelessWidget {
     );
   }
 
-  List<Widget> buildExampleBox(List<String>? examples) {
+  List<Widget> buildExampleBox(List<Example>? examples) {
     if (examples == null) {
       return [];
     }
@@ -158,18 +160,36 @@ class DefinitionBox extends StatelessWidget {
                 text: text, context: context)));
   }
 
-  RichText buildExample(String text) {
-    List<TextSpan> children =
-        BuildClickableText.buildClickableTextSpan(text: text, context: context);
-    children.insert(
+  Widget buildExample(Example example) {
+    if (example.example == null) {
+      return const SizedBox();
+    }
+    List<TextSpan> toGoWith = example.toGoWith != null
+        ? BuildClickableText.buildClickableTextSpan(
+            text: "${example.toGoWith!}  ", context: context)
+        : [];
+    List<TextSpan> children = BuildClickableText.buildClickableTextSpan(
+        text: example.example!, context: context);
+
+    TextSpan toGoWithTextSpan = TextSpan(
+        style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Constant.kPrimaryColor,
+            fontStyle: FontStyle.italic),
+        children: toGoWith);
+
+    TextSpan exampleTextSpan = TextSpan(
+        style: const TextStyle(color: Colors.black87), children: children);
+
+    toGoWith.insert(
         0, const TextSpan(style: TextStyle(fontSize: 18), text: "• "));
     return RichText(
         text: TextSpan(
             style: const TextStyle(
-                fontSize: 15,
-                letterSpacing: 0.1,
-                height: 1.5,
-                color: Colors.black87),
-            children: children));
+              fontSize: 15,
+              letterSpacing: 0.1,
+              height: 1.5,
+            ),
+            children: [toGoWithTextSpan, exampleTextSpan]));
   }
 }
