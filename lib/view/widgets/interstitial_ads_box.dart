@@ -6,9 +6,14 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class InterstitialAdsBox {
   late InterstitialAd? _interstitialAd;
 
+  // final adUnitId = Platform.isAndroid
+  //     ? 'ca-app-pub-2903872604687353/6160693630'
+  //     : 'ca-app-pub-2903872604687353/7168591342';
+
+  //dummy ad
   final adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-2903872604687353/6160693630'
-      : 'ca-app-pub-2903872604687353/7168591342';
+      ? 'ca-app-pub-3940256099942544/1033173712'
+      : 'ca-app-pub-3940256099942544/4411468910';
 
   Future<void> loadAd() async {
     await InterstitialAd.load(
@@ -19,7 +24,9 @@ class InterstitialAdsBox {
           onAdLoaded: (ad) {
             ad.fullScreenContentCallback = FullScreenContentCallback(
                 // Called when the ad showed the full screen content.
-                onAdShowedFullScreenContent: (ad) {},
+                onAdShowedFullScreenContent: (ad) {
+                  debugPrint("Interstitial Ad shown");
+                },
                 // Called when an impression occurs on the ad.
                 onAdImpression: (ad) {},
                 // Called when the ad failed to show full screen content.
