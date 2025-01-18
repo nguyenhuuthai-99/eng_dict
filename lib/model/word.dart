@@ -30,7 +30,8 @@ class Word {
       .._examples = (json['examples'] as List<dynamic>?)
           ?.map((e) => Example.fromJson(e))
           .toList()
-      .._url = json['url'];
+      .._url = json['url']
+      .._code = json['code'];
   }
 
   bool get isPhrase => _isPhrase;

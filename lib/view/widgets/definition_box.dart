@@ -41,14 +41,30 @@ class DefinitionBox extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                  child: Text(
-                word!.level != null ? word!.level! : "",
-                style: GoogleFonts.inter(
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 20,
-                    color: Constant.kPrimaryColor),
-              )),
+                child: Row(
+                  children: [
+                    Text(
+                      word!.level != null ? word!.level! : "",
+                      style: GoogleFonts.inter(
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 20,
+                          color: Constant.kPrimaryColor),
+                    ),
+                    const SizedBox(
+                      width: Constant.kMarginMedium,
+                    ),
+                    if (word!.code != null)
+                      Text(word!.code!, style: Constant.kUsageAndCodeTextStyle),
+                    const SizedBox(
+                      width: Constant.kMarginMedium,
+                    ),
+                    if (word!.usage != null)
+                      Text(word!.usage!,
+                          style: Constant.kUsageAndCodeTextStyle),
+                  ],
+                ),
+              ),
               ToggleSaveButton(
                 word: word,
               )

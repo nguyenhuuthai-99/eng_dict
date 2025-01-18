@@ -62,6 +62,8 @@ class Constant {
       color: kHeading2Color, fontSize: 16, fontWeight: FontWeight.bold);
   static const TextStyle kIPATextStyle = TextStyle(
       color: kHeading2Color, fontSize: 16, fontWeight: FontWeight.w100);
+  static const TextStyle kUsageAndCodeTextStyle =
+      TextStyle(fontWeight: FontWeight.w100, color: kSecondaryColor);
 
   //Border Radius
   static const Radius kRadiusSmall = Radius.circular(10);
