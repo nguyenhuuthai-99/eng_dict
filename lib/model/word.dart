@@ -1,3 +1,5 @@
+import 'package:eng_dict/model/linked_word.dart';
+
 class Word {
   String? _wordTitle;
   String? _wordForm;
@@ -5,9 +7,13 @@ class Word {
   String? _phraseTitle;
   String? _usage;
   String? _level;
+  String? _code;
   late String _definition;
   List<String>? _examples;
   late String _url;
+  List<LinkedWord>? _synonyms;
+  List<LinkedWord>? _compare;
+  List<LinkedWord>? _seeAlso;
 
   Word();
 
@@ -78,5 +84,29 @@ class Word {
 
   set wordForm(String? value) {
     _wordForm = value;
+  }
+
+  List<LinkedWord>? get seeAlso => _seeAlso;
+
+  set seeAlso(List<LinkedWord>? value) {
+    _seeAlso = value;
+  }
+
+  List<LinkedWord>? get compare => _compare;
+
+  set compare(List<LinkedWord>? value) {
+    _compare = value;
+  }
+
+  List<LinkedWord>? get synonyms => _synonyms;
+
+  set synonyms(List<LinkedWord>? value) {
+    _synonyms = value;
+  }
+
+  String? get code => _code;
+
+  set code(String? value) {
+    _code = value;
   }
 }
