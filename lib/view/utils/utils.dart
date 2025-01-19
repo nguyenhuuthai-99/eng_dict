@@ -13,6 +13,10 @@ class Utils {
     return encoded;
   }
 
+  static String buildURL(String suffix) {
+    return "https://dictionary.cambridge.org$suffix";
+  }
+
   static String getWordOfTheDay() {
     var numberOfDays = getDate();
     return words[numberOfDays];

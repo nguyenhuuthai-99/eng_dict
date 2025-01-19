@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Constant {
   //App Colors
@@ -17,7 +18,7 @@ class Constant {
   static const Color kButtonUnselectedColor = Color(0xB81B1F26);
   static const Color kGreyText = Color(0xff888888);
   static const Color kHyperLinkTextColor = Color(0xff007AFF);
-  static const Color kLightGreyText = Color(0x6b000000);
+  static const Color kLightGreyText = Color(0xb3000000);
   static const Gradient kGradient = LinearGradient(
       transform: GradientRotation(-0.5),
       colors: [Color(0xffF47728), Color(0xffFBA820)]);
@@ -64,6 +65,20 @@ class Constant {
       color: kHeading2Color, fontSize: 16, fontWeight: FontWeight.w100);
   static const TextStyle kUsageAndCodeTextStyle =
       TextStyle(fontWeight: FontWeight.w100, color: kSecondaryColor);
+  static TextStyle kAdditionalType = GoogleFonts.openSans(
+      fontWeight: FontWeight.w700, fontSize: 16, color: kPrimaryColor);
+  static const kAdditionalTitle = TextStyle(
+      fontWeight: FontWeight.w700, fontSize: 15, color: kSecondaryColor);
+  static const kAdditionalJustification =
+      TextStyle(fontSize: 15, color: kSecondaryColor);
+  static const kAdditionalUsage = TextStyle(
+      fontSize: 15, fontStyle: FontStyle.italic, color: kContentTextColor);
+
+  static const kDot = TextSpan(
+      text: "• ",
+      style: TextStyle(color: Constant.kSecondaryColor, fontSize: 18));
+  static const kDotExample = TextSpan(
+      text: "• ", style: TextStyle(color: Colors.black87, fontSize: 18));
 
   //Border Radius
   static const Radius kRadiusSmall = Radius.circular(10);

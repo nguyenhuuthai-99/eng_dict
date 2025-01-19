@@ -1,7 +1,9 @@
+import 'package:eng_dict/model/linked_word.dart';
 import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/view/component/toggle_save_button.dart';
 import 'package:eng_dict/view/utils/build_clickable_text.dart';
 import 'package:eng_dict/view/utils/constants.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,11 +26,6 @@ class DefinitionBox extends StatelessWidget {
     }
     if (word!.isPhrase) {
       return buildPhraseBox(context);
-    }
-    if (word!.seeAlso != null) {
-      for (var item in word!.seeAlso!) {
-        print(item.title);
-      }
     }
     return buildWordBox();
   }
@@ -86,6 +83,12 @@ class DefinitionBox extends StatelessWidget {
               children: buildExampleBox(word!.examples),
             ),
           ),
+          if (word!.synonyms != null)
+            buildAdditionalWord("Synonyms", word!.synonyms!),
+          if (word!.compare != null)
+            buildAdditionalWord("Compare", word!.compare!),
+          if (word!.seeAlso != null)
+            buildAdditionalWord("See Also", word!.seeAlso!),
           SizedBox(
             height: 1,
             width: double.infinity,
@@ -96,6 +99,59 @@ class DefinitionBox extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget buildAdditionalWord(String title, List<LinkedWord> words) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Constant.kMarginLarge),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: Constant.kAdditionalType,
+          ),
+          Padding(
+              padding: const EdgeInsets.only(left: Constant.kMarginMedium),
+              child: buildAdditionChildren(words))
+        ],
+      ),
+    );
+  }
+
+  ListView buildAdditionChildren(List<LinkedWord> words) {
+    return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemBuilder: (context, index) => buildAdditionalChild(words[index]),
+      itemCount: words.length,
+    );
+  }
+
+  RichText buildAdditionalChild(LinkedWord word) {
+    final title =
+        BuildClickableText.buildClickableWord("${word.title} ", context);
+    final titleTextSpan =
+        TextSpan(children: [title], style: Constant.kAdditionalTitle);
+    final justification = TextSpan(
+        text: "${word.justification} ",
+        style: Constant.kAdditionalJustification);
+    final usage =
+        TextSpan(text: "${word.usage} ", style: Constant.kAdditionalUsage);
+    final form =
+        TextSpan(text: "${word.form} ", style: Constant.kAdditionalUsage);
+
+    List<TextSpan> additionalWords = [
+      Constant.kDot,
+      titleTextSpan,
+      if (word.justification!.isNotEmpty) justification,
+      if (word.form!.isNotEmpty) form,
+      if (word.usage!.isNotEmpty) usage
+    ];
+    return RichText(
+        text: TextSpan(
+      children: additionalWords,
+    ));
   }
 
   List<Widget> buildExampleBox(List<Example>? examples) {
@@ -202,8 +258,6 @@ class DefinitionBox extends StatelessWidget {
     TextSpan exampleTextSpan = TextSpan(
         style: const TextStyle(color: Colors.black87), children: children);
 
-    toGoWith.insert(
-        0, const TextSpan(style: TextStyle(fontSize: 18), text: "• "));
     return RichText(
         text: TextSpan(
             style: const TextStyle(
@@ -211,6 +265,10 @@ class DefinitionBox extends StatelessWidget {
               letterSpacing: 0.1,
               height: 1.5,
             ),
-            children: [toGoWithTextSpan, exampleTextSpan]));
+            children: [
+          Constant.kDotExample,
+          toGoWithTextSpan,
+          exampleTextSpan
+        ]));
   }
 }
