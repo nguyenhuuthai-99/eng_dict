@@ -70,6 +70,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       theme: ThemeData(
+        fontFamily: "Open Sans",
         colorScheme: const ColorScheme.light(
           primary: Constant.kPrimaryColor,
         ),

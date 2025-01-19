@@ -46,7 +46,7 @@ class BuildClickableText {
               wordTitle: word,
               url: "/search/direct/?datasetsearch=english&q=$word",
             ));
-            showDictionaryBottomSheet(context, word);
+            showDictionaryBottomSheet(context: context, word: word);
           });
   }
 

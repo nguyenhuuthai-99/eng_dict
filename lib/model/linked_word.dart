@@ -1,9 +1,20 @@
-class LinkedWord{
+class LinkedWord {
   late String _title;
   String? _usage;
   String? _justification;
   String? _form;
   late String _url;
+
+  LinkedWord();
+
+  factory LinkedWord.fromJson(Map<String, dynamic> json) {
+    return LinkedWord()
+      .._title = json['title']
+      .._usage = json["usage"]
+      .._justification = json['justification']
+      .._form = json['form']
+      .._url = json['url'];
+  }
 
   String get title => _title;
 

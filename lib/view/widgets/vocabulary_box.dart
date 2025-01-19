@@ -37,8 +37,7 @@ class VocabularyBox extends StatelessWidget {
           color: vocabulary.phraseTitle.isNotEmpty
               ? Constant.kGreyBackground
               : Colors.white,
-          border:
-              const Border(top: BorderSide(color: Constant.kGreyDivider))),
+          border: const Border(top: BorderSide(color: Constant.kGreyDivider))),
       child: Column(
         children: [
           Row(
@@ -121,6 +120,7 @@ class VocabularyBox extends StatelessWidget {
             onTap: () {
               Provider.of<WordFieldData>(context, listen: false)
                   .loadWordFromURL(vocabulary.URL);
+              print(vocabulary.URL);
               Provider.of<ScreenData>(context, listen: false).changeIndex(1);
             },
             child: const Row(

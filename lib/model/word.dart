@@ -30,7 +30,17 @@ class Word {
       .._examples = (json['examples'] as List<dynamic>?)
           ?.map((e) => Example.fromJson(e))
           .toList()
-      .._url = json['url'];
+      .._url = json['url']
+      .._code = json['code']
+      .._synonyms = (json['synonyms'] as List<dynamic>?)
+          ?.map((e) => LinkedWord.fromJson(e))
+          .toList()
+      .._compare = (json['compare'] as List<dynamic>?)
+          ?.map((e) => LinkedWord.fromJson(e))
+          .toList()
+      .._seeAlso = (json['seeAlso'] as List<dynamic>?)
+          ?.map((e) => LinkedWord.fromJson(e))
+          .toList();
   }
 
   bool get isPhrase => _isPhrase;
