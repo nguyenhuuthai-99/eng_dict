@@ -25,6 +25,11 @@ class DefinitionBox extends StatelessWidget {
     if (word!.isPhrase) {
       return buildPhraseBox(context);
     }
+    if (word!.seeAlso != null) {
+      for (var item in word!.seeAlso!) {
+        print(item.title);
+      }
+    }
     return buildWordBox();
   }
 
