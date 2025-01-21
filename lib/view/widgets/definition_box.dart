@@ -3,6 +3,7 @@ import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/view/component/toggle_save_button.dart';
 import 'package:eng_dict/view/utils/build_clickable_text.dart';
 import 'package:eng_dict/view/utils/constants.dart';
+import 'package:eng_dict/view/widgets/code_explanation_box.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -57,7 +58,11 @@ class DefinitionBox extends StatelessWidget {
                       width: Constant.kMarginMedium,
                     ),
                     if (word!.code != null)
-                      Text(word!.code!, style: Constant.kUsageAndCodeTextStyle),
+                      GestureDetector(
+                        onTap: () => showCodeExplanation(),
+                        child: Text(word!.code!,
+                            style: Constant.kUsageAndCodeTextStyle),
+                      ),
                     const SizedBox(
                       width: Constant.kMarginMedium,
                     ),
@@ -98,6 +103,17 @@ class DefinitionBox extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  void showCodeExplanation() {
+    showModalBottomSheet(
+      enableDrag: true,
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: true,
+      context: context,
+      builder: (context) => CodeExplanationBox(),
     );
   }
 

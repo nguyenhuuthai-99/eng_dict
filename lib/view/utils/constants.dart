@@ -64,7 +64,7 @@ class Constant {
   static const TextStyle kIPATextStyle = TextStyle(
       color: kHeading2Color, fontSize: 16, fontWeight: FontWeight.w100);
   static const TextStyle kUsageAndCodeTextStyle =
-      TextStyle(fontWeight: FontWeight.w100, color: kContentTextColor);
+      TextStyle(fontWeight: FontWeight.w100, color: kSecondaryColor);
   static TextStyle kAdditionalType = GoogleFonts.openSans(
       fontWeight: FontWeight.w700, fontSize: 16, color: kContentTextColor);
   static const kAdditionalTitle = TextStyle(
@@ -73,6 +73,11 @@ class Constant {
       TextStyle(fontSize: 15, color: kContentTextColor);
   static const kAdditionalUsage = TextStyle(
       fontSize: 15, fontStyle: FontStyle.italic, color: kContentTextColor);
+  static const kCodeHeading = TextStyle(
+      fontSize: 20, fontWeight: FontWeight.bold, color: kPrimaryColor);
+  static const kCodeElement = TextStyle(fontSize: 16, color: Colors.black87);
+  static const kCodeTable = TextStyle(
+      fontSize: 30, color: kPrimaryColor, fontWeight: FontWeight.bold);
 
   static const kDot = TextSpan(
       text: "• ",
