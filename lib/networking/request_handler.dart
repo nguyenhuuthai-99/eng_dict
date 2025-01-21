@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:eng_dict/model/did_you_mean_word.dart';
 import 'package:flutter/cupertino.dart';
 import "package:path_provider/path_provider.dart";
 import 'package:eng_dict/model/suggested_word.dart';
@@ -68,6 +69,27 @@ class RequestHandler {
           .toList();
     }
     return wordFields;
+  }
+
+  Future<List<DidYouMeanWord>> getDidYouMeanWord(String prefix) async {
+    List<DidYouMeanWord> didYouMeanWords = [];
+
+    Uri url = Uri.parse("$_domain/spellcheck/$prefix");
+
+    var response = await http.get(url);
+
+    int responseCode = response.statusCode;
+
+    if (responseCode == HttpStatus.ok) {
+      List<dynamic> json = jsonDecode(response.body);
+
+      didYouMeanWords = json
+          .map(
+            (e) => DidYouMeanWord.fromJson(e),
+          )
+          .toList();
+    }
+    return didYouMeanWords;
   }
 
   Future<List<SuggestedWord>> getSuggestedWord(String prefix) async {
