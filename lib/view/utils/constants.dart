@@ -66,17 +66,22 @@ class Constant {
   static const TextStyle kUsageAndCodeTextStyle =
       TextStyle(fontWeight: FontWeight.w100, color: kSecondaryColor);
   static TextStyle kAdditionalType = GoogleFonts.openSans(
-      fontWeight: FontWeight.w700, fontSize: 16, color: kPrimaryColor);
+      fontWeight: FontWeight.w700, fontSize: 16, color: kContentTextColor);
   static const kAdditionalTitle = TextStyle(
-      fontWeight: FontWeight.w700, fontSize: 15, color: kSecondaryColor);
+      fontWeight: FontWeight.w700, fontSize: 15, color: kPrimaryColor);
   static const kAdditionalJustification =
-      TextStyle(fontSize: 15, color: kSecondaryColor);
+      TextStyle(fontSize: 15, color: kContentTextColor);
   static const kAdditionalUsage = TextStyle(
       fontSize: 15, fontStyle: FontStyle.italic, color: kContentTextColor);
+  static const kCodeHeading = TextStyle(
+      fontSize: 20, fontWeight: FontWeight.bold, color: kPrimaryColor);
+  static const kCodeElement = TextStyle(fontSize: 16, color: Colors.black87);
+  static const kCodeTable = TextStyle(
+      fontSize: 30, color: kPrimaryColor, fontWeight: FontWeight.bold);
 
   static const kDot = TextSpan(
       text: "• ",
-      style: TextStyle(color: Constant.kSecondaryColor, fontSize: 18));
+      style: TextStyle(color: Constant.kPrimaryColor, fontSize: 18));
   static const kDotExample = TextSpan(
       text: "• ", style: TextStyle(color: Colors.black87, fontSize: 18));
 
