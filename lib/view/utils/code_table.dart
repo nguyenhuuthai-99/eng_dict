@@ -107,17 +107,13 @@ class CodeTable {
           "A word or phrase such as Mr or dear used to address someone."
     }
   };
-
-  // String getCodeString(String form, String code) {
-  //   if (form == "adjective") {
-  //   } else if (form == "noun") {
-  //   } else if (form == "verb") {
-  //   } else {}
-  // }
-  //
-  // String getAdjective(String code) {
-  //   Set<Char> codeSet = parseCode(code);
-  // }
-  //
-  // Set<Char> parseCode(String code) {}
+  static const CEFRTable = {
+    "A1": "Basic vocabulary for everyday expressions and simple phrases.",
+    "A2": "Basic vocabulary for common needs and everyday situations.",
+    "B1": "Moderate vocabulary for familiar topics and simple connections.",
+    "B2": "Expanded vocabulary for complex ideas and diverse topics.",
+    "C1":
+        "Extensive vocabulary for fluent, flexible, and effective communication.",
+    "C2": "Comprehensive vocabulary for precise and nuanced expression."
+  };
 }

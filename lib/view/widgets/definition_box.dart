@@ -2,6 +2,7 @@ import 'package:eng_dict/model/linked_word.dart';
 import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/view/component/toggle_save_button.dart';
 import 'package:eng_dict/view/utils/build_clickable_text.dart';
+import 'package:eng_dict/view/utils/code_table.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/widgets/code_explanation_box.dart';
 import 'package:flutter/gestures.dart';
@@ -47,9 +48,22 @@ class DefinitionBox extends StatelessWidget {
                 child: Row(
                   children: [
                     if (word!.level != null)
-                      Text(
-                        "${word!.level!}  ",
-                        style: Constant.kWordLevelTextStyle,
+                      Tooltip(
+                        message: CodeTable.CEFRTable[word!.level!],
+                        triggerMode: TooltipTriggerMode.tap,
+                        preferBelow: false,
+                        showDuration: const Duration(milliseconds: 2500),
+                        textStyle: Constant.kToolTipTextStyle,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: Constant.kMarginSmall),
+                        decoration: const BoxDecoration(
+                            color: Constant.kPrimaryColor,
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(Constant.kMarginExtraSmall))),
+                        child: Text(
+                          "${word!.level!}  ",
+                          style: Constant.kWordLevelTextStyle,
+                        ),
                       ),
                     if (word!.code != null)
                       GestureDetector(

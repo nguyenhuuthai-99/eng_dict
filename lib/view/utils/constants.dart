@@ -5,12 +5,21 @@ class Constant {
   //App Colors
   static const Color kPrimaryColor = Color(0xff3658A3);
   static const Color kSecondaryColor = Color(0xff007AFF);
-  static const Color kAccentColor = Color(0xffFF3B30);
 
-  //Decorative Colors
+  //Dark Theme Color
+  static const Color kPrimaryDarkColor = Color(0xff34C759);
+  static const Color kSecondaryDarkColor = Color(0xff007AFF);
+  static const Color kDarkBackgroundColor = Color(0xff007AFF);
+  static const Color kDarkSurfaceColor = Color(0xff007AFF);
+  static const Color kOnDarkBackgroundColor = Color(0xff007AFF);
+  static const Color kOnDarkSurfaceColor = Color(0xff007AFF);
+
+  //Vocabulary Proficiency Colors
   static const Color kRedDotColor = Color(0xffFF3B30);
   static const Color kGreenDotColor = Color(0xff34C759);
   static const Color kYellowDotColor = Color(0xffFFCC00);
+
+  //Decorative colors
   static const Color kGreyBackground = Color(0xffF2F2F2);
   static const Color kGreyBorder = Color(0x1F767680);
   static const Color kGreyLine = Color(0xffE2E2E2);
@@ -83,6 +92,8 @@ class Constant {
   static const kCodeElement = TextStyle(fontSize: 16, color: Colors.black87);
   static const kCodeTable = TextStyle(
       fontSize: 30, color: kPrimaryColor, fontWeight: FontWeight.bold);
+  static const kToolTipTextStyle =
+      TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white);
 
   static const kDot = TextSpan(
       text: "• ",
