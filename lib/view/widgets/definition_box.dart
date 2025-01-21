@@ -46,28 +46,19 @@ class DefinitionBox extends StatelessWidget {
               Expanded(
                 child: Row(
                   children: [
-                    Text(
-                      word!.level != null ? word!.level! : "",
-                      style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.italic,
-                          fontSize: 20,
-                          color: Constant.kPrimaryColor),
-                    ),
-                    const SizedBox(
-                      width: Constant.kMarginMedium,
-                    ),
+                    if (word!.level != null)
+                      Text(
+                        "${word!.level!}  ",
+                        style: Constant.kWordLevelTextStyle,
+                      ),
                     if (word!.code != null)
                       GestureDetector(
                         onTap: () => showCodeExplanation(),
-                        child: Text(word!.code!,
+                        child: Text("${word!.code!} ",
                             style: Constant.kUsageAndCodeTextStyle),
                       ),
-                    const SizedBox(
-                      width: Constant.kMarginMedium,
-                    ),
                     if (word!.usage != null)
-                      Text(word!.usage!,
+                      Text("${word!.usage!} ",
                           style: Constant.kUsageAndCodeTextStyle),
                   ],
                 ),
@@ -257,12 +248,21 @@ class DefinitionBox extends StatelessWidget {
     if (example.example == null) {
       return const SizedBox();
     }
+
     List<TextSpan> toGoWith = example.toGoWith != null
         ? BuildClickableText.buildClickableTextSpan(
             text: "${example.toGoWith!}  ", context: context)
         : [];
     List<TextSpan> children = BuildClickableText.buildClickableTextSpan(
         text: example.example!, context: context);
+
+    TextSpan exampleCodeSpan = example.code != null
+        ? TextSpan(
+            style: Constant.kUsageAndCodeTextStyle,
+            text: "${example.code!} ",
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => showCodeExplanation())
+        : const TextSpan();
 
     TextSpan toGoWithTextSpan = TextSpan(
         style: const TextStyle(
@@ -283,6 +283,7 @@ class DefinitionBox extends StatelessWidget {
             ),
             children: [
           Constant.kDotExample,
+          exampleCodeSpan,
           toGoWithTextSpan,
           exampleTextSpan
         ]));

@@ -64,7 +64,12 @@ class Constant {
   static const TextStyle kIPATextStyle = TextStyle(
       color: kHeading2Color, fontSize: 16, fontWeight: FontWeight.w100);
   static const TextStyle kUsageAndCodeTextStyle =
-      TextStyle(fontWeight: FontWeight.w100, color: kSecondaryColor);
+      TextStyle(fontWeight: FontWeight.w400, color: kSecondaryColor);
+  static var kWordLevelTextStyle = GoogleFonts.inter(
+      fontWeight: FontWeight.w700,
+      // fontStyle: FontStyle.italic,
+      fontSize: 18,
+      color: Constant.kPrimaryColor);
   static TextStyle kAdditionalType = GoogleFonts.openSans(
       fontWeight: FontWeight.w700, fontSize: 16, color: kContentTextColor);
   static const kAdditionalTitle = TextStyle(
