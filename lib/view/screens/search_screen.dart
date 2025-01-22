@@ -1,3 +1,4 @@
+import 'package:eng_dict/model/did_you_mean_word.dart';
 import 'package:eng_dict/model/searched_word.dart';
 import 'package:eng_dict/model/suggested_word.dart';
 import 'package:eng_dict/networking/database_helper.dart';
@@ -7,6 +8,7 @@ import 'package:eng_dict/provider/screen_data.dart';
 import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
+import 'package:eng_dict/view/utils/utils.dart';
 import 'package:eng_dict/view/widgets/banner_ads_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +22,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   RequestHandler requestHandler = RequestHandler();
+  List<DidYouMeanWord>? didYouMeanWords;
   List<SuggestedWord> suggestedWords = [];
   late List<SearchedWord> searchedWords;
   String searchTextFieldText = "";
@@ -73,6 +76,12 @@ class _SearchScreenState extends State<SearchScreen> {
                         if (value.length > 1) {
                           suggestedWords =
                               await requestHandler.getSuggestedWord(value);
+                          if (suggestedWords.isEmpty) {
+                            didYouMeanWords =
+                                await requestHandler.getDidYouMeanWord(value);
+                          } else {
+                            didYouMeanWords = null;
+                          }
                         }
                         setState(() {});
                       },
@@ -93,9 +102,12 @@ class _SearchScreenState extends State<SearchScreen> {
             Expanded(
               child: ListView(
                 children: [
-                  BuildSearchResult(
-                    suggestedWords: suggestedWords,
-                  ),
+                  if (suggestedWords.isNotEmpty)
+                    BuildSearchResult(
+                      suggestedWords: suggestedWords,
+                    ),
+                  if (didYouMeanWords != null)
+                    BuildDidYouMeanResult(didYouMeanWords: didYouMeanWords!),
                   BannerAdsBox(
                     key: UniqueKey(),
                   ),
@@ -143,11 +155,9 @@ class _SearchScreenState extends State<SearchScreen> {
               try {
                 Provider.of<ActionCounter>(context, listen: false)
                     .incrementCounter();
-              } catch (e) {
-                debugPrint(e.toString());
-              }
+              } catch (e) {}
               Provider.of<WordFieldData>(context, listen: false)
-                  .updateWordFieldListFromSearch(
+                  .loadWordFromURL(
                       searchedWords[index].wordTitle, searchedWords[index].url);
               Provider.of<ScreenData>(context, listen: false).changeIndex(1);
             },
@@ -199,17 +209,18 @@ class BuildSearchResult extends StatelessWidget {
                         debugPrint(e.toString());
                       }
 
+                      String newUrl = Utils.buildURL(suggestedWords[index].url);
+
                       Provider.of<WordFieldData>(context, listen: false)
-                          .updateWordFieldListFromSearch(
-                              suggestedWords[index].wordTitle,
-                              suggestedWords[index].url);
+                          .loadWordFromURL(
+                              suggestedWords[index].wordTitle, newUrl);
                       Provider.of<ScreenData>(context, listen: false)
                           .changeIndex(1);
 
                       Provider.of<DatabaseHelper>(context, listen: false)
                           .insertSearchedWord(SearchedWord(
                               wordTitle: suggestedWords[index].wordTitle,
-                              url: suggestedWords[index].url));
+                              url: newUrl));
                     },
                     child: ListTile(
                       title: Text(suggestedWords[index].wordTitle),
@@ -224,5 +235,61 @@ class BuildSearchResult extends StatelessWidget {
             ],
           )
         : const SizedBox();
+  }
+}
+
+class BuildDidYouMeanResult extends StatelessWidget {
+  List<DidYouMeanWord> didYouMeanWords;
+  BuildDidYouMeanResult({super.key, required this.didYouMeanWords});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Did you mean",
+          style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Constant.kGreyText),
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: didYouMeanWords.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+                try {
+                  Provider.of<ActionCounter>(context, listen: false)
+                      .incrementCounter();
+                } catch (e) {
+                  debugPrint(e.toString());
+                }
+
+                Provider.of<WordFieldData>(context, listen: false)
+                    .loadWordFromURL(didYouMeanWords[index].title,
+                        didYouMeanWords[index].url);
+                Provider.of<ScreenData>(context, listen: false).changeIndex(1);
+
+                Provider.of<DatabaseHelper>(context, listen: false)
+                    .insertSearchedWord(SearchedWord(
+                        wordTitle: didYouMeanWords[index].title,
+                        url: didYouMeanWords[index].url));
+              },
+              child: ListTile(
+                title: Text(didYouMeanWords[index].title),
+                leading: const Icon(
+                  CustomIcon.search,
+                  color: Constant.kGreyText,
+                ),
+              ),
+            );
+          },
+        )
+      ],
+    );
   }
 }

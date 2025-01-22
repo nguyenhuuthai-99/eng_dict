@@ -119,7 +119,7 @@ class VocabularyBox extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Provider.of<WordFieldData>(context, listen: false)
-                  .loadWordFromURL(vocabulary.URL);
+                  .loadWordFromURL(vocabulary.wordTitle, vocabulary.URL);
               print(vocabulary.URL);
               Provider.of<ScreenData>(context, listen: false).changeIndex(1);
             },

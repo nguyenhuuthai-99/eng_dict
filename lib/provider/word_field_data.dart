@@ -11,14 +11,15 @@ class WordFieldData extends ChangeNotifier {
   RequestHandler requestHandler = RequestHandler();
   List<WordField> wordFields = [];
   BuildContext? context = MyApp.navigatorKey.currentState?.context;
-  late String word;
+  late String title;
   bool _isLoading = false;
   bool _hasError = false;
   final int _timeout = 60;
 
   WordFieldData();
 
-  Future<void>? loadWordFromURL(String url) async {
+  Future<void>? loadWordFromURL(String title, String url) async {
+    this.title = title;
     _isLoading = true;
     _hasError = false;
     notifyListeners();
@@ -51,7 +52,7 @@ class WordFieldData extends ChangeNotifier {
   }
 
   Future<void>? updateWordFieldList(String word) async {
-    this.word = word;
+    title = word;
     _isLoading = true;
     _hasError = false;
     notifyListeners();
@@ -83,41 +84,8 @@ class WordFieldData extends ChangeNotifier {
     }
   }
 
-  Future<void>? updateWordFieldListFromSearch(String word, String url) async {
-    this.word = word;
-    _isLoading = true;
-    _hasError = false;
-    notifyListeners();
-
-    try {
-      wordFields = await requestHandler
-          .getWordDataFromSearch(url)
-          .timeout(Duration(seconds: _timeout));
-      _isLoading = false;
-      notifyListeners();
-    } on TimeoutException {
-      if (context != null) {
-        showDialog(
-          context: context!,
-          builder: (context) => const TimeOutDialog(),
-        );
-        _hasError = true;
-        notifyListeners();
-      }
-    } on FormatException {
-      if (context != null) {
-        showDialog(
-          context: context!,
-          builder: (context) => const NoInternetDialog(),
-        );
-        _hasError = true;
-        notifyListeners();
-      }
-    }
-  }
-
   Future<void> reload() async {
-    await updateWordFieldList(word);
+    await updateWordFieldList(title);
   }
 
   bool get hasError => _hasError;

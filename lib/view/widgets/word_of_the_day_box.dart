@@ -74,7 +74,8 @@ class WordOfTheDayBox extends StatelessWidget {
                   spacing: 20, // Space between children
                   runSpacing: 8.0,
                   children: [
-                    if (wordForm.usIPASoundURL != null || wordForm.usIPA != null)
+                    if (wordForm.usIPASoundURL != null ||
+                        wordForm.usIPA != null)
                       IPABox(
                         IPA: wordForm.usIPA != null ? wordForm.usIPA! : "",
                         accent: "US",
@@ -98,7 +99,8 @@ class WordOfTheDayBox extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     Provider.of<WordFieldData>(context, listen: false)
-                        .loadWordFromURL(wordForm.words![0].url);
+                        .loadWordFromURL(
+                            word.wordTitle!, wordForm.words![0].url);
                     Provider.of<ScreenData>(context, listen: false)
                         .changeIndex(1);
                   },

@@ -44,7 +44,8 @@ class BuildClickableText {
             Provider.of<DatabaseHelper>(context, listen: false)
                 .insertSearchedWord(SearchedWord(
               wordTitle: word,
-              url: "/search/direct/?datasetsearch=english&q=$word",
+              url:
+                  "https://dictionary.cambridge.org/search/direct/?datasetsearch=english&q=$word",
             ));
             showDictionaryBottomSheet(context, word);
           });
