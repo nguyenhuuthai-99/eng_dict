@@ -17,14 +17,14 @@ class _BannerAdsBoxState extends State<BannerAdsBox>
   late BannerAd bannerAd;
   bool isLoaded = false;
 
-  // String get adUnitId => Platform.isAndroid
-  //     ? 'ca-app-pub-2903872604687353/2000827477'
-  //     : 'ca-app-pub-2903872604687353/9908366953';
+  String get adUnitId => Platform.isAndroid
+      ? 'ca-app-pub-2903872604687353/2000827477'
+      : 'ca-app-pub-2903872604687353/9908366953';
 
-  //dummy ad
-  final adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-3940256099942544/9214589741'
-      : 'ca-app-pub-3940256099942544/2435281174';
+  // //dummy ad
+  // final adUnitId = Platform.isAndroid
+  //     ? 'ca-app-pub-3940256099942544/9214589741'
+  //     : 'ca-app-pub-3940256099942544/2435281174';
 
   @override
   void didChangeDependencies() {
@@ -36,9 +36,7 @@ class _BannerAdsBoxState extends State<BannerAdsBox>
   Widget build(BuildContext context) {
     super.build(context);
     return !isLoaded
-        ? const SizedBox(
-            height: 65,
-          )
+        ? const SizedBox()
         : SizedBox(
             width: bannerAd.size.width.toDouble(),
             height: bannerAd.size.height.toDouble(),

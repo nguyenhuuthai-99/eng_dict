@@ -6,14 +6,14 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class InterstitialAdsBox {
   late InterstitialAd? _interstitialAd;
 
-  // final adUnitId = Platform.isAndroid
-  //     ? 'ca-app-pub-2903872604687353/6160693630'
-  //     : 'ca-app-pub-2903872604687353/7168591342';
+  String get adUnitId => Platform.isAndroid
+      ? 'ca-app-pub-2903872604687353/6160693630'
+      : 'ca-app-pub-2903872604687353/7168591342';
 
   //dummy ad
-  final adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-3940256099942544/1033173712'
-      : 'ca-app-pub-3940256099942544/4411468910';
+  // final adUnitId = Platform.isAndroid
+  //     ? 'ca-app-pub-3940256099942544/1033173712'
+  //     : 'ca-app-pub-3940256099942544/4411468910';
 
   Future<void> loadAd() async {
     await InterstitialAd.load(
