@@ -70,15 +70,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       theme: ThemeData(
-        fontFamily: "Open Sans",
-        colorScheme: const ColorScheme.light(
-          primary: Constant.kPrimaryColor,
-        ),
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(color: Colors.white),
-        brightness: Brightness.light,
-        textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
-      ),
+          fontFamily: "Open Sans",
+          colorScheme: const ColorScheme.light(
+            primary: Constant.kPrimaryColor,
+          ),
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: const AppBarTheme(color: Colors.white),
+          brightness: Brightness.light,
+          // textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme),
+          textTheme: TextTheme()),
       title: 'EngDict',
       home: NavigationMenu(),
     );

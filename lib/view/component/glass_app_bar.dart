@@ -9,14 +9,6 @@ class GlassAppBar extends StatelessWidget implements PreferredSizeWidget {
   late final AppBar appBar;
   GlassAppBar({required this.title, super.key}) {
     appBar = AppBar(
-      actions: const [
-        Padding(
-          padding: EdgeInsets.only(
-              right: Constant.kMarginExtraLarge,
-              top: Constant.kMarginExtraSmall),
-          child: DarkModeButton(),
-        )
-      ],
       title: Text(title),
       backgroundColor: Colors.white.withAlpha(100),
       surfaceTintColor: Colors.white.withAlpha(100),
