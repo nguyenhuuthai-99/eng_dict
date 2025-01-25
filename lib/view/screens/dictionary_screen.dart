@@ -78,15 +78,11 @@ class DictionaryScreen extends StatelessWidget {
                         children: [
                           const Text(
                             "phrase with ",
-                            style: TextStyle(
-                                color: Constant.kGreyText,
-                                fontStyle: FontStyle.italic),
+                            style: Constant.kPhraseSubHeadline,
                           ),
                           Text(
                             word!.wordTitle!,
-                            style: const TextStyle(
-                                color: Color(0xb82a3343),
-                                fontWeight: FontWeight.bold),
+                            style: Constant.kPhraseTitle ,
                           )
                         ],
                       )

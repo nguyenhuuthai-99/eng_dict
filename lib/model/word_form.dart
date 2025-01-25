@@ -1,3 +1,4 @@
+import 'package:eng_dict/model/linked_word.dart';
 import 'package:eng_dict/model/word.dart';
 
 class WordForm {
@@ -7,6 +8,8 @@ class WordForm {
   String? _usIPA;
   String? _usIPASoundURL;
   late List<Word>? _words;
+  late List<LinkedWord>? _phrasalVerbs;
+  late List<LinkedWord>? _idioms;
 
   WordForm();
 
@@ -19,6 +22,16 @@ class WordForm {
       .._usIPASoundURL = json['usIPASoundURL']
       .._words = (json['words'] as List<dynamic>?)
           ?.map((e) => Word.fromJson(e))
+          .toList()
+      .._phrasalVerbs = (json['phrasalVerbs'] as List<dynamic>?)
+          ?.map(
+            (e) => LinkedWord.fromJson(e),
+          )
+          .toList()
+      .._idioms = (json['idioms'] as List<dynamic>?)
+          ?.map(
+            (e) => LinkedWord.fromJson(e),
+          )
           .toList();
   }
 
@@ -56,5 +69,17 @@ class WordForm {
 
   set words(List<Word>? value) {
     _words = value;
+  }
+
+  List<LinkedWord>? get idioms => _idioms;
+
+  set idioms(List<LinkedWord>? value) {
+    _idioms = value;
+  }
+
+  List<LinkedWord>? get phrasalVerbs => _phrasalVerbs;
+
+  set phrasalVerbs(List<LinkedWord>? value) {
+    _phrasalVerbs = value;
   }
 }

@@ -94,6 +94,10 @@ class Constant {
       fontSize: 30, color: kPrimaryColor, fontWeight: FontWeight.bold);
   static const kToolTipTextStyle =
       TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white);
+  static const kPhraseSubHeadline =
+      TextStyle(color: Constant.kGreyText, fontStyle: FontStyle.italic);
+  static const kPhraseTitle =
+      TextStyle(color: Color(0xb82a3343), fontWeight: FontWeight.bold);
 
   static const kDot = TextSpan(
       text: "• ",
