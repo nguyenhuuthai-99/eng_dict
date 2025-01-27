@@ -99,7 +99,7 @@ class Constant {
   static const kPhraseTitle =
       TextStyle(color: Color(0xb82a3343), fontWeight: FontWeight.bold);
   static var kSectionTitle = GoogleFonts.openSans(
-      color: kHeading1Color, fontWeight: FontWeight.w600, fontSize: 24);
+      color: kHeading1Color, fontWeight: FontWeight.w600, fontSize: 20);
   static const kSectionSubTitle = TextStyle(
     height: 1.1,
     color: kHeading2Color,
