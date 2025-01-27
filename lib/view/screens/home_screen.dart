@@ -2,9 +2,12 @@ import 'package:eng_dict/model/word_field.dart';
 import 'package:eng_dict/model/word_form.dart';
 import 'package:eng_dict/networking/request_handler.dart';
 import 'package:eng_dict/view/component/glass_app_bar.dart';
+import 'package:eng_dict/view/screens/practice_screen.dart';
+import 'package:eng_dict/view/screens/reading_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/utils.dart';
 import 'package:eng_dict/view/widgets/banner_ads_box.dart';
+import 'package:eng_dict/view/widgets/home_screen_section_box.dart';
 import 'package:eng_dict/view/widgets/word_of_the_day_box.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
@@ -71,10 +74,18 @@ class HomeScreen extends StatelessWidget {
                 }
               },
             ),
-            const SizedBox(
-              height: Constant.kMarginExtraLarge,
-            ),
-            const ReadingsBox(),
+            HomeScreenSectionBox(
+                title: "Sharpen",
+                heading: "Practice",
+                subTitle: "your vocabulary with fun games and challenges",
+                image: const AssetImage("assets/images/practice.png"),
+                screen: const PracticeScreen()),
+            HomeScreenSectionBox(
+                title: "Explore",
+                heading: "Readings",
+                subTitle: "Stories and Articles",
+                image: const AssetImage("assets/images/reading.png"),
+                screen: ReadingScreen()),
             const SizedBox(
               height: Constant.kMarginExtraLarge,
             ),

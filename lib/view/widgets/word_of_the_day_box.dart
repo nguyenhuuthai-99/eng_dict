@@ -25,7 +25,7 @@ class WordOfTheDayBox extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "Word of the day",
           style: Constant.kHeadingTextStyle,
         ),

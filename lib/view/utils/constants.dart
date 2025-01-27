@@ -33,8 +33,8 @@ class Constant {
       colors: [Color(0xffF47728), Color(0xffFBA820)]);
 
   //Text Colors
-  static const Color kHeading1Color = Color(0xcc000000);
-  static const Color kHeading2Color = Color(0xb81b1f26);
+  static const Color kHeading1Color = Color(0xff414141);
+  static const Color kHeading2Color = Color(0xff494949);
   static const Color kContentTextColor = Color(0xB8000000);
 
   //App dimensions
@@ -63,11 +63,11 @@ class Constant {
       fontSize: 15,
       fontStyle: FontStyle.italic,
       fontFamily: "Inter");
-  static const TextStyle kHeadingTextStyle = TextStyle(
-      color: kHeading1Color,
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
-      fontFamily: "Inter");
+  static TextStyle kHeadingTextStyle = GoogleFonts.openSans(
+    color: kHeading1Color,
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+  );
   static const TextStyle kHeading2TextStyle = TextStyle(
       color: kHeading2Color, fontSize: 16, fontWeight: FontWeight.bold);
   static const TextStyle kIPATextStyle = TextStyle(
@@ -98,6 +98,14 @@ class Constant {
       TextStyle(color: Constant.kGreyText, fontStyle: FontStyle.italic);
   static const kPhraseTitle =
       TextStyle(color: Color(0xb82a3343), fontWeight: FontWeight.bold);
+  static var kSectionTitle = GoogleFonts.openSans(
+      color: kHeading1Color, fontWeight: FontWeight.w600, fontSize: 24);
+  static const kSectionSubTitle = TextStyle(
+    height: 1.1,
+    color: kHeading2Color,
+    fontSize: 16,
+    fontStyle: FontStyle.italic,
+  );
 
   static const kDot = TextSpan(
       text: "• ",
