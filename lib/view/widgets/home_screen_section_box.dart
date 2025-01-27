@@ -34,49 +34,41 @@ class HomeScreenSectionBox extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => screen,
                   )),
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: Constant.kMarginLarge,
-                    vertical: Constant.kMarginSmall),
-                decoration: const BoxDecoration(
-                    color: Constant.kGreyBackground,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0x26000000),
-                        offset: Offset(0, 2),
-                        blurRadius: 3,
+              child: Card(
+                color: Constant.kGreyBackground,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Constant.kMarginLarge,
+                      vertical: Constant.kMarginSmall),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 6,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: Constant.kSectionTitle,
+                            ),
+                            Text(
+                              subTitle,
+                              style: Constant.kSectionSubTitle,
+                            )
+                          ],
+                        ),
                       ),
+                      const SizedBox(
+                        width: Constant.kMarginExtraLarge,
+                      ),
+                      Flexible(
+                          flex: 5,
+                          child: Image(
+                            image: image,
+                          ))
                     ],
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(Constant.kMarginSmall))),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 6,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: Constant.kSectionTitle,
-                          ),
-                          Text(
-                            subTitle,
-                            style: Constant.kSectionSubTitle,
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      width: Constant.kMarginExtraLarge,
-                    ),
-                    Flexible(
-                        flex: 5,
-                        child: Image(
-                          image: image,
-                        ))
-                  ],
+                  ),
                 ),
               ),
             ),
