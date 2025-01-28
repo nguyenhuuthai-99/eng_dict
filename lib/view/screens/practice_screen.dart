@@ -1,4 +1,4 @@
-import 'package:eng_dict/view/screens/word_scramble_screen.dart';
+import 'package:eng_dict/view/screens/word_scramble_start_screen.dart';
 import 'package:eng_dict/view/widgets/practice_section_box.dart';
 import 'package:flutter/material.dart';
 
@@ -17,25 +17,25 @@ class PracticeScreen extends StatelessWidget {
           children: [
             PracticeSectionBox(
               title: "Word Scramble",
-              nextScreen: WordScrambleScreen(),
+              nextScreen: WordScrambleSelectScreen(),
               subTitle: "Fix the mix, master your spelling",
               image: const AssetImage("assets/images/scramble.png"),
             ),
             PracticeSectionBox(
               title: "Word Board",
-              nextScreen: const WordScrambleScreen(),
+              nextScreen: const WordScrambleSelectScreen(),
               subTitle: "Beat the board, refine your vocabulary",
               image: const AssetImage("assets/images/word_board.png"),
             ),
             PracticeSectionBox(
               title: "Quizzes",
-              nextScreen: WordScrambleScreen(),
+              nextScreen: WordScrambleSelectScreen(),
               subTitle: "Test your knowledge and beat the clock",
               image: const AssetImage("assets/images/practice.png"),
             ),
             PracticeSectionBox(
               title: "Flashcard",
-              nextScreen: WordScrambleScreen(),
+              nextScreen: WordScrambleSelectScreen(),
               subTitle: "Flip, remember, and level up your vocabulary",
               image: const AssetImage("assets/images/flashcard.png"),
             ),

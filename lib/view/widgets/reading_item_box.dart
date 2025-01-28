@@ -8,11 +8,12 @@ import 'package:provider/provider.dart';
 
 class ReadingItemBox extends StatelessWidget {
   Story story;
-  ReadingItemBox({required this.story,
+  ReadingItemBox({
+    required this.story,
     super.key,
   });
 
-  Future<bool> checkNotification(SettingsService settings) async{
+  Future<bool> checkNotification(SettingsService settings) async {
     return (await settings.readSettings())["notification_story_screen"];
   }
 
@@ -21,23 +22,43 @@ class ReadingItemBox extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: Constant.kMarginSmall, horizontal: Constant.kMarginLarge),
+          padding: const EdgeInsets.symmetric(
+              vertical: Constant.kMarginSmall,
+              horizontal: Constant.kMarginLarge),
           child: GestureDetector(
-            onTap: () async{
-              final canNotify = await checkNotification(Provider.of<SettingsService>(context, listen: false));
-    Navigator.push(context, MaterialPageRoute(builder: (context) => StoryScreen(story: story, canNotify: canNotify)));
-          },
-              child: Column(
+            onTap: () async {
+              final canNotify = await checkNotification(
+                  Provider.of<SettingsService>(context, listen: false));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          StoryScreen(story: story, canNotify: canNotify)));
+            },
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-              Text(story.title, style: const TextStyle(color: Constant.kPrimaryColor, fontWeight: FontWeight.bold, fontSize: 20, fontFamily: "Open Sans")),
-              Wrap(
-              children: [
-              Text("${story.genre} - ", style: TextStyle( fontWeight: FontWeight.bold),),
-                    Text(story.level.name, style: TextStyle(color: Constant.kSecondaryColor, fontWeight: FontWeight.bold),)
+                Text(story.title, style: Constant.kSectionTitle),
+                Wrap(
+                  children: [
+                    Text(
+                      "${story.genre} - ",
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Constant.kLightGreyText),
+                    ),
+                    Text(
+                      story.level.name,
+                      style: const TextStyle(color: Constant.kSecondaryColor),
+                    )
                   ],
                 ),
-                Text(story.summary, style: TextStyle(color: Constant.kLightGreyText, ),),
+                Text(
+                  story.summary,
+                  style: TextStyle(
+                    color: Constant.kLightGreyText,
+                  ),
+                ),
                 const Row(
                   children: [
                     Expanded(child: SizedBox()),
@@ -54,7 +75,6 @@ class ReadingItemBox extends StatelessWidget {
                     )
                   ],
                 ),
-            
               ],
             ),
           ),
