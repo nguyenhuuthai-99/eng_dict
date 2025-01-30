@@ -63,16 +63,16 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
   @override
   void initState() {
     super.initState();
-    inputList = buildScrambleWord();
-    initResultList();
+    initWordList();
   }
 
-  void initResultList() {
+  void initWordList() {
     String currentString = widget.words[currentIndex];
     resultList = [];
     for (int i = 0; i < currentString.length; i++) {
       resultList.add(" ");
     }
+    inputList = buildScrambleWord();
   }
 
   void onStringInputChange(int index) {}
@@ -83,12 +83,28 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
 
   void updateWord() {
     currentIndex++;
-    resetClock();
+    currentResultIndex = 0;
+    if (currentIndex < widget.words.length) {
+      initWordList();
+    } else {
+      // todo show result
+      print('congratulation!! you have finish the game');
+    }
+
     //todo if currentIndex exceed word list: show result
   }
 
   void checkAnswer() {
-    if (resultList.toString() == widget.words[currentIndex]) {}
+    print(resultList.join());
+    if (resultList.join() == widget.words[currentIndex]) {
+      setState(() {
+        updateWord();
+        resetClock();
+      });
+    } else {
+      //decrease word fluency level of the word
+      //add to wrong list
+    }
   }
 
   void timer() {
@@ -105,7 +121,7 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("3/10"),
+        title: Text("${currentIndex + 1}/${widget.words.length}"),
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.pause_outlined))
         ],
@@ -125,7 +141,7 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
                       Icon(
                         CupertinoIcons.alarm,
                         color: alarmColor,
-                        size: 40,
+                        size: 32,
                       ),
                       const SizedBox(
                         width: Constant.kMarginSmall,
@@ -134,7 +150,7 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
                         "00:30",
                         style: GoogleFonts.chivoMono(
                             color: alarmColor,
-                            fontSize: 44,
+                            fontSize: 28,
                             fontWeight: FontWeight.w300),
                       )
                     ],
@@ -163,6 +179,7 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
 
                         if (inputList.isEmpty) {
                           //todo check answer
+                          checkAnswer();
                         }
                       });
                     },
@@ -367,10 +384,11 @@ class ScrambleResultCharBox extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   color: Constant.kPrimaryColor),
             ),
-            Container(
-              color: Constant.kPrimaryColor,
-              height: 2,
-            )
+            if (char == " ")
+              Container(
+                color: Constant.kPrimaryColor,
+                height: 4,
+              )
           ],
         ),
       ),
