@@ -57,21 +57,21 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
   int currentIndex = 0;
   int currentResultIndex = 0;
 
-  late List<String> result;
-  late List<String> scrambledWord;
+  late List<String> resultList;
+  late List<String> inputList;
 
   @override
   void initState() {
     super.initState();
-    scrambledWord = buildScrambleWord();
+    inputList = buildScrambleWord();
     initResultList();
   }
 
   void initResultList() {
     String currentString = widget.words[currentIndex];
-    result = [];
+    resultList = [];
     for (int i = 0; i < currentString.length; i++) {
-      result.add(" ");
+      resultList.add(" ");
     }
   }
 
@@ -87,7 +87,9 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
     //todo if currentIndex exceed word list: show result
   }
 
-  void checkAnswer() {}
+  void checkAnswer() {
+    if (resultList.toString() == widget.words[currentIndex]) {}
+  }
 
   void timer() {
     //todo if timer == 0, updateWord()
@@ -103,19 +105,7 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              CupertinoIcons.alarm,
-              color: alarmColor,
-            ),
-            Text(
-              " 00:30",
-              style: GoogleFonts.chivoMono(color: alarmColor),
-            )
-          ],
-        ),
+        title: Text("3/10"),
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.pause_outlined))
         ],
@@ -127,14 +117,55 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
           child: Column(
             children: [
               Flexible(
-                  flex: 2,
+                flex: 1,
+                child: Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        CupertinoIcons.alarm,
+                        color: alarmColor,
+                        size: 40,
+                      ),
+                      const SizedBox(
+                        width: Constant.kMarginSmall,
+                      ),
+                      Text(
+                        "00:30",
+                        style: GoogleFonts.chivoMono(
+                            color: alarmColor,
+                            fontSize: 44,
+                            fontWeight: FontWeight.w300),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              Flexible(
+                  flex: 1,
                   child: ScrambleResultStringBox(
-                    result: result,
+                    result: resultList,
                   )),
               Flexible(
                   flex: 1,
                   child: ScrambleInputStringBox(
-                    scrambledWordList: scrambledWord,
+                    scrambledWordList: inputList,
+                    onChange: (index) {
+                      setState(() {
+                        //remove element from the input list
+                        var char = inputList.removeAt(index);
+
+                        //add that element to the result list
+                        resultList[currentResultIndex] = char;
+                        //scrambleWord list is empty, check answer
+                        //checkAnswer();
+                        currentResultIndex++;
+
+                        if (inputList.isEmpty) {
+                          //todo check answer
+                        }
+                      });
+                    },
                   )),
               Column(
                 children: [
@@ -157,7 +188,24 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
                       Expanded(child: const SizedBox()),
                       TextButton(
                           onPressed: () {
-                            //todo delete char
+                            setState(() {
+                              //if currentResultIndex > 0
+
+                              if (currentResultIndex - 1 >= 0 &&
+                                  resultList[currentResultIndex - 1] != ' ') {
+                                //remove the last element
+                                var char = resultList[currentResultIndex - 1];
+                                resultList[currentResultIndex - 1] = ' ';
+
+                                //add to input list
+                                inputList.add(char);
+
+                                //if the current index reach boundary
+                                if (currentResultIndex > 0) {
+                                  currentResultIndex--;
+                                }
+                              }
+                            });
                           },
                           child: const Icon(
                             CupertinoIcons.delete_left_fill,
@@ -190,16 +238,26 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
 
 class ScrambleInputStringBox extends StatelessWidget {
   List<String> scrambledWordList;
+  Function(int index) onChange;
   ScrambleInputStringBox({
     required this.scrambledWordList,
+    required this.onChange,
     super.key,
   });
 
   List<Widget> buildCharList(List<String> wordString) {
     return wordString
+        .asMap()
         .map(
-          (e) => ScrambleInputCharBox(char: e.toUpperCase()),
+          (index, e) => MapEntry(
+              index,
+              ScrambleInputCharBox(
+                index: index,
+                char: e.toUpperCase(),
+                onInputChange: (index) => onChange(index),
+              )),
         )
+        .values
         .toList();
   }
 
@@ -247,29 +305,36 @@ class ScrambleResultStringBox extends StatelessWidget {
 
 class ScrambleInputCharBox extends StatelessWidget {
   final String char;
-  const ScrambleInputCharBox({
+  final int index;
+  Function(int index) onInputChange;
+  ScrambleInputCharBox({
+    required this.index,
     required this.char,
+    required this.onInputChange,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 35,
-      height: 35,
-      padding: const EdgeInsets.only(bottom: 2),
-      margin: EdgeInsets.symmetric(horizontal: Constant.kMarginExtraSmall),
-      decoration: BoxDecoration(
-          color: Constant.kGreyBackground,
-          border: Border.all(color: Constant.kGreyLine, width: 2)),
-      child: Center(
-        child: Text(
-          char,
-          style: GoogleFonts.azeretMono(
-            color: Constant.kPrimaryColor,
-            fontWeight: FontWeight.bold,
-            height: 0.7,
-            fontSize: 32,
+    return GestureDetector(
+      onTap: () => onInputChange(index),
+      child: Container(
+        width: 35,
+        height: 35,
+        padding: const EdgeInsets.only(bottom: 2),
+        margin: EdgeInsets.symmetric(horizontal: Constant.kMarginExtraSmall),
+        decoration: BoxDecoration(
+            color: Constant.kGreyBackground,
+            border: Border.all(color: Constant.kGreyLine, width: 2)),
+        child: Center(
+          child: Text(
+            char,
+            style: GoogleFonts.azeretMono(
+              color: Constant.kPrimaryColor,
+              fontWeight: FontWeight.bold,
+              height: 0.7,
+              fontSize: 32,
+            ),
           ),
         ),
       ),
