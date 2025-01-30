@@ -141,21 +141,21 @@ class _DifficultyBoxState extends State<DifficultyBox> {
           child: DifficultyItem(
               isSelected: _selectedDifficulty == ScrambleDifficulty.easy,
               title: "Easy",
-              borderColor: Constant.kGreenDotColor,
+              borderColor: Constant.kGreenIndicatorColor,
               onTap: () => _onDifficultySelected(ScrambleDifficulty.easy)),
         ),
         Expanded(
           child: DifficultyItem(
               isSelected: _selectedDifficulty == ScrambleDifficulty.medium,
               title: "Medium",
-              borderColor: Constant.kYellowDotColor,
+              borderColor: Constant.kYellowIndicatorColor,
               onTap: () => _onDifficultySelected(ScrambleDifficulty.medium)),
         ),
         Expanded(
           child: DifficultyItem(
               isSelected: _selectedDifficulty == ScrambleDifficulty.hard,
               title: "Hard",
-              borderColor: Constant.kRedDotColor,
+              borderColor: Constant.kRedIndicatorColor,
               onTap: () => _onDifficultySelected(ScrambleDifficulty.hard)),
         ),
       ],

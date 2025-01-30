@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class VocabularyBox extends StatelessWidget {
   Vocabulary vocabulary;
-  Color dotColor = Constant.kRedDotColor;
+  Color dotColor = Constant.kRedIndicatorColor;
   VocabularyBox({
     required this.vocabulary,
     super.key,
@@ -120,7 +120,6 @@ class VocabularyBox extends StatelessWidget {
             onTap: () {
               Provider.of<WordFieldData>(context, listen: false)
                   .loadWordFromURL(vocabulary.wordTitle, vocabulary.URL);
-              print(vocabulary.URL);
               Provider.of<ScreenData>(context, listen: false).changeIndex(1);
             },
             child: const Row(

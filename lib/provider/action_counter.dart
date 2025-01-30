@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:eng_dict/view/widgets/interstitial_ads_box.dart';
+import 'package:eng_dict/view/widgets/ads/interstitial_ads_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:path_provider/path_provider.dart';

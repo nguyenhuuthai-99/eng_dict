@@ -14,10 +14,10 @@ class Constant {
   static const Color kOnDarkBackgroundColor = Color(0xff007AFF);
   static const Color kOnDarkSurfaceColor = Color(0xff007AFF);
 
-  //Vocabulary Proficiency Colors
-  static const Color kRedDotColor = Color(0xffFF3B30);
-  static const Color kGreenDotColor = Color(0xff34C759);
-  static const Color kYellowDotColor = Color(0xffFFCC00);
+  //Word indicator colors
+  static const Color kRedIndicatorColor = Color(0xffFF3B30);
+  static const Color kGreenIndicatorColor = Color(0xff34C759);
+  static const Color kYellowIndicatorColor = Color(0xffFFCC00);
 
   //Decorative colors
   static const Color kGreyBackground = Color(0xffF2F2F2);

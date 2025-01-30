@@ -8,8 +8,8 @@ import 'package:eng_dict/view/screens/search_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:eng_dict/view/utils/setting_service.dart';
-import 'package:eng_dict/view/widgets/definition_box.dart';
-import 'package:eng_dict/view/widgets/word_title_box.dart';
+import 'package:eng_dict/view/widgets/dictionary/definition_box.dart';
+import 'package:eng_dict/view/widgets/dictionary/word_title_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -82,7 +82,7 @@ class DictionaryScreen extends StatelessWidget {
                           ),
                           Text(
                             word!.wordTitle!,
-                            style: Constant.kPhraseTitle ,
+                            style: Constant.kPhraseTitle,
                           )
                         ],
                       )

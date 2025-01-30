@@ -6,14 +6,14 @@ import 'package:eng_dict/view/screens/practice_screen.dart';
 import 'package:eng_dict/view/screens/reading_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/utils.dart';
-import 'package:eng_dict/view/widgets/banner_ads_box.dart';
-import 'package:eng_dict/view/widgets/home_screen_section_box.dart';
-import 'package:eng_dict/view/widgets/word_of_the_day_box.dart';
+import 'package:eng_dict/view/widgets/ads/banner_ads_box.dart';
+import 'package:eng_dict/view/widgets/home/home_screen_section_box.dart';
+import 'package:eng_dict/view/widgets/home/word_of_the_day_box.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import '../utils/custom_icon.dart';
 import '../component/search_bar.dart';
-import '../widgets/readings_box.dart';
+import '../widgets/home/readings_box.dart';
 
 class HomeScreen extends StatelessWidget {
   final String screenId = "HomeScreen";

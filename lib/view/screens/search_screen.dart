@@ -9,7 +9,7 @@ import 'package:eng_dict/provider/word_field_data.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:eng_dict/view/utils/utils.dart';
-import 'package:eng_dict/view/widgets/banner_ads_box.dart';
+import 'package:eng_dict/view/widgets/ads/banner_ads_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

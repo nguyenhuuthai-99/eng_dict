@@ -1,5 +1,5 @@
 import 'package:eng_dict/view/screens/word_scramble_start_screen.dart';
-import 'package:eng_dict/view/widgets/practice_section_box.dart';
+import 'package:eng_dict/view/widgets/practice/practice_section_box.dart';
 import 'package:flutter/material.dart';
 
 class PracticeScreen extends StatelessWidget {
