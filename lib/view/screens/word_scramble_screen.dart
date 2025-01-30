@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/view/screens/word_scramble_start_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
@@ -53,12 +55,16 @@ class ScrambleGameScreen extends StatefulWidget {
 }
 
 class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
-  Color alarmColor = Constant.kGreenIndicatorColor;
   int currentIndex = 0;
   int currentResultIndex = 0;
 
   late List<String> resultList;
   late List<String> inputList;
+  List<String> rightList = [];
+  List<String> wrongList = [];
+
+  int timerKey = 0;
+  bool isFinish = false;
 
   @override
   void initState() {
@@ -78,15 +84,35 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
   void onStringInputChange(int index) {}
 
   void resetClock() {
-    alarmColor = Constant.kGreenIndicatorColor;
+    timerKey++;
+  }
+
+  void onTimesUp() {
+    if (isFinish) return;
+    setState(() {
+      resetClock();
+      updateWord();
+      updateWrongList();
+    });
+  }
+
+  void updateWrongList() {
+    wrongList.add(widget.words[currentIndex]);
+  }
+
+  void updateRightList() {
+    rightList.add(widget.words[currentIndex]);
   }
 
   void updateWord() {
+    if (isFinish) return;
     currentIndex++;
     currentResultIndex = 0;
     if (currentIndex < widget.words.length) {
       initWordList();
     } else {
+      currentIndex--;
+      isFinish = true;
       // todo show result
       print('congratulation!! you have finish the game');
     }
@@ -95,20 +121,17 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
   }
 
   void checkAnswer() {
-    print(resultList.join());
     if (resultList.join() == widget.words[currentIndex]) {
       setState(() {
+        updateRightList();
         updateWord();
         resetClock();
       });
     } else {
       //decrease word fluency level of the word
       //add to wrong list
+      updateWrongList();
     }
-  }
-
-  void timer() {
-    //todo if timer == 0, updateWord()
   }
 
   List<String> buildScrambleWord() {
@@ -121,7 +144,10 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${currentIndex + 1}/${widget.words.length}"),
+        title: Text(
+          "${currentIndex + 1}/${widget.words.length}",
+          style: Constant.kHeadingTextStyle,
+        ),
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.pause_outlined))
         ],
@@ -135,27 +161,11 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
               Flexible(
                 flex: 1,
                 child: Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        CupertinoIcons.alarm,
-                        color: alarmColor,
-                        size: 32,
-                      ),
-                      const SizedBox(
-                        width: Constant.kMarginSmall,
-                      ),
-                      Text(
-                        "00:30",
-                        style: GoogleFonts.chivoMono(
-                            color: alarmColor,
-                            fontSize: 28,
-                            fontWeight: FontWeight.w300),
-                      )
-                    ],
-                  ),
-                ),
+                    child: TimerWidget(
+                  startTime: 20,
+                  onTimesUp: () => onTimesUp(),
+                  key: ValueKey(timerKey),
+                )),
               ),
               Flexible(
                   flex: 1,
@@ -396,5 +406,92 @@ class ScrambleResultCharBox extends StatelessWidget {
   }
 }
 
-//List<Char> result;
-//List<Char> scrambled;
+class TimerWidget extends StatefulWidget {
+  final int startTime;
+  Function onTimesUp;
+  TimerWidget({super.key, required this.startTime, required this.onTimesUp});
+
+  @override
+  State<TimerWidget> createState() => _TimerWidgetState();
+}
+
+class _TimerWidgetState extends State<TimerWidget> {
+  late int _seconds;
+  Timer? _timer;
+
+  Color _timerColor = Constant.kGreenIndicatorColor;
+
+  @override
+  void initState() {
+    super.initState();
+    _seconds = widget.startTime;
+    _startTimer();
+  }
+
+  void _startTimer() {
+    if (_timer != null) return;
+
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        setState(() {
+          if (_seconds > 0) {
+            _seconds--;
+            updateTimerColor();
+          } else {
+            _cancelTimer();
+            widget.onTimesUp();
+          }
+        });
+      },
+    );
+  }
+
+  void updateTimerColor() {
+    if (_seconds == (widget.startTime * 2 / 3).floor()) {
+      _timerColor = Constant.kYellowIndicatorColor;
+    } else if (_seconds == (widget.startTime * 1 / 3).floor()) {
+      _timerColor = Constant.kRedIndicatorColor;
+    }
+  }
+
+  void _cancelTimer() {
+    _timer?.cancel();
+    _timer = null;
+  }
+
+  String _formatTime(int seconds) {
+    int minutes = seconds ~/ 60;
+    int secondsLeft = seconds % 60;
+
+    return '${minutes.toString().padLeft(2, '0')}:${secondsLeft.toString().padLeft(2, '0')}';
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _cancelTimer();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          CupertinoIcons.alarm,
+          color: _timerColor,
+          size: 32,
+        ),
+        const SizedBox(
+          width: Constant.kMarginSmall,
+        ),
+        Text(
+          _formatTime(_seconds),
+          style: GoogleFonts.chivoMono(
+              color: _timerColor, fontSize: 28, fontWeight: FontWeight.w300),
+        )
+      ],
+    );
+  }
+}
