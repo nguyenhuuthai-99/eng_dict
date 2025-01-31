@@ -57,10 +57,13 @@ class ScrambleGameScreen extends StatefulWidget {
 class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
   int currentIndex = 0;
   int currentResultIndex = 0;
+  bool firstTry = true;
 
   late List<String> resultList;
   late List<String> inputList;
-  List<String> rightList = [];
+
+  List<String> masteredList = [];
+  List<String> needToLearnList = [];
   List<String> wrongList = [];
 
   int timerKey = 0;
@@ -81,8 +84,6 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
     inputList = buildScrambleWord();
   }
 
-  void onStringInputChange(int index) {}
-
   void resetClock() {
     timerKey++;
   }
@@ -91,46 +92,51 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
     if (isFinish) return;
     setState(() {
       resetClock();
-      updateWord();
       updateWrongList();
+      updateWord();
     });
+  }
+
+  void updateNeedToLearnList() {
+    needToLearnList.add(widget.words[currentIndex]);
+  }
+
+  void updateMasteredList() {
+    masteredList.add(widget.words[currentIndex]);
   }
 
   void updateWrongList() {
     wrongList.add(widget.words[currentIndex]);
   }
 
-  void updateRightList() {
-    rightList.add(widget.words[currentIndex]);
-  }
-
   void updateWord() {
     if (isFinish) return;
     currentIndex++;
     currentResultIndex = 0;
+    firstTry = true;
     if (currentIndex < widget.words.length) {
       initWordList();
     } else {
       currentIndex--;
       isFinish = true;
-      // todo show result
-      print('congratulation!! you have finish the game');
     }
-
-    //todo if currentIndex exceed word list: show result
   }
 
   void checkAnswer() {
     if (resultList.join() == widget.words[currentIndex]) {
       setState(() {
-        updateRightList();
+        updateMasteredList();
+        if (!firstTry) {
+          updateNeedToLearnList();
+        }
         updateWord();
         resetClock();
       });
     } else {
+      firstTry = false;
       //decrease word fluency level of the word
       //add to wrong list
-      updateWrongList();
+      // updateNeedToLearnList();
     }
   }
 
@@ -142,124 +148,132 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "${currentIndex + 1}/${widget.words.length}",
-          style: Constant.kHeadingTextStyle,
-        ),
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.pause_outlined))
-        ],
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: Constant.kMarginExtraLarge),
-          child: Column(
-            children: [
-              Flexible(
-                flex: 1,
-                child: Center(
-                    child: TimerWidget(
-                  startTime: 20,
-                  onTimesUp: () => onTimesUp(),
-                  key: ValueKey(timerKey),
-                )),
+    return !isFinish
+        ? Scaffold(
+            appBar: AppBar(
+              title: Text(
+                "${currentIndex + 1}/${widget.words.length}",
+                style: Constant.kHeadingTextStyle,
               ),
-              Flexible(
-                  flex: 1,
-                  child: ScrambleResultStringBox(
-                    result: resultList,
-                  )),
-              Flexible(
-                  flex: 1,
-                  child: ScrambleInputStringBox(
-                    scrambledWordList: inputList,
-                    onChange: (index) {
-                      setState(() {
-                        //remove element from the input list
-                        var char = inputList.removeAt(index);
-
-                        //add that element to the result list
-                        resultList[currentResultIndex] = char;
-                        //scrambleWord list is empty, check answer
-                        //checkAnswer();
-                        currentResultIndex++;
-
-                        if (inputList.isEmpty) {
-                          //todo check answer
-                          checkAnswer();
-                        }
-                      });
-                    },
-                  )),
-              Column(
-                children: [
-                  Row(
+              actions: [
+                IconButton(onPressed: () {}, icon: Icon(Icons.pause_outlined))
+              ],
+            ),
+            body: SafeArea(
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: Constant.kMarginExtraLarge),
+                  child: Column(
                     children: [
-                      IconButton(
-                          onPressed: () {
-                            //todo play sounds
-                          },
-                          icon: const Icon(
-                            size: 30,
-                            CustomIcon.speaker,
-                            color: Constant.kPrimaryColor,
+                      Flexible(
+                        flex: 1,
+                        child: Center(
+                            child: TimerWidget(
+                          startTime: 10,
+                          onTimesUp: () => onTimesUp(),
+                          key: ValueKey(timerKey),
+                        )),
+                      ),
+                      Flexible(
+                          flex: 1,
+                          child: ScrambleResultStringBox(
+                            result: resultList,
                           )),
-                      Text(
-                        "noun",
-                        style: Constant.kHeading2TextStyle
-                            .apply(fontStyle: FontStyle.italic),
-                      ),
-                      Expanded(child: const SizedBox()),
-                      TextButton(
-                          onPressed: () {
-                            setState(() {
-                              //if currentResultIndex > 0
+                      Flexible(
+                          flex: 1,
+                          child: ScrambleInputStringBox(
+                            scrambledWordList: inputList,
+                            onChange: (index) {
+                              setState(() {
+                                //remove element from the input list
+                                var char = inputList.removeAt(index);
 
-                              if (currentResultIndex - 1 >= 0 &&
-                                  resultList[currentResultIndex - 1] != ' ') {
-                                //remove the last element
-                                var char = resultList[currentResultIndex - 1];
-                                resultList[currentResultIndex - 1] = ' ';
+                                //add that element to the result list
+                                resultList[currentResultIndex] = char;
+                                //scrambleWord list is empty, check answer
+                                //checkAnswer();
+                                currentResultIndex++;
 
-                                //add to input list
-                                inputList.add(char);
-
-                                //if the current index reach boundary
-                                if (currentResultIndex > 0) {
-                                  currentResultIndex--;
+                                if (inputList.isEmpty) {
+                                  //todo check answer
+                                  checkAnswer();
                                 }
-                              }
-                            });
-                          },
-                          child: const Icon(
-                            CupertinoIcons.delete_left_fill,
-                            size: 24,
-                            color: Colors.black87,
-                          ))
+                              });
+                            },
+                          )),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    //todo play sounds
+                                  },
+                                  icon: const Icon(
+                                    size: 30,
+                                    CustomIcon.speaker,
+                                    color: Constant.kPrimaryColor,
+                                  )),
+                              Text(
+                                "noun",
+                                style: Constant.kHeading2TextStyle
+                                    .apply(fontStyle: FontStyle.italic),
+                              ),
+                              Expanded(child: const SizedBox()),
+                              TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      //if currentResultIndex > 0
+
+                                      if (currentResultIndex - 1 >= 0 &&
+                                          resultList[currentResultIndex - 1] !=
+                                              ' ') {
+                                        //remove the last element
+                                        var char =
+                                            resultList[currentResultIndex - 1];
+                                        resultList[currentResultIndex - 1] =
+                                            ' ';
+
+                                        //add to input list
+                                        inputList.add(char);
+
+                                        //if the current index reach boundary
+                                        if (currentResultIndex > 0) {
+                                          currentResultIndex--;
+                                        }
+                                      }
+                                    });
+                                  },
+                                  child: const Icon(
+                                    CupertinoIcons.delete_left_fill,
+                                    size: 24,
+                                    color: Colors.black87,
+                                  ))
+                            ],
+                          ),
+                          const SizedBox(
+                            height: Constant.kMarginMedium,
+                          ),
+                          SizedBox(
+                            height: 200,
+                            child: SingleChildScrollView(
+                              child: Text(
+                                "asdjasd fasd fas fasd fasd faifj fjsif a",
+                                style: Constant.kHeadingTextStyle,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
                     ],
-                  ),
-                  const SizedBox(
-                    height: Constant.kMarginMedium,
-                  ),
-                  SizedBox(
-                    height: 200,
-                    child: SingleChildScrollView(
-                      child: Text(
-                        "asdjasd fasd fas fasd fasd faifj fjsif a",
-                        style: Constant.kHeadingTextStyle,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+                  )),
+            ),
+          )
+        : ScrambleResultScreen(
+            acedWords: masteredList,
+            failedWords: wrongList,
+            sharpenWords: needToLearnList,
+            total: widget.words.length);
   }
 }
 
@@ -492,6 +506,124 @@ class _TimerWidgetState extends State<TimerWidget> {
               color: _timerColor, fontSize: 28, fontWeight: FontWeight.w300),
         )
       ],
+    );
+  }
+}
+
+class ScrambleResultScreen extends StatelessWidget {
+  List<String> acedWords;
+  List<String> failedWords;
+  List<String> sharpenWords;
+  int total;
+  ScrambleResultScreen(
+      {super.key,
+      required this.acedWords,
+      required this.failedWords,
+      required this.sharpenWords,
+      required this.total});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Result"),
+      ),
+      body: Padding(
+        padding:
+            const EdgeInsets.symmetric(horizontal: Constant.kMarginExtraLarge),
+        child: ListView(
+          children: [
+            const Text(
+              "🎉 Well done! You completed the Scramble Game! 🎊",
+              style: Constant.kHeading2TextStyle,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: Constant.kMarginExtraLarge,
+            ),
+            ScrambleReportBox(
+                title: "Aced words",
+                statistic: acedWords.length,
+                total: total,
+                color: Constant.kGreenIndicatorColor,
+                words: acedWords),
+            ScrambleReportBox(
+                title: "Failed words",
+                statistic: failedWords.length,
+                total: total,
+                color: Constant.kRedIndicatorColor,
+                words: failedWords),
+            ScrambleReportBox(
+                title: "Words to sharpen",
+                statistic: sharpenWords.length,
+                color: Constant.kYellowIndicatorColor,
+                total: total,
+                explanation: "Words that you got them right after many attempt",
+                words: sharpenWords),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ScrambleReportBox extends StatelessWidget {
+  String title;
+  int statistic;
+  int total;
+  List<String> words;
+  String? explanation;
+  Color color;
+
+  ScrambleReportBox(
+      {required this.title,
+      required this.statistic,
+      required this.total,
+      required this.words,
+      this.explanation,
+      required this.color,
+      super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: Constant.kMarginMedium),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              RichText(
+                  text: TextSpan(style: Constant.kHeadingTextStyle, children: [
+                TextSpan(text: "$title "),
+                TextSpan(
+                    text: "$statistic/$total ", style: TextStyle(color: color))
+              ])),
+              if (explanation != null)
+                Tooltip(
+                  triggerMode: TooltipTriggerMode.tap,
+                  preferBelow: false,
+                  child: Icon(
+                    CupertinoIcons.question_circle,
+                    color: Colors.grey,
+                  ),
+                  message: explanation,
+                )
+            ],
+          ),
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) => RichText(
+                text: TextSpan(style: TextStyle(color: color), children: [
+              Constant.kDotCustom..style?.copyWith(color: color),
+              TextSpan(
+                  text: words[index],
+                  style: Constant.kAdditionalTitle.apply(color: color)),
+            ])),
+            itemCount: words.length,
+          )
+        ],
+      ),
     );
   }
 }

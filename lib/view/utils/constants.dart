@@ -112,6 +112,8 @@ class Constant {
       style: TextStyle(color: Constant.kPrimaryColor, fontSize: 18));
   static const kDotExample = TextSpan(
       text: "• ", style: TextStyle(color: Colors.black87, fontSize: 18));
+  static const kDotCustom =
+      TextSpan(text: "• ", style: TextStyle(fontSize: 18));
 
   //Border Radius
   static const Radius kRadiusSmall = Radius.circular(10);

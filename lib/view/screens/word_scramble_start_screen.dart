@@ -68,7 +68,7 @@ class _StartScreenState extends State<StartScreen> {
             ],
           ),
           Text(
-            "Difficulty",
+            "Time",
             style: Constant.kHeadingTextStyle,
           ),
           DifficultyBox(
@@ -140,21 +140,21 @@ class _DifficultyBoxState extends State<DifficultyBox> {
         Expanded(
           child: DifficultyItem(
               isSelected: _selectedDifficulty == ScrambleDifficulty.easy,
-              title: "Easy",
+              title: "45s",
               borderColor: Constant.kGreenIndicatorColor,
               onTap: () => _onDifficultySelected(ScrambleDifficulty.easy)),
         ),
         Expanded(
           child: DifficultyItem(
               isSelected: _selectedDifficulty == ScrambleDifficulty.medium,
-              title: "Medium",
+              title: "30s",
               borderColor: Constant.kYellowIndicatorColor,
               onTap: () => _onDifficultySelected(ScrambleDifficulty.medium)),
         ),
         Expanded(
           child: DifficultyItem(
               isSelected: _selectedDifficulty == ScrambleDifficulty.hard,
-              title: "Hard",
+              title: "20s",
               borderColor: Constant.kRedIndicatorColor,
               onTap: () => _onDifficultySelected(ScrambleDifficulty.hard)),
         ),
