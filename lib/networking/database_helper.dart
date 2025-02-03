@@ -1,4 +1,3 @@
-
 import 'package:eng_dict/model/searched_word.dart';
 import 'package:eng_dict/model/vocabulary.dart';
 import 'package:sqflite/sqflite.dart';
@@ -10,7 +9,7 @@ class DatabaseHelper {
 
   Future<void> initializeDatabase() async {
     final databasePath = await getDatabasesPath();
-    final path = join(databasePath, "atp.db");
+    final path = join(databasePath, "app.db");
     database = await openDatabase(
       path,
       version: 1,
@@ -23,7 +22,8 @@ class DatabaseHelper {
           phrase_title Text,
           word_definition TEXT,
           fluency_level int,
-          url text
+          url text,
+          sound_url text
         )''');
 
         await db.execute('''
@@ -69,14 +69,25 @@ class DatabaseHelper {
           "word_form": vocabulary.wordForm,
           "phrase_title": vocabulary.phraseTitle,
           "word_definition": vocabulary.definition,
-          "fluency_level": 1,
-          "url": vocabulary.URL
+          "fluency_level": vocabulary.fluencyLevel,
+          "url": vocabulary.URL,
+          "sound_url": vocabulary.soundUrl
         },
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<List<Vocabulary>> getVocabulary() async {
     List<Map<String, dynamic>> result = await database.query("vocabulary");
+    return result
+        .map(
+          (e) => Vocabulary.fromMap(e),
+        )
+        .toList();
+  }
+
+  Future<List<Vocabulary>> getVocabularyOnLevel(int level) async {
+    List<Map<String, dynamic>> result = await database
+        .query("vocabulary", where: "fluency_level = ?", whereArgs: [level]);
     return result
         .map(
           (e) => Vocabulary.fromMap(e),

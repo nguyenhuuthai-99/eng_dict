@@ -9,9 +9,11 @@ import 'package:provider/provider.dart';
 
 class ToggleSaveButton extends StatefulWidget {
   Word? word;
+  String? soundURL;
 
   ToggleSaveButton({
     this.word,
+    this.soundURL,
     super.key,
   });
 
@@ -38,6 +40,8 @@ class _ToggleSaveButtonState extends State<ToggleSaveButton> {
           vocabulary.phraseTitle = word.phraseTitle ?? "";
           vocabulary.definition = word.definition;
           vocabulary.wordForm = word.wordForm ?? "";
+          vocabulary.soundUrl = widget.soundURL;
+          vocabulary.fluencyLevel = word.phraseTitle != null ? 0 : 1;
 
           Provider.of<VocabularyData>(context, listen: false)
               .insertVocabulary(vocabulary);

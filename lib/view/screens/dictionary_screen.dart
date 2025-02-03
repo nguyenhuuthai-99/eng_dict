@@ -88,7 +88,10 @@ class DictionaryScreen extends StatelessWidget {
                       )
                     : const SizedBox(),
               ),
-              DefinitionBox(word: word),
+              DefinitionBox(
+                word: word,
+                soundUrl: wordForm?.usIPASoundURL,
+              ),
             ],
           );
         },
@@ -230,7 +233,7 @@ class DictionaryScreen extends StatelessWidget {
 }
 
 class DictionaryErrorScreen extends StatelessWidget {
-  const DictionaryErrorScreen({
+  DictionaryErrorScreen({
     super.key,
   });
 
@@ -282,15 +285,10 @@ class DictionaryErrorScreen extends StatelessWidget {
                       TextSpan(
                           text:
                               "- There could be an issue with our server.\n\n"),
-                      TextSpan(
-                        text:
-                            "If you believe this is a server issue, please let us know.\n",
-                      ),
                     ],
                   ),
                 ),
               ),
-              TextButton(onPressed: () {}, child: const Text("Report"))
             ],
           ),
         ),
@@ -330,7 +328,7 @@ class DictionaryLoadingScreen extends StatelessWidget {
               ),
             ),
           )
-        : const DictionaryErrorScreen();
+        : DictionaryErrorScreen();
   }
 }
 

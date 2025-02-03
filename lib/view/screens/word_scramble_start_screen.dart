@@ -52,7 +52,7 @@ class _StartScreenState extends State<StartScreen> {
           Row(
             children: [
               Text(
-                "Show hint",
+                "Show pronunciation",
                 style: Constant.kHeadingTextStyle,
               ),
               const Expanded(child: SizedBox()),
@@ -140,21 +140,21 @@ class _DifficultyBoxState extends State<DifficultyBox> {
         Expanded(
           child: DifficultyItem(
               isSelected: _selectedDifficulty == ScrambleDifficulty.easy,
-              title: "45s",
+              title: "2m",
               borderColor: Constant.kGreenIndicatorColor,
               onTap: () => _onDifficultySelected(ScrambleDifficulty.easy)),
         ),
         Expanded(
           child: DifficultyItem(
               isSelected: _selectedDifficulty == ScrambleDifficulty.medium,
-              title: "30s",
+              title: "1m",
               borderColor: Constant.kYellowIndicatorColor,
               onTap: () => _onDifficultySelected(ScrambleDifficulty.medium)),
         ),
         Expanded(
           child: DifficultyItem(
               isSelected: _selectedDifficulty == ScrambleDifficulty.hard,
-              title: "20s",
+              title: "30s",
               borderColor: Constant.kRedIndicatorColor,
               onTap: () => _onDifficultySelected(ScrambleDifficulty.hard)),
         ),

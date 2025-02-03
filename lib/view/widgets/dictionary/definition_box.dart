@@ -13,10 +13,12 @@ import '../../../model/example.dart';
 
 class DefinitionBox extends StatelessWidget {
   Word? word;
+  String? soundUrl;
   late BuildContext context;
 
   DefinitionBox({
     required this.word,
+    this.soundUrl,
     super.key,
   });
 
@@ -79,6 +81,7 @@ class DefinitionBox extends StatelessWidget {
               ),
               ToggleSaveButton(
                 word: word,
+                soundURL: soundUrl,
               )
             ],
           ),
@@ -205,6 +208,7 @@ class DefinitionBox extends StatelessWidget {
                           : const SizedBox()),
                   ToggleSaveButton(
                     word: word,
+                    soundURL: soundUrl,
                   )
                 ],
               ),

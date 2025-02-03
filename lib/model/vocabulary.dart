@@ -6,6 +6,7 @@ class Vocabulary {
   late String _wordDefinition;
   late int fluencyLevel;
   late String _URL;
+  late String? _soundUrl;
 
   Vocabulary();
 
@@ -17,6 +18,7 @@ class Vocabulary {
     wordDefinition = map["word_definition"];
     fluencyLevel = map["fluency_level"];
     URL = map['url'];
+    soundUrl = map['sound_url'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +30,7 @@ class Vocabulary {
       "word_definition": wordDefinition,
       "fluency_level": fluencyLevel,
       "url": URL,
+      "sound_url": soundUrl
     };
   }
 
@@ -71,5 +74,11 @@ class Vocabulary {
 
   set wordDefinition(String value) {
     _wordDefinition = value;
+  }
+
+  String? get soundUrl => _soundUrl;
+
+  set soundUrl(String? value) {
+    _soundUrl = value;
   }
 }
