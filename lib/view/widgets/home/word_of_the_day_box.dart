@@ -7,7 +7,7 @@ import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../provider/screen_data.dart';
+import '../../../provider/screen_data.dart';
 
 class WordOfTheDayBox extends StatelessWidget {
   final WordForm wordForm;
@@ -25,7 +25,7 @@ class WordOfTheDayBox extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           "Word of the day",
           style: Constant.kHeadingTextStyle,
         ),

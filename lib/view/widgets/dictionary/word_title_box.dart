@@ -2,13 +2,13 @@ import 'package:eng_dict/provider/action_counter.dart';
 import 'package:eng_dict/view/component/ipa_component.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
-import 'package:eng_dict/view/widgets/banner_ads_box.dart';
-import 'package:eng_dict/view/widgets/expanded_word_box.dart';
-import 'package:eng_dict/view/widgets/youglish_web_view.dart';
+import 'package:eng_dict/view/widgets/ads/banner_ads_box.dart';
+import 'package:eng_dict/view/widgets/dictionary/expanded_word_box.dart';
+import 'package:eng_dict/view/widgets/dictionary/youglish_web_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/word_form.dart';
+import '../../../model/word_form.dart';
 
 class WordTitleBox extends StatelessWidget {
   WordForm? wordForm;

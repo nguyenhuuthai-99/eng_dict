@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,5 +33,51 @@ class DeleteWordAlert extends StatelessWidget {
             child: const Text("Cancel"))
       ],
     );
+  }
+}
+
+class ConfirmAlert extends StatelessWidget {
+  Function confirmAction;
+  String title;
+  String content;
+
+  ConfirmAlert(
+      {super.key,
+      required this.confirmAction,
+      required this.title,
+      required this.content});
+
+  @override
+  Widget build(BuildContext context) {
+    return Platform.isIOS
+        ? CupertinoAlertDialog(
+            title: Text(title),
+            actions: [
+              TextButton(
+                  onPressed: () => confirmAction(),
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(color: Colors.red),
+                  )),
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("Cancel"))
+            ],
+          )
+        : AlertDialog(
+            title: Text(title),
+            content: Text(content),
+            actions: [
+              TextButton(
+                  onPressed: () => confirmAction,
+                  child: const Text(
+                    "OK",
+                    style: TextStyle(color: Colors.red),
+                  )),
+              TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("Cancel"))
+            ],
+          );
   }
 }

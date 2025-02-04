@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:eng_dict/provider/screen_data.dart';
 import 'package:eng_dict/provider/vocabulary_data.dart';
-import 'package:eng_dict/view/widgets/banner_ads_box.dart';
+import 'package:eng_dict/view/widgets/ads/banner_ads_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/constants.dart';
@@ -36,7 +36,7 @@ class NavigationMenu extends StatelessWidget {
                   child: NavigationBar(
                     selectedIndex: data.index,
                     indicatorColor: Colors.transparent,
-                    backgroundColor: Colors.white.withOpacity(0.6),
+                    backgroundColor: Colors.white.withAlpha(500),
                     height: 70,
                     onDestinationSelected: (index) {
                       if (index == 2) {

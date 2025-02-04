@@ -6,27 +6,28 @@ import 'package:eng_dict/view/dialog/alertDialog.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class VocabularyBox extends StatelessWidget {
   Vocabulary vocabulary;
-  Color dotColor = Constant.kRedDotColor;
+  Color indicatorColor = Constant.kRedIndicatorColor;
   VocabularyBox({
     required this.vocabulary,
     super.key,
   });
 
-  void pickDotColor() {
-    if (vocabulary.fluencyLevel == 2) {
-      dotColor = Colors.yellow;
-    } else if (vocabulary.fluencyLevel == 3) {
-      dotColor = Colors.green;
+  void pickIndicatorColor() {
+    if (8 >= vocabulary.fluencyLevel && vocabulary.fluencyLevel > 4) {
+      indicatorColor = Constant.kYellowIndicatorColor;
+    } else if (vocabulary.fluencyLevel > 8) {
+      indicatorColor = Constant.kGreenIndicatorColor;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    pickDotColor();
+    pickIndicatorColor();
     return Container(
       padding: const EdgeInsets.only(
           top: Constant.kMarginSmall,
@@ -42,10 +43,11 @@ class VocabularyBox extends StatelessWidget {
         children: [
           Row(
             children: [
-              if (vocabulary.fluencyLevel == 0)
-                Icon(
-                  CustomIcon.dot,
-                  color: dotColor,
+              if (vocabulary.fluencyLevel > 0)
+                Text(
+                  vocabulary.fluencyLevel.toString(),
+                  style: GoogleFonts.aBeeZee(
+                      color: indicatorColor, fontWeight: FontWeight.w900),
                 ),
               if (vocabulary.phraseTitle.isNotEmpty)
                 const Text(
@@ -120,7 +122,6 @@ class VocabularyBox extends StatelessWidget {
             onTap: () {
               Provider.of<WordFieldData>(context, listen: false)
                   .loadWordFromURL(vocabulary.wordTitle, vocabulary.URL);
-              print(vocabulary.URL);
               Provider.of<ScreenData>(context, listen: false).changeIndex(1);
             },
             child: const Row(

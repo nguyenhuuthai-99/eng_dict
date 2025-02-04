@@ -8,8 +8,8 @@ import 'package:eng_dict/view/screens/search_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:eng_dict/view/utils/setting_service.dart';
-import 'package:eng_dict/view/widgets/definition_box.dart';
-import 'package:eng_dict/view/widgets/word_title_box.dart';
+import 'package:eng_dict/view/widgets/dictionary/definition_box.dart';
+import 'package:eng_dict/view/widgets/dictionary/word_title_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -82,13 +82,16 @@ class DictionaryScreen extends StatelessWidget {
                           ),
                           Text(
                             word!.wordTitle!,
-                            style: Constant.kPhraseTitle ,
+                            style: Constant.kPhraseTitle,
                           )
                         ],
                       )
                     : const SizedBox(),
               ),
-              DefinitionBox(word: word),
+              DefinitionBox(
+                word: word,
+                soundUrl: wordForm?.usIPASoundURL,
+              ),
             ],
           );
         },
@@ -230,7 +233,7 @@ class DictionaryScreen extends StatelessWidget {
 }
 
 class DictionaryErrorScreen extends StatelessWidget {
-  const DictionaryErrorScreen({
+  DictionaryErrorScreen({
     super.key,
   });
 
@@ -282,15 +285,10 @@ class DictionaryErrorScreen extends StatelessWidget {
                       TextSpan(
                           text:
                               "- There could be an issue with our server.\n\n"),
-                      TextSpan(
-                        text:
-                            "If you believe this is a server issue, please let us know.\n",
-                      ),
                     ],
                   ),
                 ),
               ),
-              TextButton(onPressed: () {}, child: const Text("Report"))
             ],
           ),
         ),
@@ -330,7 +328,7 @@ class DictionaryLoadingScreen extends StatelessWidget {
               ),
             ),
           )
-        : const DictionaryErrorScreen();
+        : DictionaryErrorScreen();
   }
 }
 

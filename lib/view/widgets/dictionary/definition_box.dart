@@ -4,19 +4,21 @@ import 'package:eng_dict/view/component/toggle_save_button.dart';
 import 'package:eng_dict/view/utils/build_clickable_text.dart';
 import 'package:eng_dict/view/utils/code_table.dart';
 import 'package:eng_dict/view/utils/constants.dart';
-import 'package:eng_dict/view/widgets/code_explanation_box.dart';
+import 'package:eng_dict/view/widgets/dictionary/code_explanation_box.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../model/example.dart';
+import '../../../model/example.dart';
 
 class DefinitionBox extends StatelessWidget {
   Word? word;
+  String? soundUrl;
   late BuildContext context;
 
   DefinitionBox({
     required this.word,
+    this.soundUrl,
     super.key,
   });
 
@@ -79,6 +81,7 @@ class DefinitionBox extends StatelessWidget {
               ),
               ToggleSaveButton(
                 word: word,
+                soundURL: soundUrl,
               )
             ],
           ),
@@ -205,6 +208,7 @@ class DefinitionBox extends StatelessWidget {
                           : const SizedBox()),
                   ToggleSaveButton(
                     word: word,
+                    soundURL: soundUrl,
                   )
                 ],
               ),
