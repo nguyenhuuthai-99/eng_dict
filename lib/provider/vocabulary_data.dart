@@ -20,6 +20,10 @@ class VocabularyData extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateVocabulary(int id, int level) async {
+    await databaseHelper.updateVocabularyFluency(id, level);
+  }
+
   Future<void> insertVocabulary(Vocabulary vocabulary) async {
     int id = await databaseHelper.insertVocabulary(vocabulary);
     addNewWord(id);

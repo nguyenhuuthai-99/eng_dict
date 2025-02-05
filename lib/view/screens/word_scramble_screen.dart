@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:eng_dict/model/vocabulary.dart';
-import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/networking/database_helper.dart';
+import 'package:eng_dict/provider/vocabulary_data.dart';
 import 'package:eng_dict/view/dialog/alertDialog.dart';
 import 'package:eng_dict/view/screens/word_scramble_start_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
@@ -12,7 +11,6 @@ import 'package:eng_dict/view/utils/play_sound.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/custom_icon.dart';
@@ -56,9 +54,12 @@ class _WordScrambleScreenState extends State<WordScrambleScreen> {
       return picked;
     }
 
-    List<Vocabulary> level1Words = await databaseHelper.getVocabularyOnLevel(1);
-    List<Vocabulary> level2Words = await databaseHelper.getVocabularyOnLevel(2);
-    List<Vocabulary> level3Words = await databaseHelper.getVocabularyOnLevel(3);
+    List<Vocabulary> level1Words =
+        await databaseHelper.getVocabularyOnLevel(VocabularyLevel.unfamiliar);
+    List<Vocabulary> level2Words =
+        await databaseHelper.getVocabularyOnLevel(VocabularyLevel.familiar);
+    List<Vocabulary> level3Words =
+        await databaseHelper.getVocabularyOnLevel(VocabularyLevel.mastered);
 
     wordList.addAll(pickRandom(level1Words, 6));
     wordList.addAll(pickRandom(level2Words, 2));
@@ -145,9 +146,12 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
   late List<String> resultList;
   late List<String> inputList;
 
-  List<Vocabulary> masteredList = [];
-  List<Vocabulary> needToLearnList = [];
-  List<Vocabulary> wrongList = [];
+  List<int> masteredList = [];
+  List<int> needToLearnList = [];
+  List<int> wrongList = [];
+
+  late int currentFluency;
+  List<int> updatedFluency = [];
 
   late Vocabulary currentWord;
   late String currentWordTitle;
@@ -175,6 +179,7 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
 
   void initWordList() {
     currentWord = widget.words[currentIndex];
+    currentFluency = currentWord.fluencyLevel;
     currentWordTitle = widget.words[currentIndex].wordTitle;
     resultList = [];
     for (int i = 0; i < currentWordTitle.length; i++) {
@@ -197,15 +202,24 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
   }
 
   void updateNeedToLearnList() {
-    needToLearnList.add(currentWord);
+    currentFluency--;
+    needToLearnList.add(currentIndex);
   }
 
   void updateMasteredList() {
-    masteredList.add(currentWord);
+    currentFluency++;
+    print(currentFluency);
+    updatedFluency.add(currentFluency);
+    masteredList.add(currentIndex);
   }
 
   void updateWrongList() {
-    wrongList.add(currentWord);
+    currentFluency--;
+    if (currentFluency == 0) {
+      currentFluency = 1;
+    }
+    updatedFluency.add(currentFluency);
+    wrongList.add(currentIndex);
   }
 
   void updateWord() {
@@ -219,17 +233,31 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
     } else {
       currentIndex--;
       isFinish = true;
+      updateFluencyLevel();
     }
+  }
+
+  Future<void> updateFluencyLevel() async {
+    VocabularyData vocabularyData =
+        Provider.of<VocabularyData>(context, listen: false);
+
+    for (int i = 0; i < updatedFluency.length; i++) {
+      if (widget.words[i].fluencyLevel != updatedFluency[i]) {
+        await vocabularyData.updateVocabulary(
+            widget.words[i].id, updatedFluency[i]);
+      }
+    }
+    vocabularyData.getVocabulary();
   }
 
   void checkAnswer() {
     if (resultList.join() == currentWordTitle) {
       PlaySound.playAssetSound("assets/sounds/right.mp3");
       setState(() {
-        updateMasteredList();
         if (!firstTry) {
           updateNeedToLearnList();
         }
+        updateMasteredList();
         updateWord();
         resetClock();
       });
@@ -406,6 +434,8 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
             ),
           )
         : ScrambleResultScreen(
+            fluencyLevel: updatedFluency,
+            originalWordList: widget.words,
             acedWords: masteredList,
             failedWords: wrongList,
             sharpenWords: needToLearnList,
@@ -647,12 +677,18 @@ class _TimerWidgetState extends State<TimerWidget> {
 }
 
 class ScrambleResultScreen extends StatelessWidget {
-  List<Vocabulary> acedWords;
-  List<Vocabulary> failedWords;
-  List<Vocabulary> sharpenWords;
+  List<Vocabulary> originalWordList;
+  List<int> fluencyLevel;
+
+  List<int> acedWords;
+  List<int> failedWords;
+  List<int> sharpenWords;
   int total;
+
   ScrambleResultScreen(
       {super.key,
+      required this.fluencyLevel,
+      required this.originalWordList,
       required this.acedWords,
       required this.failedWords,
       required this.sharpenWords,
@@ -678,24 +714,31 @@ class ScrambleResultScreen extends StatelessWidget {
               height: Constant.kMarginExtraLarge,
             ),
             ScrambleReportBox(
-                title: "Aced words",
-                statistic: acedWords.length,
-                total: total,
-                statisticColor: Constant.kGreenIndicatorColor,
-                words: acedWords),
+              fluencyLevel: fluencyLevel,
+              originalWordList: originalWordList,
+              title: "Aced words",
+              statistic: acedWords.length,
+              total: total,
+              statisticColor: Constant.kGreenIndicatorColor,
+              wordsIndex: acedWords,
+            ),
             ScrambleReportBox(
+                fluencyLevel: fluencyLevel,
+                originalWordList: originalWordList,
                 title: "Failed words",
                 statistic: failedWords.length,
                 total: total,
                 statisticColor: Constant.kRedIndicatorColor,
-                words: failedWords),
+                wordsIndex: failedWords),
             ScrambleReportBox(
+                fluencyLevel: fluencyLevel,
+                originalWordList: originalWordList,
                 title: "Words to sharpen",
                 statistic: sharpenWords.length,
                 statisticColor: Constant.kYellowIndicatorColor,
                 total: total,
                 explanation: "Words that you got them right after many attempt",
-                words: sharpenWords),
+                wordsIndex: sharpenWords),
           ],
         ),
       ),
@@ -704,17 +747,24 @@ class ScrambleResultScreen extends StatelessWidget {
 }
 
 class ScrambleReportBox extends StatelessWidget {
+  List<Vocabulary> originalWordList;
+  List<int> fluencyLevel;
+
   String title;
   int statistic;
   int total;
-  List<Vocabulary> words;
+  List<int> wordsIndex;
   String? explanation;
   Color statisticColor;
+  TextSpan symbol = Constant.kRemainSymbol;
+
   ScrambleReportBox(
-      {required this.title,
+      {required this.originalWordList,
+      required this.fluencyLevel,
+      required this.title,
       required this.statistic,
       required this.total,
-      required this.words,
+      required this.wordsIndex,
       this.explanation,
       required this.statisticColor,
       super.key});
@@ -729,6 +779,15 @@ class ScrambleReportBox extends StatelessWidget {
     return fluencyColor;
   }
 
+  TextSpan pickSymbol(Vocabulary currentWord, int updatedFluency) {
+    if (currentWord.fluencyLevel > updatedFluency) {
+      return Constant.kDownSymbol;
+    } else if (currentWord.fluencyLevel < updatedFluency) {
+      return Constant.kUpSymbol;
+    }
+    return symbol;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -738,7 +797,7 @@ class ScrambleReportBox extends StatelessWidget {
           Row(
             children: [
               RichText(
-                  text: TextSpan(style: Constant.kHeadingTextStyle, children: [
+                  text: TextSpan(style: Constant.kSectionTitle, children: [
                 TextSpan(text: "$title "),
                 TextSpan(
                     text: "$statistic/$total ",
@@ -748,11 +807,11 @@ class ScrambleReportBox extends StatelessWidget {
                 Tooltip(
                   triggerMode: TooltipTriggerMode.tap,
                   preferBelow: false,
-                  child: Icon(
+                  message: explanation,
+                  child: const Icon(
                     CupertinoIcons.question_circle,
                     color: Colors.grey,
                   ),
-                  message: explanation,
                 )
             ],
           ),
@@ -761,17 +820,19 @@ class ScrambleReportBox extends StatelessWidget {
             shrinkWrap: true,
             itemBuilder: (context, index) => RichText(
                 text: TextSpan(children: [
-              Constant.kRemainSymbol,
+              pickSymbol(originalWordList[wordsIndex[index]],
+                  fluencyLevel[wordsIndex[index]]),
               TextSpan(
-                  text: "${words[index].fluencyLevel} ",
+                  text: "${fluencyLevel[wordsIndex[index]]} ",
                   style: GoogleFonts.openSans(
-                      color: pickIndicatorColor(words[index].fluencyLevel),
+                      color:
+                          pickIndicatorColor(fluencyLevel[wordsIndex[index]]),
                       fontWeight: FontWeight.w900)),
               TextSpan(
-                  text: words[index].wordTitle,
+                  text: originalWordList[wordsIndex[index]].wordTitle,
                   style: Constant.kHeading2TextStyle),
             ])),
-            itemCount: words.length,
+            itemCount: wordsIndex.length,
           )
         ],
       ),
