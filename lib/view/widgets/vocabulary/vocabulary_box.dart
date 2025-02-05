@@ -46,8 +46,10 @@ class VocabularyBox extends StatelessWidget {
               if (vocabulary.fluencyLevel > 0)
                 Text(
                   vocabulary.fluencyLevel.toString(),
-                  style: GoogleFonts.aBeeZee(
-                      color: indicatorColor, fontWeight: FontWeight.w900),
+                  style: GoogleFonts.openSans(
+                      color: indicatorColor,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 16),
                 ),
               if (vocabulary.phraseTitle.isNotEmpty)
                 const Text(

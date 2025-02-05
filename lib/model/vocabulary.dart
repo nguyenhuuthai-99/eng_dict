@@ -1,3 +1,5 @@
+enum VocabularyLevel { unfamiliar, familiar, mastered }
+
 class Vocabulary {
   late int _id;
   late String _wordTitle;

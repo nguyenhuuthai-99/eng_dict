@@ -119,10 +119,10 @@ class Constant {
       TextSpan(text: "▲ ", style: TextStyle(color: kGreenIndicatorColor));
   static const kDownSymbol =
       TextSpan(text: "▼ ", style: TextStyle(color: kRedIndicatorColor));
-  static TextSpan kRemainSymbol = TextSpan(
-      text: "- ",
-      style: GoogleFonts.azeretMono(
-          color: kGreyText, fontWeight: FontWeight.w900));
+  static const TextSpan kRemainSymbol = TextSpan(
+      text: "▬  ",
+      style:
+          TextStyle(color: kYellowIndicatorColor, fontWeight: FontWeight.w900));
 
   //Border Radius
   static const Radius kRadiusSmall = Radius.circular(10);

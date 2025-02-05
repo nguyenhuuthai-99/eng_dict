@@ -85,14 +85,31 @@ class DatabaseHelper {
         .toList();
   }
 
-  Future<List<Vocabulary>> getVocabularyOnLevel(int level) async {
-    List<Map<String, dynamic>> result = await database
-        .query("vocabulary", where: "fluency_level = ?", whereArgs: [level]);
+  Future<List<Vocabulary>> getVocabularyOnLevel(VocabularyLevel level) async {
+    int start;
+    int end;
+    if (level == VocabularyLevel.unfamiliar) {
+      start = 1;
+      end = 4;
+    } else if (level == VocabularyLevel.familiar) {
+      start = 5;
+      end = 8;
+    } else {
+      start = 9;
+      end = 12;
+    }
+    List<Map<String, dynamic>> result = await database.query("vocabulary",
+        where: "fluency_level between ? and ?", whereArgs: [start, end]);
     return result
         .map(
           (e) => Vocabulary.fromMap(e),
         )
         .toList();
+  }
+
+  Future<void> updateVocabularyFluency(int id, int level) async {
+    await database.update("vocabulary", {"fluency_level": level},
+        where: 'id = ?', whereArgs: [id]);
   }
 
   Future<void> deleteVocabulary(int id) async {
