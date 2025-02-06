@@ -19,7 +19,7 @@ class _BannerAdsBoxState extends State<BannerAdsBox>
 
   String get adUnitId => Platform.isAndroid
       ? 'ca-app-pub-2903872604687353/2000827477'
-      : 'ca-app-pub-2903872604687353/9908366953';
+      : 'ca-app-pub-2903872604687353/8979132933';
 
   // //dummy ad
   // final adUnitId = Platform.isAndroid
