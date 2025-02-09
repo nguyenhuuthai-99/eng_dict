@@ -31,6 +31,8 @@ class Constant {
   static const Gradient kGradient = LinearGradient(
       transform: GradientRotation(-0.5),
       colors: [Color(0xffF47728), Color(0xffFBA820)]);
+  static const Color kBlue = Color(0xff32ADE6);
+  static const Color kOrange = Color(0xffFF8040);
 
   //Text Colors
   static const Color kHeading1Color = Color(0xff414141);
