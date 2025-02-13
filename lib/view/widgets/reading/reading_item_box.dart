@@ -1,5 +1,5 @@
 import 'package:eng_dict/model/story.dart';
-import 'package:eng_dict/view/screens/story_screen.dart';
+import 'package:eng_dict/view/screens/reading/story_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:eng_dict/view/utils/setting_service.dart';

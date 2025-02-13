@@ -21,6 +21,8 @@ class Constant {
 
   //Decorative colors
   static const Color kGreyBackground = Color(0xffF2F2F2);
+  static const Color kGreenBackground = Color(0xffedffdb);
+  static const Color kRedBackground = Color(0xffffdedd);
   static const Color kGreyBorder = Color(0x1F767680);
   static const Color kGreyLine = Color(0xffE2E2E2);
   static const Color kGreyDivider = Color(0xffb1b1b1);
@@ -31,6 +33,8 @@ class Constant {
   static const Gradient kGradient = LinearGradient(
       transform: GradientRotation(-0.5),
       colors: [Color(0xffF47728), Color(0xffFBA820)]);
+  static const Color kBlue = Color(0xff32ADE6);
+  static const Color kOrange = Color(0xffFF8040);
 
   //Text Colors
   static const Color kHeading1Color = Color(0xff414141);
@@ -106,7 +110,8 @@ class Constant {
     fontSize: 16,
     fontStyle: FontStyle.italic,
   );
-
+  static const kPracticeFeedbackTitle =
+      TextStyle(fontSize: 18, fontWeight: FontWeight.w700);
   static const kDot = TextSpan(
       text: "• ",
       style: TextStyle(color: Constant.kPrimaryColor, fontSize: 18));

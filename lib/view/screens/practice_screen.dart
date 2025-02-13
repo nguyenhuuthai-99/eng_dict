@@ -1,4 +1,5 @@
-import 'package:eng_dict/view/screens/word_scramble_start_screen.dart';
+import 'package:eng_dict/view/screens/practice/quizzes_screen.dart';
+import 'package:eng_dict/view/screens/practice/word_scramble_start_screen.dart';
 import 'package:eng_dict/view/widgets/practice/practice_section_box.dart';
 import 'package:flutter/material.dart';
 
@@ -29,7 +30,7 @@ class PracticeScreen extends StatelessWidget {
             ),
             PracticeSectionBox(
               title: "Quizzes",
-              nextScreen: WordScrambleSelectScreen(),
+              nextScreen: QuizzesScreen(),
               subTitle: "Test your knowledge and beat the clock",
               image: const AssetImage("assets/images/practice.png"),
             ),
