@@ -55,6 +55,10 @@ const level1Count = 6;
 const level2Count = 3;
 const level3Count = 1;
 
+const wordMatchingTimeLimit = 10;
+const multipleChoiceTimeLimit = 30;
+const spellingTimeLimit = 30;
+
 class QuizzesScreen extends StatefulWidget {
   const QuizzesScreen({super.key});
 
@@ -179,17 +183,13 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Constant.kMarginLarge),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        child: Stack(
           children: [
-            TimerWidget(startTime: 120, onTimesUp: () => onTimesUp()),
-            Expanded(
-              child: WordMatchingWidget(
-                onSubmit: (correctWords, incorrectWords) {
-                  //todo add result list
-                },
-                wordMatchingLesson: wordMatchingLessons[0],
-              ),
+            WordMatchingWidget(
+              onSubmit: (correctWords, incorrectWords) {
+                //todo add result list
+              },
+              wordMatchingLesson: wordMatchingLessons[0],
             ),
           ],
         ),
@@ -273,9 +273,12 @@ class _WordMatchingWidgetState extends State<WordMatchingWidget> {
     isSubmitted = true;
     List<Vocabulary> incorrectWords = [];
     List<Vocabulary> correctWords = [];
+    Set<int> unconnectedIndex = {0, 1, 2, 3};
+
     // go through the connection map, check
     connections.forEach(
       (key, value) {
+        unconnectedIndex.remove(key);
         setState(() {
           //if correct
           if (words[key].definition == shuffledDefinition[value]) {
@@ -291,155 +294,176 @@ class _WordMatchingWidgetState extends State<WordMatchingWidget> {
         });
       },
     );
+
+    if (unconnectedIndex.isNotEmpty) {
+      for (int index in unconnectedIndex) {
+        incorrectWords.add(words[index]);
+        activeColors[index] = Constant.kRedIndicatorColor;
+        activeWidgets[index] = Constant.kRedIndicatorColor;
+      }
+    }
+
     widget.onSubmit(correctWords, incorrectWords);
-    print(correctWords);
-    print(incorrectWords);
+  }
+
+  void onTimesUp() {
+    print('timeup');
+    checkAnswer();
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Expanded(
+          flex: 1,
           child: Center(
-            child: Stack(
-              key: stackKey,
-              children: [
-                // Draw connecting lines
-                CustomPaint(
-                  painter: LinePainter(
-                      connections: widget.wordMatchingLesson.connections,
-                      stackKey: stackKey,
-                      startPosition: startPosition,
-                      dragPosition: dragPosition,
-                      currentWordIndex: currentWordIndex,
-                      wordTitleKeys: wordTitleKeys,
-                      definitionKeys: definitionKeys,
-                      getLineColor: (int index) => activeColors[index]),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      flex: 3,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: words.asMap().entries.map(
-                          (e) {
-                            int i = e.key;
-                            return WordMatchingTitleWidget(
-                              onDragStarted: () {
-                                if (isSubmitted) {
-                                  return;
+            child: TimerWidget(
+                startTime: wordMatchingTimeLimit, onTimesUp: () => onTimesUp()),
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: Stack(
+            key: stackKey,
+            children: [
+              // Draw connecting lines
+              CustomPaint(
+                painter: LinePainter(
+                    connections: widget.wordMatchingLesson.connections,
+                    stackKey: stackKey,
+                    startPosition: startPosition,
+                    dragPosition: dragPosition,
+                    currentWordIndex: currentWordIndex,
+                    wordTitleKeys: wordTitleKeys,
+                    definitionKeys: definitionKeys,
+                    getLineColor: (int index) => activeColors[index]),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    flex: 3,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: words.asMap().entries.map(
+                        (e) {
+                          int i = e.key;
+                          return WordMatchingTitleWidget(
+                            onDragStarted: () {
+                              if (isSubmitted) {
+                                return;
+                              }
+                              setState(() {
+                                activeWidgets[i] = activeColors[i];
+
+                                currentWordIndex = i;
+
+                                startPosition =
+                                    _getWidgetCenter(wordTitleKeys[i]);
+                                dragPosition =
+                                    _getWidgetCenter(wordTitleKeys[i]);
+
+                                int existingConnection =
+                                    connections.keys.firstWhere(
+                                  (element) => element == i,
+                                  orElse: () => -1,
+                                );
+                                if (existingConnection != -1) {
+                                  currentConnection = MapEntry(
+                                      existingConnection,
+                                      connections.remove(existingConnection)!);
                                 }
-                                setState(() {
-                                  activeWidgets[i] = activeColors[i];
+                              });
+                            },
+                            onDragUpdate: (details) {
+                              if (isSubmitted) {
+                                return;
+                              }
+                              setState(() {
+                                dragPosition = details.globalPosition;
+                              });
+                            },
+                            onDraggableCanceled: () {
+                              if (isSubmitted) return;
 
-                                  currentWordIndex = i;
-
-                                  startPosition =
-                                      _getWidgetCenter(wordTitleKeys[i]);
-                                  dragPosition =
-                                      _getWidgetCenter(wordTitleKeys[i]);
-
-                                  int existingConnection =
-                                      connections.keys.firstWhere(
-                                    (element) => element == i,
-                                    orElse: () => -1,
-                                  );
-                                  if (existingConnection != -1) {
-                                    currentConnection = MapEntry(
-                                        existingConnection,
-                                        connections
-                                            .remove(existingConnection)!);
-                                  }
-                                });
-                              },
-                              onDragUpdate: (details) {
-                                if (isSubmitted) {
-                                  return;
-                                }
-                                setState(() {
-                                  dragPosition = details.globalPosition;
-                                });
-                              },
-                              onDraggableCanceled: () {
-                                if (isSubmitted) return;
-
-                                if (currentConnection == null) {
-                                  activeWidgets[i] = null;
-                                  return;
-                                }
-                                connections.addEntries([currentConnection!]);
-                                currentConnection = null;
-                              },
-                              onDragEnd: () {
-                                if (isSubmitted) return;
-                                setState(() {
-                                  dragPosition = null;
-                                  startPosition = null;
-                                });
-                              },
-                              activeColor: activeWidgets[i],
-                              wordIndex: i,
-                              title: words[i].wordTitle,
-                              key: wordTitleKeys[i],
-                            );
-                          },
-                        ).toList(),
-                      ),
+                              if (currentConnection == null) {
+                                activeWidgets[i] = null;
+                                return;
+                              }
+                              connections.addEntries([currentConnection!]);
+                              currentConnection = null;
+                            },
+                            onDragEnd: () {
+                              if (isSubmitted) return;
+                              setState(() {
+                                dragPosition = null;
+                                startPosition = null;
+                              });
+                            },
+                            activeColor: activeWidgets[i],
+                            wordIndex: i,
+                            title: words[i].wordTitle,
+                            key: wordTitleKeys[i],
+                          );
+                        },
+                      ).toList(),
                     ),
-                    const Expanded(child: SizedBox()),
-                    Flexible(
-                      flex: 6,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          for (int i = 0; i < shuffledDefinition.length; i++)
-                            WordMatchingDefinitionWidget(
-                              onAcceptWithDetails: (details) {
-                                if (isSubmitted) return;
-                                setState(() {
-                                  int? existingWord = connections.entries
-                                      .firstWhere(
-                                        (entry) => entry.value == i,
-                                        orElse: () => const MapEntry(
-                                            -1, -1), // Default invalid entry
-                                      )
-                                      .key;
-
-                                  if (existingWord != -1) {
-                                    connections.remove(existingWord);
-                                    activeWidgets[existingWord] = null;
-                                  }
-
-                                  connections[details.data] = i;
-                                  currentConnection = null;
-                                });
-                              },
-                              pickColor: () {
-                                int connectedWordIndex = connections.entries
+                  ),
+                  const Expanded(child: SizedBox()),
+                  Flexible(
+                    flex: 6,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (int i = 0; i < shuffledDefinition.length; i++)
+                          WordMatchingDefinitionWidget(
+                            onAcceptWithDetails: (details) {
+                              if (isSubmitted) return;
+                              setState(() {
+                                int? existingWord = connections.entries
                                     .firstWhere(
-                                      (element) => element.value == i,
-                                      orElse: () => const MapEntry(-1, -1),
+                                      (entry) => entry.value == i,
+                                      orElse: () => const MapEntry(
+                                          -1, -1), // Default invalid entry
                                     )
                                     .key;
-                                if (connectedWordIndex != -1) {
-                                  return activeWidgets[connectedWordIndex]!;
+
+                                if (existingWord != -1) {
+                                  connections.remove(existingWord);
+                                  activeWidgets[existingWord] = null;
                                 }
-                                return Colors.black54;
-                              },
-                              definition: shuffledDefinition[i],
-                              key: definitionKeys[i],
-                            )
-                        ],
-                      ),
+
+                                connections[details.data] = i;
+                                currentConnection = null;
+                              });
+                            },
+                            pickColor: () {
+                              int connectedWordIndex = connections.entries
+                                  .firstWhere(
+                                    (element) => element.value == i,
+                                    orElse: () => const MapEntry(-1, -1),
+                                  )
+                                  .key;
+                              if (connectedWordIndex != -1) {
+                                return activeWidgets[connectedWordIndex]!;
+                              }
+                              if (isSubmitted) {
+                                return Constant.kRedIndicatorColor;
+                              }
+                              return Colors.black54;
+                            },
+                            definition: shuffledDefinition[i],
+                            key: definitionKeys[i],
+                          )
+                      ],
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
         TextButton(
