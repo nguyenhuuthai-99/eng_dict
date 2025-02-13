@@ -21,6 +21,8 @@ class Constant {
 
   //Decorative colors
   static const Color kGreyBackground = Color(0xffF2F2F2);
+  static const Color kGreenBackground = Color(0xffedffdb);
+  static const Color kRedBackground = Color(0xffffdedd);
   static const Color kGreyBorder = Color(0x1F767680);
   static const Color kGreyLine = Color(0xffE2E2E2);
   static const Color kGreyDivider = Color(0xffb1b1b1);
@@ -108,7 +110,8 @@ class Constant {
     fontSize: 16,
     fontStyle: FontStyle.italic,
   );
-
+  static const kPracticeFeedbackTitle =
+      TextStyle(fontSize: 18, fontWeight: FontWeight.w700);
   static const kDot = TextSpan(
       text: "• ",
       style: TextStyle(color: Constant.kPrimaryColor, fontSize: 18));

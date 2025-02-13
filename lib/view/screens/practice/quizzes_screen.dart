@@ -8,6 +8,7 @@ import 'package:eng_dict/model/word.dart';
 import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/view/component/count_down_timer.dart';
 import 'package:eng_dict/view/utils/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -180,20 +181,12 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
         title: Text("3/10"),
         actions: [Text("Skip   ")],
       ),
-      body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Constant.kMarginLarge),
-        child: Stack(
-          children: [
-            WordMatchingWidget(
-              onSubmit: (correctWords, incorrectWords) {
-                //todo add result list
-              },
-              wordMatchingLesson: wordMatchingLessons[0],
-            ),
-          ],
-        ),
-      )),
+      body: WordMatchingWidget(
+        onSubmit: (correctWords, incorrectWords) {
+          //todo add result list
+        },
+        wordMatchingLesson: wordMatchingLessons[0],
+      ),
     );
   }
 }
@@ -252,6 +245,9 @@ class _WordMatchingWidgetState extends State<WordMatchingWidget> {
   late Map<int, int> connections;
   late MapEntry<int, int>? currentConnection;
 
+  List<Vocabulary> incorrectWords = [];
+  List<Vocabulary> correctWords = [];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -271,8 +267,7 @@ class _WordMatchingWidgetState extends State<WordMatchingWidget> {
 
   void checkAnswer() {
     isSubmitted = true;
-    List<Vocabulary> incorrectWords = [];
-    List<Vocabulary> correctWords = [];
+
     Set<int> unconnectedIndex = {0, 1, 2, 3};
 
     // go through the connection map, check
@@ -307,180 +302,358 @@ class _WordMatchingWidgetState extends State<WordMatchingWidget> {
   }
 
   void onTimesUp() {
-    print('timeup');
+    if (isSubmitted) return;
     checkAnswer();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
+    return Stack(
       children: [
-        Expanded(
-          flex: 1,
-          child: Center(
-            child: TimerWidget(
-                startTime: wordMatchingTimeLimit, onTimesUp: () => onTimesUp()),
-          ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Stack(
-            key: stackKey,
-            children: [
-              // Draw connecting lines
-              CustomPaint(
-                painter: LinePainter(
-                    connections: widget.wordMatchingLesson.connections,
-                    stackKey: stackKey,
-                    startPosition: startPosition,
-                    dragPosition: dragPosition,
-                    currentWordIndex: currentWordIndex,
-                    wordTitleKeys: wordTitleKeys,
-                    definitionKeys: definitionKeys,
-                    getLineColor: (int index) => activeColors[index]),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Flexible(
-                    flex: 3,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: words.asMap().entries.map(
-                        (e) {
-                          int i = e.key;
-                          return WordMatchingTitleWidget(
-                            onDragStarted: () {
-                              if (isSubmitted) {
-                                return;
-                              }
-                              setState(() {
-                                activeWidgets[i] = activeColors[i];
-
-                                currentWordIndex = i;
-
-                                startPosition =
-                                    _getWidgetCenter(wordTitleKeys[i]);
-                                dragPosition =
-                                    _getWidgetCenter(wordTitleKeys[i]);
-
-                                int existingConnection =
-                                    connections.keys.firstWhere(
-                                  (element) => element == i,
-                                  orElse: () => -1,
-                                );
-                                if (existingConnection != -1) {
-                                  currentConnection = MapEntry(
-                                      existingConnection,
-                                      connections.remove(existingConnection)!);
-                                }
-                              });
-                            },
-                            onDragUpdate: (details) {
-                              if (isSubmitted) {
-                                return;
-                              }
-                              setState(() {
-                                dragPosition = details.globalPosition;
-                              });
-                            },
-                            onDraggableCanceled: () {
-                              if (isSubmitted) return;
-
-                              if (currentConnection == null) {
-                                activeWidgets[i] = null;
-                                return;
-                              }
-                              connections.addEntries([currentConnection!]);
-                              currentConnection = null;
-                            },
-                            onDragEnd: () {
-                              if (isSubmitted) return;
-                              setState(() {
-                                dragPosition = null;
-                                startPosition = null;
-                              });
-                            },
-                            activeColor: activeWidgets[i],
-                            wordIndex: i,
-                            title: words[i].wordTitle,
-                            key: wordTitleKeys[i],
-                          );
-                        },
-                      ).toList(),
-                    ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: Constant.kMarginLarge),
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Center(
+                    child: TimerWidget(
+                        startTime: wordMatchingTimeLimit,
+                        onTimesUp: () => onTimesUp()),
                   ),
-                  const Expanded(child: SizedBox()),
-                  Flexible(
-                    flex: 6,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        for (int i = 0; i < shuffledDefinition.length; i++)
-                          WordMatchingDefinitionWidget(
-                            onAcceptWithDetails: (details) {
-                              if (isSubmitted) return;
-                              setState(() {
-                                int? existingWord = connections.entries
-                                    .firstWhere(
-                                      (entry) => entry.value == i,
-                                      orElse: () => const MapEntry(
-                                          -1, -1), // Default invalid entry
-                                    )
-                                    .key;
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Stack(
+                    key: stackKey,
+                    children: [
+                      // Draw connecting lines
+                      CustomPaint(
+                        painter: LinePainter(
+                            connections: widget.wordMatchingLesson.connections,
+                            stackKey: stackKey,
+                            startPosition: startPosition,
+                            dragPosition: dragPosition,
+                            currentWordIndex: currentWordIndex,
+                            wordTitleKeys: wordTitleKeys,
+                            definitionKeys: definitionKeys,
+                            getLineColor: (int index) => activeColors[index]),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            flex: 3,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: words.asMap().entries.map(
+                                (e) {
+                                  int i = e.key;
+                                  return WordMatchingTitleWidget(
+                                    onDragStarted: () {
+                                      if (isSubmitted) {
+                                        return;
+                                      }
+                                      setState(() {
+                                        activeWidgets[i] = activeColors[i];
 
-                                if (existingWord != -1) {
-                                  connections.remove(existingWord);
-                                  activeWidgets[existingWord] = null;
-                                }
+                                        currentWordIndex = i;
 
-                                connections[details.data] = i;
-                                currentConnection = null;
-                              });
-                            },
-                            pickColor: () {
-                              int connectedWordIndex = connections.entries
-                                  .firstWhere(
-                                    (element) => element.value == i,
-                                    orElse: () => const MapEntry(-1, -1),
+                                        startPosition =
+                                            _getWidgetCenter(wordTitleKeys[i]);
+                                        dragPosition =
+                                            _getWidgetCenter(wordTitleKeys[i]);
+
+                                        int existingConnection =
+                                            connections.keys.firstWhere(
+                                          (element) => element == i,
+                                          orElse: () => -1,
+                                        );
+                                        if (existingConnection != -1) {
+                                          currentConnection = MapEntry(
+                                              existingConnection,
+                                              connections
+                                                  .remove(existingConnection)!);
+                                        }
+                                      });
+                                    },
+                                    onDragUpdate: (details) {
+                                      if (isSubmitted) {
+                                        return;
+                                      }
+                                      setState(() {
+                                        dragPosition = details.globalPosition;
+                                      });
+                                    },
+                                    onDraggableCanceled: () {
+                                      if (isSubmitted) return;
+
+                                      if (currentConnection == null) {
+                                        activeWidgets[i] = null;
+                                        return;
+                                      }
+                                      connections
+                                          .addEntries([currentConnection!]);
+                                      currentConnection = null;
+                                    },
+                                    onDragEnd: () {
+                                      if (isSubmitted) return;
+                                      setState(() {
+                                        dragPosition = null;
+                                        startPosition = null;
+                                      });
+                                    },
+                                    activeColor: activeWidgets[i],
+                                    wordIndex: i,
+                                    title: words[i].wordTitle,
+                                    key: wordTitleKeys[i],
+                                  );
+                                },
+                              ).toList(),
+                            ),
+                          ),
+                          const Expanded(child: SizedBox()),
+                          Flexible(
+                            flex: 6,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                for (int i = 0;
+                                    i < shuffledDefinition.length;
+                                    i++)
+                                  WordMatchingDefinitionWidget(
+                                    onAcceptWithDetails: (details) {
+                                      if (isSubmitted) return;
+                                      setState(() {
+                                        int? existingWord = connections.entries
+                                            .firstWhere(
+                                              (entry) => entry.value == i,
+                                              orElse: () => const MapEntry(-1,
+                                                  -1), // Default invalid entry
+                                            )
+                                            .key;
+
+                                        if (existingWord != -1) {
+                                          connections.remove(existingWord);
+                                          activeWidgets[existingWord] = null;
+                                        }
+
+                                        connections[details.data] = i;
+                                        currentConnection = null;
+                                      });
+                                    },
+                                    pickColor: () {
+                                      int connectedWordIndex =
+                                          connections.entries
+                                              .firstWhere(
+                                                (element) => element.value == i,
+                                                orElse: () =>
+                                                    const MapEntry(-1, -1),
+                                              )
+                                              .key;
+                                      if (connectedWordIndex != -1) {
+                                        return activeWidgets[
+                                            connectedWordIndex]!;
+                                      }
+                                      if (isSubmitted) {
+                                        return Constant.kRedIndicatorColor;
+                                      }
+                                      return Colors.black54;
+                                    },
+                                    definition: shuffledDefinition[i],
+                                    key: definitionKeys[i],
                                   )
-                                  .key;
-                              if (connectedWordIndex != -1) {
-                                return activeWidgets[connectedWordIndex]!;
-                              }
-                              if (isSubmitted) {
-                                return Constant.kRedIndicatorColor;
-                              }
-                              return Colors.black54;
-                            },
-                            definition: shuffledDefinition[i],
-                            key: definitionKeys[i],
-                          )
-                      ],
-                    ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ],
+                ),
+                TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: connections.length == 4
+                            ? Constant.kBlue
+                            : Colors.black12,
+                        shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.circular(Constant.kMarginExtraSmall),
+                        )),
+                    onPressed: connections.length == 4 ? checkAnswer : null,
+                    child: const Text(
+                      "Submit",
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                    ))
+              ],
+            ),
           ),
         ),
-        TextButton(
-            style: TextButton.styleFrom(
-                backgroundColor:
-                    connections.length == 4 ? Constant.kBlue : Colors.black12,
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(Constant.kMarginExtraSmall),
-                )),
-            onPressed: connections.length == 4 ? checkAnswer : null,
-            child: const Text(
-              "Submit",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-            ))
+        if (isSubmitted)
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: incorrectWords.isEmpty
+                ? CorrectFeedback(
+                    onNextPressed: () {
+                      //todo
+                    },
+                  )
+                : IncorrectFeedback(
+                    onNextPressed: () {
+                      //todo
+                    },
+                    incorrectWords: incorrectWords,
+                  ),
+          ),
       ],
+    );
+  }
+}
+
+class IncorrectFeedback extends StatelessWidget {
+  IncorrectFeedback({
+    required this.onNextPressed,
+    required this.incorrectWords,
+    super.key,
+  });
+
+  List<Vocabulary> incorrectWords;
+
+  Function() onNextPressed;
+
+  String buildIncorrectWordText() {
+    String result = 'You need to work more on:';
+    for (var word in incorrectWords) {
+      result += ' ${word.wordTitle},';
+    }
+    return result.substring(0, result.length - 1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Constant.kRedBackground,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(Constant.kMarginSmall),
+              topRight: Radius.circular(Constant.kMarginSmall))),
+      padding: EdgeInsets.only(
+          left: Constant.kMarginLarge,
+          right: Constant.kMarginLarge,
+          top: Constant.kMarginLarge),
+      child: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                const Icon(
+                  CupertinoIcons.xmark_circle_fill,
+                  color: Constant.kRedIndicatorColor,
+                ),
+                const SizedBox(
+                  width: Constant.kMarginMedium,
+                ),
+                Text(
+                  "Incorrect",
+                  style: Constant.kPracticeFeedbackTitle
+                      .apply(color: Constant.kRedIndicatorColor),
+                )
+              ],
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: Constant.kMarginMedium),
+              child: Text(
+                buildIncorrectWordText(),
+                style: TextStyle(color: Constant.kRedIndicatorColor),
+              ),
+            ),
+            TextButton(
+                style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: Constant.kMarginMedium),
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(Constant.kMarginSmall)),
+                    backgroundColor: Constant.kRedIndicatorColor),
+                onPressed: onNextPressed,
+                child: const Text(
+                  "Next",
+                  style: TextStyle(color: Colors.white),
+                ))
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CorrectFeedback extends StatelessWidget {
+  CorrectFeedback({
+    required this.onNextPressed,
+    super.key,
+  });
+
+  Function() onNextPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+          color: Constant.kGreenBackground,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(Constant.kMarginSmall),
+              topRight: Radius.circular(Constant.kMarginSmall))),
+      padding: const EdgeInsets.only(
+          left: Constant.kMarginLarge,
+          right: Constant.kMarginLarge,
+          top: Constant.kMarginLarge),
+      child: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                const Icon(
+                  CupertinoIcons.check_mark_circled_solid,
+                  color: Constant.kGreenIndicatorColor,
+                ),
+                const SizedBox(
+                  width: Constant.kMarginMedium,
+                ),
+                Text(
+                  "Good Job",
+                  style: Constant.kPracticeFeedbackTitle
+                      .apply(color: Constant.kGreenIndicatorColor),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: Constant.kMarginMedium,
+            ),
+            TextButton(
+                style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: Constant.kMarginMedium),
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(Constant.kMarginSmall)),
+                    backgroundColor: Constant.kGreenIndicatorColor),
+                onPressed: onNextPressed,
+                child: const Text(
+                  "Next",
+                  style: TextStyle(color: Colors.white),
+                ))
+          ],
+        ),
+      ),
     );
   }
 }
