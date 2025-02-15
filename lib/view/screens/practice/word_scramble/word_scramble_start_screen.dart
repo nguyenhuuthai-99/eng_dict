@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:eng_dict/view/screens/practice/word_scramble_screen.dart';
+import 'package:eng_dict/view/screens/practice/word_scramble/word_scramble_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:flutter/material.dart';
 

@@ -5,7 +5,7 @@ import 'package:eng_dict/model/vocabulary.dart';
 import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/provider/vocabulary_data.dart';
 import 'package:eng_dict/view/dialog/alertDialog.dart';
-import 'package:eng_dict/view/screens/practice/word_scramble_start_screen.dart';
+import 'package:eng_dict/view/screens/practice/word_scramble/word_scramble_start_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/play_sound.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,8 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../../component/count_down_timer.dart';
-import '../../utils/custom_icon.dart';
+import '../../../component/count_down_timer.dart';
+import '../../../utils/custom_icon.dart';
 
 class WordScrambleScreen extends StatefulWidget {
   bool showHint;
