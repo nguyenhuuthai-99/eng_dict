@@ -15,13 +15,6 @@ class CustomSearchBar extends StatelessWidget {
       onTap: () async {
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => const SearchScreen()));
-        // bool isConnected = await InternetChecker.checkInternet();
-        // if (!isConnected) {
-        //   showDialog(
-        //     context: context,
-        //     builder: (context) => NoInternetDialog(),
-        //   );
-        // }
       },
       child: Container(
         decoration: BoxDecoration(
