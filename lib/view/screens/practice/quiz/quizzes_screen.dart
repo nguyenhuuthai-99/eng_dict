@@ -6,6 +6,8 @@ import 'package:eng_dict/model/quiz/word_matching.dart';
 import 'package:eng_dict/model/vocabulary.dart';
 import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/view/screens/practice/quiz/multiple_choice.dart';
+import 'package:eng_dict/view/screens/practice/quiz/spelling.dart';
+import 'package:eng_dict/view/screens/practice/quiz/word_matching.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +19,8 @@ const wordMatchingTimeLimit = 60;
 const multipleChoiceTimeLimit = 30;
 const spellingTimeLimit = 30;
 
+const minimumVocabularyCount = 4;
+
 class QuizzesScreen extends StatefulWidget {
   const QuizzesScreen({super.key});
 
@@ -26,13 +30,15 @@ class QuizzesScreen extends StatefulWidget {
 
 class _QuizzesScreenState extends State<QuizzesScreen> {
   bool _isQuizReady = false;
+  bool _isEnoughTestingWord = true;
 
-  late List<Vocabulary> vocabularies;
+  late List<Vocabulary> testingVocabularies;
+  late List<Vocabulary> fetchedVocabularies;
 
   List<MultipleChoiceLesson> multipleChoiceLessons = [];
   List<WordMatchingLesson> wordMatchingLessons = [];
   List<SpellingLesson> spellingLessons = [];
-  List<Object> generatedLessons = [];
+  List<Object?> generatedLessons = [];
   int currentLessonIndex = 0;
 
   late DatabaseHelper databaseHelper;
@@ -44,13 +50,15 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
     initQuizzes();
   }
 
-  void initQuizzes() {
-    //todo get practice word, user need to get at least 4 added word to continue
-    //todo create lesson for each word maximum 10 words
+  void initQuizzes() async {
+    testingVocabularies = await fetchVocabularies();
 
-    //todo initiate practice lesson for each game,
-    //todo make a list for each game, may be nested list
-    //List [multipleChoiceLessons]
+    if (!canInitQuizzes(testingVocabularies)) {
+      _isEnoughTestingWord = false;
+    }
+    await delayedFunction();
+
+    initLesson();
 
     //when the quiz is ready, start the quiz screen
     setState(() {
@@ -58,23 +66,93 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
     });
   }
 
+  Future<void> delayedFunction() async {
+    print("Waiting...");
+    await Future.delayed(Duration(seconds: 4));
+    print("4 seconds later...");
+  }
+
   void initLesson() {
-    for (int i = 0; i < 4; i++) {
-      if (i == 3) {
-        initQuiz();
-        continue;
+    for (int i = 0; i < testingVocabularies.length; i++) {
+      if (i == 10) break;
+
+      if ((i + 1) % 3 == 1) {
+        generatedLessons.add(initMultipleChoice(testingVocabularies[i]));
+      } else if ((i + 1) % 3 == 2) {
+        generatedLessons.add(initWordMatching(testingVocabularies[i]));
+      } else {
+        generatedLessons.add(initSpelling(testingVocabularies[i]));
       }
-      initQuiz();
-      initWordMatching();
-      initSpelling();
     }
   }
 
-  void initQuiz() {}
+  MultipleChoiceLesson? initMultipleChoice(Vocabulary vocabulary) {
+    MultipleChoiceLesson multipleChoiceLesson =
+        MultipleChoiceLesson(correctWord: vocabulary);
 
-  void initWordMatching() {}
+    var vocabulariesCopy = [...fetchedVocabularies];
 
-  void initSpelling() {}
+    Random random = Random();
+
+    Map<String, Vocabulary> selections = {};
+    for (int i = 0; i < 4; i++) {
+      bool isFound = false;
+      var count = 0;
+      while (!isFound) {
+        if (count > 5) break;
+        if (vocabulariesCopy.isNotEmpty) {
+          int randomIndex = random.nextInt(vocabulariesCopy.length);
+          final title = vocabulariesCopy[randomIndex].wordTitle;
+          if (title != vocabulary.wordTitle && !selections.containsKey(title)) {
+            selections[title] = vocabulariesCopy.removeAt(randomIndex);
+            isFound = true;
+          }
+        }
+        count++;
+      }
+    }
+
+    selections.forEach(
+      (key, value) => multipleChoiceLesson.insertWord(value),
+    );
+    if (multipleChoiceLesson.words.isEmpty) {
+      return null;
+    }
+    return multipleChoiceLesson;
+  }
+
+  WordMatchingLesson initWordMatching(Vocabulary vocabulary) {
+    WordMatchingLesson wordMatchingLesson = WordMatchingLesson();
+    wordMatchingLesson.insertWord(vocabulary);
+
+    Set<String> testingWords = {vocabulary.wordTitle};
+    List<Vocabulary> vocabulariesCopy = [...fetchedVocabularies];
+    Random random = Random();
+
+    for (int i = 0; i < 3; i++) {
+      bool isFound = false;
+      var count = 0;
+      while (!isFound) {
+        if (count > 5) {
+          break;
+        }
+        int randomIndex = random.nextInt(vocabulariesCopy.length);
+        final title = vocabulariesCopy[randomIndex].wordTitle;
+        if (!testingWords.contains(title)) {
+          testingWords.add(title);
+          wordMatchingLesson.insertWord(vocabulariesCopy.removeAt(randomIndex));
+          isFound = true;
+        }
+        count++;
+      }
+    }
+    return wordMatchingLesson;
+  }
+
+  SpellingLesson initSpelling(Vocabulary vocabulary) {
+    SpellingLesson spellingLesson = SpellingLesson(word: vocabulary);
+    return spellingLesson;
+  }
 
   List<Vocabulary> pickRandom(List<Vocabulary> source, int count) {
     Random random = Random();
@@ -86,7 +164,9 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
     return picked;
   }
 
-  Future<void> initWords() async {
+  Future<List<Vocabulary>> fetchVocabularies() async {
+    List<Vocabulary> vocabularies = [];
+
     databaseHelper = Provider.of<DatabaseHelper>(context, listen: false);
 
     List<Vocabulary> level1Words =
@@ -96,18 +176,40 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
     List<Vocabulary> level3Words =
         await databaseHelper.getVocabularyOnLevel(VocabularyLevel.mastered);
 
+    fetchedVocabularies = [...level2Words, ...level3Words, ...level1Words];
+
     vocabularies.addAll(pickRandom(level1Words, level1Count));
     vocabularies.addAll(pickRandom(level2Words, level2Count));
     vocabularies.addAll(pickRandom(level3Words, level3Count));
 
     int remaining = 10 - vocabularies.length;
+
+    List<Vocabulary> remainingVocabularies = [
+      ...level2Words,
+      ...level3Words,
+      ...level1Words
+    ];
     if (remaining > 0) {
-      List<Vocabulary> extraElements = [
-        ...level2Words,
-        ...level3Words,
-        ...level1Words
-      ];
-      vocabularies.addAll(pickRandom(extraElements, remaining));
+      vocabularies.addAll(pickRandom(remainingVocabularies, remaining));
+    }
+    return vocabularies;
+  }
+
+  bool canInitQuizzes(List<Vocabulary> vocabularies) {
+    if (vocabularies.length < 4) {
+      return false;
+    } else {
+      Set<String> distinctWords = {};
+
+      vocabularies.forEach(
+        (element) => distinctWords.add(element.wordTitle),
+      );
+
+      if (distinctWords.length < 4) {
+        return false;
+      } else {
+        return true;
+      }
     }
   }
 
@@ -118,15 +220,42 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
     });
   }
 
-  void onSubmit(bool isCorrect){
+  void onSubmit(bool isCorrect) {}
 
-  }
+  void onWordMatchingSubmit(
+      List<Vocabulary> correctWords, List<Vocabulary> incorrectWords) {}
 
-  Widget pickLesson(){
-    Object currenLesson = generatedLessons[currentLessonIndex];
-    if(currenLesson == MultipleChoiceLesson){
-      currenLesson as MultipleChoiceLesson;
-      return MultipleChoiceScreen(timeLimit: multipleChoiceTimeLimit, words: currenLesson.words, testingWord: currenLesson.testingWord, onSubmit: onSubmit, onNextPressed: onNextPressed)
+  Widget pickLesson() {
+    if (currentLessonIndex >= generatedLessons.length)
+      return Container(
+        child: const Text("finished"),
+      );
+
+    Object? currentLesson = generatedLessons[currentLessonIndex];
+    if (currentLesson == null) {
+      currentLessonIndex++;
+      pickLesson();
+    }
+    if (currentLesson is MultipleChoiceLesson) {
+      return MultipleChoiceScreen(
+          timeLimit: multipleChoiceTimeLimit,
+          words: currentLesson.words,
+          testingWord: currentLesson.correctWord,
+          onSubmit: onSubmit,
+          onNextPressed: onNextPressed);
+    } else if (currentLesson is WordMatchingLesson) {
+      return WordMatchingScreen(
+          wordMatchingLesson: currentLesson,
+          onSubmit: onWordMatchingSubmit,
+          onNextPressed: onNextPressed,
+          timeLimit: wordMatchingTimeLimit);
+    } else {
+      currentLesson as SpellingLesson;
+      return SpellingLessonScreen(
+          word: currentLesson.word,
+          onNextPressed: onNextPressed,
+          onSubmit: onSubmit,
+          timeLimit: spellingTimeLimit);
     }
   }
 
@@ -135,10 +264,20 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text("3/10"),
+        title: Text("${currentLessonIndex + 1}/${testingVocabularies.length}"),
         actions: [Text("Skip   ")],
       ),
-      body: generatedLessons[currentLessonIndex],
+      body: _isQuizReady
+          ? pickLesson()
+          : const Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CircularProgressIndicator(),
+                  Text("Retrieving user data")
+                ],
+              ),
+            ),
     );
   }
 }

@@ -53,16 +53,19 @@ class VocabularyBox extends StatelessWidget {
                 ),
               if (vocabulary.phraseTitle.isNotEmpty)
                 const Text(
-                  " phrase   ",
+                  " phrase",
                   style: TextStyle(
                       fontStyle: FontStyle.italic, color: Constant.kGreyText),
                 ),
               if (Provider.of<VocabularyData>(context, listen: false)
                   .newVocabularyList
                   .contains(vocabulary.id))
-                const Icon(
-                  CustomIcon.new_icon,
-                  color: Colors.blue,
+                Padding(
+                  padding: const EdgeInsets.only(left: Constant.kMarginMedium),
+                  child: const Icon(
+                    CustomIcon.new_icon,
+                    color: Colors.blue,
+                  ),
                 ),
               const Expanded(child: SizedBox()),
               GestureDetector(

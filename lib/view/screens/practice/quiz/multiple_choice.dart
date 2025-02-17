@@ -15,7 +15,7 @@ class MultipleChoiceScreen extends StatefulWidget {
     super.key,
   });
   int timeLimit;
-  List<String> words;
+  List<Vocabulary> words;
   Vocabulary testingWord;
   Function(bool isCorrect) onSubmit;
   Function() onNextPressed;
@@ -30,6 +30,14 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
   String? selectedWord;
 
   bool? _isCorrect;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    widget.words.add(widget.testingWord);
+    widget.words.shuffle();
+  }
 
   void onTimesUp() {
     if (_correctWord != null) {
@@ -118,7 +126,7 @@ class SelectionWidget extends StatefulWidget {
       required this.onChange,
       this.correctWord});
 
-  final List<String> words;
+  final List<Vocabulary> words;
   Function(String selectedWord, int selectedIndex) onChange;
   final String? correctWord;
 
@@ -141,7 +149,7 @@ class _SelectionWidgetState extends State<SelectionWidget> {
 
   Color pickColor(int index) {
     if (widget.correctWord != null) {
-      if (widget.correctWord! == widget.words[index]) {
+      if (widget.correctWord! == widget.words[index].wordTitle) {
         return Constant.kGreenIndicatorColor;
       }
     }
@@ -169,14 +177,14 @@ class _SelectionWidgetState extends State<SelectionWidget> {
       ),
       itemBuilder: (context, index) {
         return GestureDetector(
-          onTap: () => onChange(index, widget.words[index]),
+          onTap: () => onChange(index, widget.words[index].wordTitle),
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(Constant.kMarginSmall),
                 border: Border.all(color: pickColor(index), width: 2)),
             child: Center(
               child: Text(
-                widget.words[index],
+                widget.words[index].wordTitle,
                 style: Constant.kHeading2TextStyle.copyWith(
                     fontWeight: FontWeight.bold, color: pickColor(index)),
               ),
