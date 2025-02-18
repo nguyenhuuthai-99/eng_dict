@@ -2,6 +2,7 @@ import 'package:eng_dict/model/quiz/word_matching.dart';
 import 'package:eng_dict/model/vocabulary.dart';
 import 'package:eng_dict/view/component/count_down_timer.dart';
 import 'package:eng_dict/view/utils/constants.dart';
+import 'package:eng_dict/view/utils/play_sound.dart';
 import 'package:eng_dict/view/widgets/practice/quiz/quiz_feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -114,6 +115,11 @@ class _WordMatchingScreenState extends State<WordMatchingScreen> {
         activeColors[index] = Constant.kRedIndicatorColor;
         activeWidgets[index] = Constant.kRedIndicatorColor;
       }
+    }
+    if (incorrectWords.isEmpty) {
+      PlaySound.playAssetSound('/assets/sounds/right.mp3');
+    } else {
+      PlaySound.playAssetSound("/assets/sounds/wrong.mp3");
     }
 
     widget.onSubmit(correctWords, incorrectWords);

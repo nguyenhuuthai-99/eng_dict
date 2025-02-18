@@ -1,8 +1,8 @@
 import 'package:eng_dict/model/vocabulary.dart';
 import 'package:eng_dict/view/component/count_down_timer.dart';
 import 'package:eng_dict/view/utils/constants.dart';
+import 'package:eng_dict/view/utils/play_sound.dart';
 import 'package:eng_dict/view/widgets/practice/quiz/quiz_feedback.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MultipleChoiceScreen extends StatefulWidget {
@@ -52,13 +52,16 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
     });
 
     if (selectedWord == null) {
+      PlaySound.playAssetSound("/assets/sounds/wrong.mp3");
       _isCorrect = false;
       widget.onSubmit(false);
       return;
     }
     if (selectedWord! == _correctWord) {
+      PlaySound.playAssetSound("/assets/sounds/right.mp3");
       _isCorrect = true;
     } else {
+      PlaySound.playAssetSound("/assets/sounds/wrong.mp3");
       _isCorrect = false;
     }
     widget.onSubmit(selectedWord! == _correctWord);

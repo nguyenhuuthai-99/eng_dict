@@ -8,6 +8,7 @@ import 'package:eng_dict/networking/database_helper.dart';
 import 'package:eng_dict/view/screens/practice/quiz/multiple_choice.dart';
 import 'package:eng_dict/view/screens/practice/quiz/spelling.dart';
 import 'package:eng_dict/view/screens/practice/quiz/word_matching.dart';
+import 'package:eng_dict/view/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +33,7 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
   bool _isQuizReady = false;
   bool _isEnoughTestingWord = true;
 
-  late List<Vocabulary> testingVocabularies;
+  List<Vocabulary> testingVocabularies = [];
   late List<Vocabulary> fetchedVocabularies;
 
   List<MultipleChoiceLesson> multipleChoiceLessons = [];
@@ -56,7 +57,6 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
     if (!canInitQuizzes(testingVocabularies)) {
       _isEnoughTestingWord = false;
     }
-    await delayedFunction();
 
     initLesson();
 
@@ -64,12 +64,6 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
     setState(() {
       _isQuizReady = true;
     });
-  }
-
-  Future<void> delayedFunction() async {
-    print("Waiting...");
-    await Future.delayed(Duration(seconds: 4));
-    print("4 seconds later...");
   }
 
   void initLesson() {
@@ -95,7 +89,7 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
     Random random = Random();
 
     Map<String, Vocabulary> selections = {};
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 3; i++) {
       bool isFound = false;
       var count = 0;
       while (!isFound) {
@@ -214,7 +208,6 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
   }
 
   void onNextPressed() {
-    //todo move to the next question
     setState(() {
       currentLessonIndex++;
     });
@@ -263,12 +256,22 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: Text("${currentLessonIndex + 1}/${testingVocabularies.length}"),
-        actions: [Text("Skip   ")],
-      ),
+      appBar: _isEnoughTestingWord
+          ? AppBar(
+              title: currentLessonIndex == testingVocabularies.length
+                  ? null
+                  : Text(
+                      "${currentLessonIndex + 1}/${testingVocabularies.length}"),
+              actions: [
+                TextButton(
+                    onPressed: onNextPressed, child: const Text("Skip   "))
+              ],
+            )
+          : AppBar(),
       body: _isQuizReady
-          ? pickLesson()
+          ? _isEnoughTestingWord
+              ? pickLesson()
+              : const InsufficientWordsScreen()
           : const Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -278,6 +281,35 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
                 ],
               ),
             ),
+    );
+  }
+}
+
+class InsufficientWordsScreen extends StatelessWidget {
+  const InsufficientWordsScreen({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding:
+            const EdgeInsets.symmetric(horizontal: Constant.kMarginExtraLarge),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "Not enough saved words",
+              style: Constant.kHeadingTextStyle,
+            ),
+            Text(
+              "You need to have at least 4 distinct saved vocabularies to start practice quizzes. Please add more vocabulary and try later.",
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

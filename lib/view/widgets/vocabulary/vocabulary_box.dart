@@ -60,9 +60,9 @@ class VocabularyBox extends StatelessWidget {
               if (Provider.of<VocabularyData>(context, listen: false)
                   .newVocabularyList
                   .contains(vocabulary.id))
-                Padding(
-                  padding: const EdgeInsets.only(left: Constant.kMarginMedium),
-                  child: const Icon(
+                const Padding(
+                  padding: EdgeInsets.only(left: Constant.kMarginMedium),
+                  child: Icon(
                     CustomIcon.new_icon,
                     color: Colors.blue,
                   ),
