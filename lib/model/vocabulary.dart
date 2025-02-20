@@ -1,14 +1,20 @@
+import 'dart:ui';
+
+import 'package:eng_dict/view/utils/constants.dart';
+import 'package:flutter/cupertino.dart';
+
 enum VocabularyLevel { unfamiliar, familiar, mastered }
 
 class Vocabulary {
-  late int _id;
-  late String _wordTitle;
-  late String _wordForm;
-  late String _phraseTitle;
-  late String _wordDefinition;
-  late int fluencyLevel;
-  late String _URL;
-  late String? _soundUrl;
+  late final int _id;
+  late final String _wordTitle;
+  late final String _wordForm;
+  late final String _phraseTitle;
+  late final String _wordDefinition;
+  late final int _fluencyLevel;
+  late final String _URL;
+  late final String? _soundUrl;
+  late int _updatedFluencyLevel;
 
   Vocabulary();
 
@@ -19,6 +25,7 @@ class Vocabulary {
     phraseTitle = map["phrase_title"];
     wordDefinition = map["word_definition"];
     fluencyLevel = map["fluency_level"];
+    _updatedFluencyLevel = map["fluency_level"];
     URL = map['url'];
     soundUrl = map['sound_url'];
   }
@@ -34,6 +41,27 @@ class Vocabulary {
       "url": URL,
       "sound_url": soundUrl
     };
+  }
+
+  Color pickIndicatorColor() {
+    if (8 >= fluencyLevel && fluencyLevel > 4) {
+      return Constant.kYellowIndicatorColor;
+    } else if (fluencyLevel > 8) {
+      return Constant.kGreenIndicatorColor;
+    } else {
+      return Constant.kRedIndicatorColor;
+    }
+  }
+
+  TextSpan pickUpdatedSymbol() {
+    int updatedStatus = updatedFluencyLevel - fluencyLevel;
+    if (updatedStatus == 0) {
+      return Constant.kRemainSymbol;
+    } else if (updatedStatus > 0) {
+      return Constant.kUpSymbol;
+    } else {
+      return Constant.kDownSymbol;
+    }
   }
 
   int get id => _id;
@@ -82,5 +110,18 @@ class Vocabulary {
 
   set soundUrl(String? value) {
     _soundUrl = value;
+  }
+
+  int get updatedFluencyLevel => _updatedFluencyLevel;
+
+  void increaseFluencyLevel() => _updatedFluencyLevel++;
+
+  void decreaseFluencyLevel() => _updatedFluencyLevel--;
+
+  int get fluencyLevel => _fluencyLevel;
+
+  set fluencyLevel(int value) {
+    _updatedFluencyLevel = value;
+    _fluencyLevel = value;
   }
 }

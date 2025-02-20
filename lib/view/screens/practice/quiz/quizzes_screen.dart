@@ -11,6 +11,7 @@ import 'package:eng_dict/view/screens/practice/quiz/word_matching.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../../../component/animated_progression_indicator.dart';
@@ -361,20 +362,47 @@ class QuizResultScreen extends StatelessWidget {
               ListView.builder(
                 itemBuilder: (context, index) {
                   var curWord = testingQuizzes[index];
-                  return Row(
-                    children: [
-                      Text(
-                        curWord.fluencyLevel.toString(),
-                        style: Constant.kHeading2TextStyle,
-                      ),
-                      Icon(CupertinoIcons.arrowtriangle_up_fill),
-                      Column(
+                  return Card(
+                    color: Constant.kGreyBackground,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Constant.kMarginExtraLarge,
+                          vertical: Constant.kMarginLarge),
+                      child: Row(
                         children: [
-                          Text(curWord.wordTitle),
-                          Text(curWord.wordForm)
+                          RichText(
+                              text: TextSpan(children: [
+                            TextSpan(
+                              text: "${curWord.fluencyLevel}  ",
+                              style: GoogleFonts.openSans(
+                                  color: curWord.pickIndicatorColor(),
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 16),
+                            ),
+                            curWord.pickUpdatedSymbol(),
+                          ])),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: Constant.kMarginMedium),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  curWord.wordTitle,
+                                  style: Constant.kHeadingTextStyle,
+                                ),
+                                Text(
+                                  curWord.wordForm,
+                                  style: const TextStyle(
+                                      color: Colors.black87,
+                                      fontStyle: FontStyle.italic),
+                                )
+                              ],
+                            ),
+                          )
                         ],
-                      )
-                    ],
+                      ),
+                    ),
                   );
                 },
                 physics: NeverScrollableScrollPhysics(),

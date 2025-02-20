@@ -48,6 +48,7 @@ class _AnimatedCircularProgressState extends State<AnimatedCircularProgress> {
                 color: widget.progressionIndicatorColor,
                 value: value,
                 strokeWidth: 15,
+                strokeCap: StrokeCap.round,
                 backgroundColor: Colors.grey[300],
               ),
               Opacity(

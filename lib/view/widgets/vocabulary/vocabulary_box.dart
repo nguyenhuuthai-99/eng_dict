@@ -17,17 +17,9 @@ class VocabularyBox extends StatelessWidget {
     super.key,
   });
 
-  void pickIndicatorColor() {
-    if (8 >= vocabulary.fluencyLevel && vocabulary.fluencyLevel > 4) {
-      indicatorColor = Constant.kYellowIndicatorColor;
-    } else if (vocabulary.fluencyLevel > 8) {
-      indicatorColor = Constant.kGreenIndicatorColor;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    pickIndicatorColor();
+    indicatorColor = vocabulary.pickIndicatorColor();
     return Container(
       padding: const EdgeInsets.only(
           top: Constant.kMarginSmall,
