@@ -16,7 +16,7 @@ class SpellingLessonScreen extends StatefulWidget {
       required this.timeLimit});
   int timeLimit;
   Vocabulary word;
-  Function(bool isCorrect) onSubmit;
+  Function(bool isCorrect, Vocabulary vocabulary) onSubmit;
   Function() onNextPressed;
 
   @override
@@ -40,14 +40,14 @@ class _SpellCheckScreenState extends State<SpellingLessonScreen> {
   void checkAnswer() {
     if (_input == widget.word.wordTitle.toUpperCase()) {
       PlaySound.playAssetSound("assets/sounds/right.mp3");
-      widget.onSubmit(true);
+      widget.onSubmit(true, widget.word);
       _isCorrect = true;
     } else {
       _attempt--;
       PlaySound.playAssetSound("assets/sounds/wrong.mp3");
       _textEditingController.clear();
       if (_attempt <= 0) {
-        widget.onSubmit(false);
+        widget.onSubmit(false, widget.word);
         _isCorrect = false;
       }
     }

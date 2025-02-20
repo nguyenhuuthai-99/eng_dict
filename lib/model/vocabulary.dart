@@ -54,7 +54,7 @@ class Vocabulary {
   }
 
   TextSpan pickUpdatedSymbol() {
-    int updatedStatus = updatedFluencyLevel - fluencyLevel;
+    int updatedStatus = _updatedFluencyLevel - _fluencyLevel;
     if (updatedStatus == 0) {
       return Constant.kRemainSymbol;
     } else if (updatedStatus > 0) {
@@ -114,9 +114,17 @@ class Vocabulary {
 
   int get updatedFluencyLevel => _updatedFluencyLevel;
 
-  void increaseFluencyLevel() => _updatedFluencyLevel++;
+  void increaseFluencyLevel() {
+    if (_updatedFluencyLevel < 12) {
+      _updatedFluencyLevel++;
+    }
+  }
 
-  void decreaseFluencyLevel() => _updatedFluencyLevel--;
+  void decreaseFluencyLevel() {
+    if (_updatedFluencyLevel > 1) {
+      _updatedFluencyLevel--;
+    }
+  }
 
   int get fluencyLevel => _fluencyLevel;
 

@@ -17,7 +17,7 @@ class MultipleChoiceScreen extends StatefulWidget {
   int timeLimit;
   List<Vocabulary> words;
   Vocabulary testingWord;
-  Function(bool isCorrect) onSubmit;
+  Function(bool isCorrect, Vocabulary vocabulary) onSubmit;
   Function() onNextPressed;
 
   @override
@@ -54,7 +54,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
     if (selectedWord == null) {
       PlaySound.playAssetSound("/assets/sounds/wrong.mp3");
       _isCorrect = false;
-      widget.onSubmit(false);
+      widget.onSubmit(false, widget.testingWord);
       return;
     }
     if (selectedWord! == _correctWord) {
@@ -64,7 +64,7 @@ class _MultipleChoiceScreenState extends State<MultipleChoiceScreen> {
       PlaySound.playAssetSound("/assets/sounds/wrong.mp3");
       _isCorrect = false;
     }
-    widget.onSubmit(selectedWord! == _correctWord);
+    widget.onSubmit(selectedWord! == _correctWord, widget.testingWord);
   }
 
   @override

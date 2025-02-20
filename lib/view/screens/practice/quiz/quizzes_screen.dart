@@ -5,16 +5,15 @@ import 'package:eng_dict/model/quiz/spelling.dart';
 import 'package:eng_dict/model/quiz/word_matching.dart';
 import 'package:eng_dict/model/vocabulary.dart';
 import 'package:eng_dict/networking/database_helper.dart';
+import 'package:eng_dict/provider/vocabulary_data.dart';
 import 'package:eng_dict/view/screens/practice/quiz/multiple_choice.dart';
 import 'package:eng_dict/view/screens/practice/quiz/spelling.dart';
 import 'package:eng_dict/view/screens/practice/quiz/word_matching.dart';
 import 'package:eng_dict/view/utils/constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../../../component/animated_progression_indicator.dart';
 import '../../../widgets/practice/quiz/circle_progression_box.dart';
 
 const level1Count = 6;
@@ -40,7 +39,10 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
   bool _isQuizFinished = false;
 
   List<Vocabulary> testingVocabularies = [];
+  Set<Vocabulary> distinctTestedVocabularies = {};
   late List<Vocabulary> fetchedVocabularies;
+  List<Vocabulary> correctVocabularies = [];
+  List<Vocabulary> incorrectVocabularies = [];
 
   List<MultipleChoiceLesson> multipleChoiceLessons = [];
   List<WordMatchingLesson> wordMatchingLessons = [];
@@ -49,11 +51,13 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
   int currentLessonIndex = 0;
 
   late DatabaseHelper databaseHelper;
+  late VocabularyData vocabularyData;
 
   @override
   void initState() {
     super.initState();
     databaseHelper = Provider.of<DatabaseHelper>(context, listen: false);
+    vocabularyData = Provider.of<VocabularyData>(context, listen: false);
     initQuizzes();
   }
 
@@ -63,6 +67,8 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
     if (!canInitQuizzes(testingVocabularies)) {
       _isEnoughTestingWord = false;
     }
+
+    distinctTestedVocabularies = testingVocabularies.toSet();
 
     initLesson();
 
@@ -139,13 +145,17 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
         int randomIndex = random.nextInt(vocabulariesCopy.length);
         final title = vocabulariesCopy[randomIndex].wordTitle;
         if (!testingWords.contains(title)) {
+          var word = vocabulariesCopy.removeAt(randomIndex);
+          wordMatchingLesson.insertWord(word);
+          distinctTestedVocabularies.add(word);
+          testingVocabularies.add(word);
           testingWords.add(title);
-          wordMatchingLesson.insertWord(vocabulariesCopy.removeAt(randomIndex));
           isFound = true;
         }
         count++;
       }
     }
+
     return wordMatchingLesson;
   }
 
@@ -223,20 +233,54 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
   void _isFinished() {
     if (currentLessonIndex >= generatedLessons.length) {
       _isQuizFinished = true;
+      updateVocabularyFluency();
     }
   }
 
-  void onSubmit(bool isCorrect) {}
+  void updateVocabularyFluency() {
+    for (var word in distinctTestedVocabularies) {
+      vocabularyData.updateVocabulary(word.id, word.updatedFluencyLevel);
+    }
+  }
+
+  void onSubmit(bool isCorrect, Vocabulary vocabulary) {
+    if (isCorrect) {
+      addCorrectWord(vocabulary);
+    } else {
+      addIncorrectWord(vocabulary);
+    }
+  }
+
+  void addIncorrectWord(Vocabulary incorrectWord) {
+    incorrectVocabularies.add(incorrectWord);
+    updateIncorrectWord(incorrectWord);
+  }
+
+  void updateIncorrectWord(Vocabulary incorrectWord) {
+    incorrectWord.decreaseFluencyLevel();
+  }
+
+  void addCorrectWord(Vocabulary correctWord) {
+    correctVocabularies.add(correctWord);
+    updateCorrectWord(correctWord);
+  }
+
+  void updateCorrectWord(Vocabulary correctWord) {
+    correctWord.increaseFluencyLevel();
+  }
 
   void onWordMatchingSubmit(
-      List<Vocabulary> correctWords, List<Vocabulary> incorrectWords) {}
+      List<Vocabulary> correctWords, List<Vocabulary> incorrectWords) {
+    for (var word in correctWords) {
+      addCorrectWord(word);
+    }
+
+    for (var word in incorrectWords) {
+      addIncorrectWord(word);
+    }
+  }
 
   Widget pickLesson() {
-    if (currentLessonIndex >= generatedLessons.length)
-      return Container(
-        child: const Text("finished"),
-      );
-
     Object? currentLesson = generatedLessons[currentLessonIndex];
     if (currentLesson == null) {
       currentLessonIndex++;
@@ -267,21 +311,15 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return QuizResultScreen(
-      correctQuizzes: [null, null, null],
-      incorrectQuizzes: [null, null, null, null, null],
-      testingQuizzes: testingVocabularies,
-      numberOfQuizzes: 10,
-    );
     return !_isQuizFinished
         ? Scaffold(
             resizeToAvoidBottomInset: true,
             appBar: _isEnoughTestingWord
                 ? AppBar(
-                    title: currentLessonIndex == testingVocabularies.length
+                    title: currentLessonIndex == generatedLessons.length
                         ? null
                         : Text(
-                            "${currentLessonIndex + 1}/${testingVocabularies.length}"),
+                            "${currentLessonIndex + 1}/${generatedLessons.length}"),
                     actions: [
                       TextButton(
                           onPressed: onNextPressed,
@@ -304,24 +342,24 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
                   ),
           )
         : QuizResultScreen(
-            correctQuizzes: [],
-            incorrectQuizzes: [],
-            numberOfQuizzes: 10,
-            testingQuizzes: []);
+            correctQuizzes: correctVocabularies,
+            incorrectQuizzes: incorrectVocabularies,
+            numberOfQuizzes: testingVocabularies.length,
+            distinctWords: distinctTestedVocabularies.toList());
   }
 }
 
 class QuizResultScreen extends StatelessWidget {
   final List<Vocabulary?> correctQuizzes;
   final List<Vocabulary?> incorrectQuizzes;
-  final List<Vocabulary> testingQuizzes;
+  final List<Vocabulary> distinctWords;
   final int numberOfQuizzes;
 
   const QuizResultScreen({
     required this.correctQuizzes,
     required this.incorrectQuizzes,
     required this.numberOfQuizzes,
-    required this.testingQuizzes,
+    required this.distinctWords,
     super.key,
   });
 
@@ -361,7 +399,7 @@ class QuizResultScreen extends StatelessWidget {
               ),
               ListView.builder(
                 itemBuilder: (context, index) {
-                  var curWord = testingQuizzes[index];
+                  var curWord = distinctWords[index];
                   return Card(
                     color: Constant.kGreyBackground,
                     child: Padding(
@@ -373,7 +411,7 @@ class QuizResultScreen extends StatelessWidget {
                           RichText(
                               text: TextSpan(children: [
                             TextSpan(
-                              text: "${curWord.fluencyLevel}  ",
+                              text: "${curWord.updatedFluencyLevel}  ",
                               style: GoogleFonts.openSans(
                                   color: curWord.pickIndicatorColor(),
                                   fontWeight: FontWeight.w900,
@@ -405,9 +443,9 @@ class QuizResultScreen extends StatelessWidget {
                     ),
                   );
                 },
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: testingQuizzes.length,
+                itemCount: distinctWords.length,
               )
             ],
           ),
