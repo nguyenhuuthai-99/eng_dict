@@ -13,15 +13,22 @@ class VocabularyData extends ChangeNotifier {
   Future<void> getVocabulary() async {
     isLoading = true;
 
-    vocabularyList = await databaseHelper.getVocabulary();
+    await getVocabulariesFromDatabase();
+
     sortVocabularyByID();
 
     isLoading = false;
     notifyListeners();
   }
 
+  Future<void> getVocabulariesFromDatabase() async {
+    vocabularyList = await databaseHelper.getVocabulary();
+  }
+
   Future<void> updateVocabulary(int id, int level) async {
     await databaseHelper.updateVocabularyFluency(id, level);
+    getVocabulariesFromDatabase();
+    notifyListeners();
   }
 
   Future<void> insertVocabulary(Vocabulary vocabulary) async {

@@ -2,26 +2,29 @@ import 'package:eng_dict/model/quiz/word_matching.dart';
 import 'package:eng_dict/model/vocabulary.dart';
 import 'package:eng_dict/view/component/count_down_timer.dart';
 import 'package:eng_dict/view/utils/constants.dart';
+import 'package:eng_dict/view/utils/play_sound.dart';
 import 'package:eng_dict/view/widgets/practice/quiz/quiz_feedback.dart';
 import 'package:flutter/material.dart';
 
-class WordMatchingWidget extends StatefulWidget {
-  WordMatchingWidget({
+class WordMatchingScreen extends StatefulWidget {
+  WordMatchingScreen({
     required this.wordMatchingLesson,
     required this.onSubmit,
     required this.timeLimit,
+    required this.onNextPressed,
     super.key,
   });
   WordMatchingLesson wordMatchingLesson;
   Function(List<Vocabulary> correctWords, List<Vocabulary> incorrectWords)
       onSubmit;
+  Function() onNextPressed;
   int timeLimit;
 
   @override
-  State<WordMatchingWidget> createState() => _WordMatchingWidgetState();
+  State<WordMatchingScreen> createState() => _WordMatchingScreenState();
 }
 
-class _WordMatchingWidgetState extends State<WordMatchingWidget> {
+class _WordMatchingScreenState extends State<WordMatchingScreen> {
   bool isSubmitted = false;
 
   // Track the current drag position
@@ -112,6 +115,11 @@ class _WordMatchingWidgetState extends State<WordMatchingWidget> {
         activeColors[index] = Constant.kRedIndicatorColor;
         activeWidgets[index] = Constant.kRedIndicatorColor;
       }
+    }
+    if (incorrectWords.isEmpty) {
+      PlaySound.playAssetSound('/assets/sounds/right.mp3');
+    } else {
+      PlaySound.playAssetSound("/assets/sounds/wrong.mp3");
     }
 
     widget.onSubmit(correctWords, incorrectWords);
@@ -314,14 +322,10 @@ class _WordMatchingWidgetState extends State<WordMatchingWidget> {
             alignment: Alignment.bottomCenter,
             child: incorrectWords.isEmpty
                 ? CorrectFeedback(
-                    onNextPressed: () {
-                      //todo
-                    },
+                    onNextPressed: widget.onNextPressed,
                   )
                 : IncorrectFeedback(
-                    onNextPressed: () {
-                      //todo
-                    },
+                    onNextPressed: widget.onNextPressed,
                     incorrectWords: incorrectWords,
                   ),
           ),

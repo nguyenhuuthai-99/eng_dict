@@ -17,17 +17,9 @@ class VocabularyBox extends StatelessWidget {
     super.key,
   });
 
-  void pickIndicatorColor() {
-    if (8 >= vocabulary.fluencyLevel && vocabulary.fluencyLevel > 4) {
-      indicatorColor = Constant.kYellowIndicatorColor;
-    } else if (vocabulary.fluencyLevel > 8) {
-      indicatorColor = Constant.kGreenIndicatorColor;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    pickIndicatorColor();
+    indicatorColor = vocabulary.pickIndicatorColor();
     return Container(
       padding: const EdgeInsets.only(
           top: Constant.kMarginSmall,
@@ -53,16 +45,19 @@ class VocabularyBox extends StatelessWidget {
                 ),
               if (vocabulary.phraseTitle.isNotEmpty)
                 const Text(
-                  " phrase   ",
+                  " phrase",
                   style: TextStyle(
                       fontStyle: FontStyle.italic, color: Constant.kGreyText),
                 ),
               if (Provider.of<VocabularyData>(context, listen: false)
                   .newVocabularyList
                   .contains(vocabulary.id))
-                const Icon(
-                  CustomIcon.new_icon,
-                  color: Colors.blue,
+                const Padding(
+                  padding: EdgeInsets.only(left: Constant.kMarginMedium),
+                  child: Icon(
+                    CustomIcon.new_icon,
+                    color: Colors.blue,
+                  ),
                 ),
               const Expanded(child: SizedBox()),
               GestureDetector(
