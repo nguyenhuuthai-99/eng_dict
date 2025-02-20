@@ -10,14 +10,11 @@ class WordMatchingLesson implements Lesson {
   WordMatchingLesson();
 
   void insertWord(Vocabulary insertingWord) {
-    _words.forEach(
-      (element) {
-        if (insertingWord.wordTitle == element.wordTitle) {
-          return;
-        }
-      },
-    );
-
+    for (var element in _words) {
+      if (insertingWord.wordTitle == element.wordTitle) {
+        continue;
+      }
+    }
     _words.add(insertingWord);
   }
 

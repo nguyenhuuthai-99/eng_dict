@@ -15,6 +15,8 @@ class MultipleChoiceLesson implements Lesson {
     _words.add(insertingWord);
   }
 
+  List<Vocabulary> get words => _words;
+
   @override
   List<MultipleChoiceLesson> generateLesson() {
     return [];

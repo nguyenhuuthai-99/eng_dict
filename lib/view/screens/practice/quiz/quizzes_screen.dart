@@ -5,53 +5,16 @@ import 'package:eng_dict/model/quiz/spelling.dart';
 import 'package:eng_dict/model/quiz/word_matching.dart';
 import 'package:eng_dict/model/vocabulary.dart';
 import 'package:eng_dict/networking/database_helper.dart';
-import 'package:eng_dict/view/component/count_down_timer.dart';
+import 'package:eng_dict/provider/vocabulary_data.dart';
+import 'package:eng_dict/view/screens/practice/quiz/multiple_choice.dart';
+import 'package:eng_dict/view/screens/practice/quiz/spelling.dart';
+import 'package:eng_dict/view/screens/practice/quiz/word_matching.dart';
 import 'package:eng_dict/view/utils/constants.dart';
-import 'package:eng_dict/view/utils/custom_icon.dart';
-import 'package:eng_dict/view/utils/play_sound.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-List<Vocabulary> vocabList = [
-  Vocabulary()
-    ..id = 1
-    ..wordTitle = "Eloquent"
-    ..wordForm = "Adjective"
-    ..phraseTitle = "He gave an eloquent speech."
-    ..wordDefinition =
-        "Fluent or persuasive in speaking or writing Fluent or persuasive Fluent or persuasive in speaking or writing in speaking or writing Fluent or persuasive in speaking or writing Fluent or persuasive in speaking or writing Fluent or persuasive in speaking or writing. Fluent or persuasi"
-    ..fluencyLevel = 3
-    ..URL = "https://example.com/eloquent"
-    ..soundUrl = "https://example.com/sounds/eloquent.mp3",
-  Vocabulary()
-    ..id = 2
-    ..wordTitle = "Resilient"
-    ..wordForm = "Adjective"
-    ..phraseTitle = "She is resilient in tough situations."
-    ..wordDefinition = "Able to recover quickly from difficulties."
-    ..fluencyLevel = 2
-    ..URL = "https://example.com/resilient"
-    ..soundUrl =
-        "https://dictionary.cambridge.org/media/english/us_pron/r/res/resil/resilient.mp3",
-  Vocabulary()
-    ..id = 3
-    ..wordTitle = "Meticulous"
-    ..wordForm = "Adjective"
-    ..phraseTitle = "He is meticulous about details."
-    ..wordDefinition = "Showing great attention to detail."
-    ..fluencyLevel = 1
-    ..URL = "https://example.com/meticulous"
-    ..soundUrl = "https://example.com/sounds/meticulous.mp3",
-  Vocabulary()
-    ..id = 4
-    ..wordTitle = "Candid"
-    ..wordForm = "Adjective"
-    ..phraseTitle = "She was candid about her mistakes."
-    ..wordDefinition = "Truthful and straightforward."
-    ..fluencyLevel = 10
-    ..URL = "https://example.com/candid"
-    ..soundUrl = "https://example.com/sounds/candid.mp3",
-];
+import '../../../widgets/practice/quiz/circle_progression_box.dart';
 
 const level1Count = 6;
 const level2Count = 3;
@@ -60,6 +23,8 @@ const level3Count = 1;
 const wordMatchingTimeLimit = 60;
 const multipleChoiceTimeLimit = 30;
 const spellingTimeLimit = 30;
+
+const minimumVocabularyCount = 4;
 
 class QuizzesScreen extends StatefulWidget {
   const QuizzesScreen({super.key});
@@ -70,37 +35,42 @@ class QuizzesScreen extends StatefulWidget {
 
 class _QuizzesScreenState extends State<QuizzesScreen> {
   bool _isQuizReady = false;
-  Random random = Random();
+  bool _isEnoughTestingWord = true;
+  bool _isQuizFinished = false;
 
-  late List<Vocabulary> wordList;
+  List<Vocabulary> testingVocabularies = [];
+  Set<Vocabulary> distinctTestedVocabularies = {};
+  late List<Vocabulary> fetchedVocabularies;
+  List<Vocabulary> correctVocabularies = [];
+  List<Vocabulary> incorrectVocabularies = [];
 
   List<MultipleChoiceLesson> multipleChoiceLessons = [];
   List<WordMatchingLesson> wordMatchingLessons = [];
   List<SpellingLesson> spellingLessons = [];
-  List<Object> finalLessons = [];
+  List<Object?> generatedLessons = [];
+  int currentLessonIndex = 0;
 
   late DatabaseHelper databaseHelper;
+  late VocabularyData vocabularyData;
 
   @override
   void initState() {
-    //todo dummy object
-    WordMatchingLesson wordMatchingLesson = WordMatchingLesson();
-    wordMatchingLesson.words = vocabList;
-    wordMatchingLessons.add(wordMatchingLesson);
-
-    // TODO: implement initState
     super.initState();
     databaseHelper = Provider.of<DatabaseHelper>(context, listen: false);
+    vocabularyData = Provider.of<VocabularyData>(context, listen: false);
     initQuizzes();
   }
 
-  void initQuizzes() {
-    //todo get practice word, user need to get at least 4 added word to continue
-    //todo create lesson for each word maximum 10 words
+  void initQuizzes() async {
+    testingVocabularies = await fetchVocabularies();
 
-    //todo initiate practice lesson for each game,
-    //todo make a list for each game, may be nested list
-    //List [multipleChoiceLessons]
+    if (!canInitQuizzes(testingVocabularies)) {
+      _isEnoughTestingWord = false;
+    }
+
+    distinctTestedVocabularies = testingVocabularies.toSet();
+
+    initLesson();
 
     //when the quiz is ready, start the quiz screen
     setState(() {
@@ -109,24 +79,93 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
   }
 
   void initLesson() {
-    for (int i = 0; i < 4; i++) {
-      if (i == 3) {
-        initQuiz();
-        continue;
+    for (int i = 0; i < testingVocabularies.length; i++) {
+      if (i == 10) break;
+
+      if ((i + 1) % 3 == 1) {
+        generatedLessons.add(initMultipleChoice(testingVocabularies[i]));
+      } else if ((i + 1) % 3 == 2) {
+        generatedLessons.add(initWordMatching(testingVocabularies[i]));
+      } else {
+        generatedLessons.add(initSpelling(testingVocabularies[i]));
       }
-      initQuiz();
-      initWordMatching();
-      initSpelling();
     }
   }
 
-  void initQuiz() {}
+  MultipleChoiceLesson? initMultipleChoice(Vocabulary vocabulary) {
+    MultipleChoiceLesson multipleChoiceLesson =
+        MultipleChoiceLesson(correctWord: vocabulary);
 
-  void initWordMatching() {}
+    var vocabulariesCopy = [...fetchedVocabularies];
 
-  void initSpelling() {}
+    Random random = Random();
+
+    Map<String, Vocabulary> selections = {};
+    for (int i = 0; i < 3; i++) {
+      bool isFound = false;
+      var count = 0;
+      while (!isFound) {
+        if (count > 5) break;
+        if (vocabulariesCopy.isNotEmpty) {
+          int randomIndex = random.nextInt(vocabulariesCopy.length);
+          final title = vocabulariesCopy[randomIndex].wordTitle;
+          if (title != vocabulary.wordTitle && !selections.containsKey(title)) {
+            selections[title] = vocabulariesCopy.removeAt(randomIndex);
+            isFound = true;
+          }
+        }
+        count++;
+      }
+    }
+
+    selections.forEach(
+      (key, value) => multipleChoiceLesson.insertWord(value),
+    );
+    if (multipleChoiceLesson.words.isEmpty) {
+      return null;
+    }
+    return multipleChoiceLesson;
+  }
+
+  WordMatchingLesson initWordMatching(Vocabulary vocabulary) {
+    WordMatchingLesson wordMatchingLesson = WordMatchingLesson();
+    wordMatchingLesson.insertWord(vocabulary);
+
+    Set<String> testingWords = {vocabulary.wordTitle};
+    List<Vocabulary> vocabulariesCopy = [...fetchedVocabularies];
+    Random random = Random();
+
+    for (int i = 0; i < 3; i++) {
+      bool isFound = false;
+      var count = 0;
+      while (!isFound) {
+        if (count > 5) {
+          break;
+        }
+        int randomIndex = random.nextInt(vocabulariesCopy.length);
+        final title = vocabulariesCopy[randomIndex].wordTitle;
+        if (!testingWords.contains(title)) {
+          var word = vocabulariesCopy.removeAt(randomIndex);
+          wordMatchingLesson.insertWord(word);
+          distinctTestedVocabularies.add(word);
+          testingVocabularies.add(word);
+          testingWords.add(title);
+          isFound = true;
+        }
+        count++;
+      }
+    }
+
+    return wordMatchingLesson;
+  }
+
+  SpellingLesson initSpelling(Vocabulary vocabulary) {
+    SpellingLesson spellingLesson = SpellingLesson(word: vocabulary);
+    return spellingLesson;
+  }
 
   List<Vocabulary> pickRandom(List<Vocabulary> source, int count) {
+    Random random = Random();
     List<Vocabulary> picked = [];
     for (int i = 0; i < count && source.isNotEmpty; i++) {
       int index = random.nextInt(source.length);
@@ -135,19 +174,10 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
     return picked;
   }
 
-  Future<void> initWords() async {
-    databaseHelper = Provider.of<DatabaseHelper>(context, listen: false);
-    Random random = Random();
+  Future<List<Vocabulary>> fetchVocabularies() async {
+    List<Vocabulary> vocabularies = [];
 
-    // Function to randomly pick `count` elements from a list
-    List<Vocabulary> pickRandom(List<Vocabulary> source, int count) {
-      List<Vocabulary> picked = [];
-      for (int i = 0; i < count && source.isNotEmpty; i++) {
-        int index = random.nextInt(source.length);
-        picked.add(source.removeAt(index));
-      }
-      return picked;
-    }
+    databaseHelper = Provider.of<DatabaseHelper>(context, listen: false);
 
     List<Vocabulary> level1Words =
         await databaseHelper.getVocabularyOnLevel(VocabularyLevel.unfamiliar);
@@ -156,180 +186,296 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
     List<Vocabulary> level3Words =
         await databaseHelper.getVocabularyOnLevel(VocabularyLevel.mastered);
 
-    wordList.addAll(pickRandom(level1Words, level1Count));
-    wordList.addAll(pickRandom(level2Words, level2Count));
-    wordList.addAll(pickRandom(level3Words, level3Count));
+    fetchedVocabularies = [...level2Words, ...level3Words, ...level1Words];
 
-    int remaining = 10 - wordList.length;
+    vocabularies.addAll(pickRandom(level1Words, level1Count));
+    vocabularies.addAll(pickRandom(level2Words, level2Count));
+    vocabularies.addAll(pickRandom(level3Words, level3Count));
+
+    int remaining = 10 - vocabularies.length;
+
+    List<Vocabulary> remainingVocabularies = [
+      ...level2Words,
+      ...level3Words,
+      ...level1Words
+    ];
     if (remaining > 0) {
-      List<Vocabulary> extraElements = [
-        ...level2Words,
-        ...level3Words,
-        ...level1Words
-      ];
-      wordList.addAll(pickRandom(extraElements, remaining));
+      vocabularies.addAll(pickRandom(remainingVocabularies, remaining));
+    }
+    return vocabularies;
+  }
+
+  bool canInitQuizzes(List<Vocabulary> vocabularies) {
+    if (vocabularies.length < 4) {
+      return false;
+    } else {
+      Set<String> distinctWords = {};
+
+      vocabularies.forEach(
+        (element) => distinctWords.add(element.wordTitle),
+      );
+
+      if (distinctWords.length < 4) {
+        return false;
+      } else {
+        return true;
+      }
     }
   }
 
   void onNextPressed() {
-    //todo move to the next question
+    setState(() {
+      currentLessonIndex++;
+      _isFinished();
+    });
+  }
+
+  void _isFinished() {
+    if (currentLessonIndex >= generatedLessons.length) {
+      _isQuizFinished = true;
+      updateVocabularyFluency();
+    }
+  }
+
+  void updateVocabularyFluency() {
+    for (var word in distinctTestedVocabularies) {
+      vocabularyData.updateVocabulary(word.id, word.updatedFluencyLevel);
+    }
+  }
+
+  void onSubmit(bool isCorrect, Vocabulary vocabulary) {
+    if (isCorrect) {
+      addCorrectWord(vocabulary);
+    } else {
+      addIncorrectWord(vocabulary);
+    }
+  }
+
+  void addIncorrectWord(Vocabulary incorrectWord) {
+    incorrectVocabularies.add(incorrectWord);
+    updateIncorrectWord(incorrectWord);
+  }
+
+  void updateIncorrectWord(Vocabulary incorrectWord) {
+    incorrectWord.decreaseFluencyLevel();
+  }
+
+  void addCorrectWord(Vocabulary correctWord) {
+    correctVocabularies.add(correctWord);
+    updateCorrectWord(correctWord);
+  }
+
+  void updateCorrectWord(Vocabulary correctWord) {
+    correctWord.increaseFluencyLevel();
+  }
+
+  void onWordMatchingSubmit(
+      List<Vocabulary> correctWords, List<Vocabulary> incorrectWords) {
+    for (var word in correctWords) {
+      addCorrectWord(word);
+    }
+
+    for (var word in incorrectWords) {
+      addIncorrectWord(word);
+    }
+  }
+
+  Widget pickLesson() {
+    Object? currentLesson = generatedLessons[currentLessonIndex];
+    if (currentLesson == null) {
+      currentLessonIndex++;
+      pickLesson();
+    }
+    if (currentLesson is MultipleChoiceLesson) {
+      return MultipleChoiceScreen(
+          timeLimit: multipleChoiceTimeLimit,
+          words: currentLesson.words,
+          testingWord: currentLesson.correctWord,
+          onSubmit: onSubmit,
+          onNextPressed: onNextPressed);
+    } else if (currentLesson is WordMatchingLesson) {
+      return WordMatchingScreen(
+          wordMatchingLesson: currentLesson,
+          onSubmit: onWordMatchingSubmit,
+          onNextPressed: onNextPressed,
+          timeLimit: wordMatchingTimeLimit);
+    } else {
+      currentLesson as SpellingLesson;
+      return SpellingLessonScreen(
+          word: currentLesson.word,
+          onNextPressed: onNextPressed,
+          onSubmit: onSubmit,
+          timeLimit: spellingTimeLimit);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    return !_isQuizFinished
+        ? Scaffold(
+            resizeToAvoidBottomInset: true,
+            appBar: _isEnoughTestingWord
+                ? AppBar(
+                    title: currentLessonIndex == generatedLessons.length
+                        ? null
+                        : Text(
+                            "${currentLessonIndex + 1}/${generatedLessons.length}"),
+                    actions: [
+                      TextButton(
+                          onPressed: onNextPressed,
+                          child: const Text("Skip   "))
+                    ],
+                  )
+                : AppBar(),
+            body: _isQuizReady
+                ? _isEnoughTestingWord
+                    ? pickLesson()
+                    : const InsufficientWordsScreen()
+                : const Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircularProgressIndicator(),
+                        Text("Retrieving user data")
+                      ],
+                    ),
+                  ),
+          )
+        : QuizResultScreen(
+            correctQuizzes: correctVocabularies,
+            incorrectQuizzes: incorrectVocabularies,
+            numberOfQuizzes: testingVocabularies.length,
+            distinctWords: distinctTestedVocabularies.toList());
+  }
+}
+
+class QuizResultScreen extends StatelessWidget {
+  final List<Vocabulary?> correctQuizzes;
+  final List<Vocabulary?> incorrectQuizzes;
+  final List<Vocabulary> distinctWords;
+  final int numberOfQuizzes;
+
+  const QuizResultScreen({
+    required this.correctQuizzes,
+    required this.incorrectQuizzes,
+    required this.numberOfQuizzes,
+    required this.distinctWords,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text("3/10"),
-        actions: [Text("Skip   ")],
+        title: const Text("Result"),
       ),
-      body: SpellCheckScreen(
-        word: vocabList[1],
-        onSubmit: (isCorrect) {},
+      body: SafeArea(
+        child: Padding(
+          padding:
+              const EdgeInsets.symmetric(horizontal: Constant.kMarginMedium),
+          child: ListView(
+            children: [
+              const SizedBox(
+                height: Constant.kMarginMedium,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: Constant.kMarginExtraLarge),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    CircleProgressionIndicatorBox(
+                        title: "Correct",
+                        indicatorColor: Constant.kGreenIndicatorColor,
+                        progression: correctQuizzes.length,
+                        total: numberOfQuizzes),
+                    CircleProgressionIndicatorBox(
+                        title: "Incorrect",
+                        indicatorColor: Constant.kRedIndicatorColor,
+                        progression: incorrectQuizzes.length,
+                        total: numberOfQuizzes)
+                  ],
+                ),
+              ),
+              ListView.builder(
+                itemBuilder: (context, index) {
+                  var curWord = distinctWords[index];
+                  return Card(
+                    color: Constant.kGreyBackground,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Constant.kMarginExtraLarge,
+                          vertical: Constant.kMarginLarge),
+                      child: Row(
+                        children: [
+                          RichText(
+                              text: TextSpan(children: [
+                            TextSpan(
+                              text: "${curWord.updatedFluencyLevel}  ",
+                              style: GoogleFonts.openSans(
+                                  color: curWord.pickIndicatorColor(),
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 16),
+                            ),
+                            curWord.pickUpdatedSymbol(),
+                          ])),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: Constant.kMarginMedium),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  curWord.wordTitle,
+                                  style: Constant.kHeadingTextStyle,
+                                ),
+                                Text(
+                                  curWord.wordForm,
+                                  style: const TextStyle(
+                                      color: Colors.black87,
+                                      fontStyle: FontStyle.italic),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: distinctWords.length,
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
-class SpellCheckScreen extends StatefulWidget {
-  SpellCheckScreen({super.key, required this.word, required this.onSubmit});
-  Vocabulary word;
-  Function(bool isCorrect) onSubmit;
-
-  @override
-  State<SpellCheckScreen> createState() => _SpellCheckScreenState();
-}
-
-class _SpellCheckScreenState extends State<SpellCheckScreen> {
-  int _attempt = 3;
-  late String _input;
-  bool _canSubmit = false;
-
-  TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    PlaySound.playSoundFromURL(widget.word.soundUrl!);
-  }
-
-  void checkAnswer() {
-    if (_input == widget.word.wordTitle.toUpperCase()) {
-      PlaySound.playAssetSound("assets/sounds/right.mp3");
-      widget.onSubmit(true);
-    } else {
-      _attempt--;
-      PlaySound.playAssetSound("assets/sounds/wrong.mp3");
-      _textEditingController.clear();
-      if (_attempt <= 0) {
-        widget.onSubmit(false);
-      }
-    }
-    setState(() {});
-    // FocusManager.instance.primaryFocus?.unfocus();
-  }
-
-  void onTimesUp() {
-    _attempt = 0;
-    checkAnswer();
-  }
+class InsufficientWordsScreen extends StatelessWidget {
+  const InsufficientWordsScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Constant.kMarginLarge),
+        padding:
+            const EdgeInsets.symmetric(horizontal: Constant.kMarginExtraLarge),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: Constant.kMarginExtraLarge),
-                  child: TimerWidget(
-                      startTime: spellingTimeLimit, onTimesUp: onTimesUp),
-                ),
-                SizedBox(
-                  height: Constant.kMarginExtraLarge,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    PlaySound.playSoundFromURL(widget.word.soundUrl!);
-                  },
-                  child: const CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Constant.kGreyBackground,
-                    child: Icon(
-                      CustomIcon.speaker,
-                      color: Constant.kPrimaryColor,
-                      size: 80,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 32,
-                ),
-                Text(
-                  widget.word.definition,
-                  style: Constant.kHeading2TextStyle,
-                )
-              ],
+            Text(
+              "Not enough saved words",
+              style: Constant.kHeadingTextStyle,
             ),
-            const Expanded(child: SizedBox()),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  "   Attempt: $_attempt",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: Constant.kMarginMedium),
-                  child: TextField(
-                    controller: _textEditingController,
-                    autocorrect: false,
-                    enableSuggestions: false,
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.grey, width: 2)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey))),
-                    textCapitalization: TextCapitalization.characters,
-                    maxLines: 1,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    onSubmitted: (value) => checkAnswer(),
-                    onChanged: (value) {
-                      _input = value;
-                      setState(() {
-                        if (value.isNotEmpty) {
-                          _canSubmit = true;
-                        } else {
-                          _canSubmit = false;
-                        }
-                      });
-                    },
-                  ),
-                ),
-                TextButton(
-                    style: TextButton.styleFrom(
-                        backgroundColor:
-                            !_canSubmit ? Colors.black12 : Constant.kBlue,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(Constant.kMarginSmall))),
-                    onPressed: !_canSubmit ? null : checkAnswer,
-                    child: const Text(
-                      "Submit",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    )),
-              ],
+            Text(
+              "You need to have at least 4 distinct saved vocabularies to start practice quizzes. Please add more vocabulary and try later.",
+              textAlign: TextAlign.center,
             ),
           ],
         ),
