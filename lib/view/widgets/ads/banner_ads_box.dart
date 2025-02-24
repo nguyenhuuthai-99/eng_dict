@@ -21,7 +21,7 @@ class _BannerAdsBoxState extends State<BannerAdsBox>
       ? 'ca-app-pub-2903872604687353/2000827477'
       : 'ca-app-pub-2903872604687353/8979132933';
 
-  // //dummy ad
+  // // //dummy ad
   // final adUnitId = Platform.isAndroid
   //     ? 'ca-app-pub-3940256099942544/9214589741'
   //     : 'ca-app-pub-3940256099942544/2435281174';

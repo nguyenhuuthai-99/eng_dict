@@ -10,7 +10,7 @@ class InterstitialAdsBox {
       ? 'ca-app-pub-2903872604687353/6160693630'
       : 'ca-app-pub-2903872604687353/7168591342';
 
-  //dummy ad
+  // //dummy ad
   // final adUnitId = Platform.isAndroid
   //     ? 'ca-app-pub-3940256099942544/1033173712'
   //     : 'ca-app-pub-3940256099942544/4411468910';
