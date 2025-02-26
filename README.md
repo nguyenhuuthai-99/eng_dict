@@ -2,7 +2,12 @@
 
 ## 1. Overview
 EngDict is a mobile application designed to help English learners search for words they are curious about. The app provides definitions classified by different fields and allows users to practice their saved words, making learning easier and more engaging.
-
+<img src="screenshots/dictionary.jpg" width="200">
+<img src="screenshots/pronunciation.jpg" width="200">
+<img src="screenshots/practice.jpg" width="200">
+<img src="screenshots/tap-and-search.jpg" width="200">
+<img src="screenshots/vocabulary.jpg" width="200">
+<img src="screenshots/reading.jpg" width="200">
 ## 2. Features
 - **Word Search**: Users can search for English words, and definitions are provided in English.
 - **Pronunciation Support**: Users can listen to word pronunciations in **US**, **UK**, and real-world **video contexts**.
@@ -30,7 +35,7 @@ EngDict is a mobile application designed to help English learners search for wor
 #### **Frontend Setup**
 1. Clone the repository:
    ```sh
-   git clone <[https://github.com/nguyenhuuthai-99/eng_dict>
+   git clone https://github.com/nguyenhuuthai-99/eng_dict
    cd engdict-app
    ```
 2. Install dependencies:
