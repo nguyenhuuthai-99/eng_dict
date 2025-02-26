@@ -2,6 +2,7 @@
 
 ## 1. Overview
 EngDict is a mobile application designed to help English learners search for words they are curious about. The app provides definitions classified by different fields and allows users to practice their saved words, making learning easier and more engaging.
+
 <img src="screenshots/dictionary.jpg" width="200">
 <img src="screenshots/pronunciation.jpg" width="200">
 <img src="screenshots/practice.jpg" width="200">
