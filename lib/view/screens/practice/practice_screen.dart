@@ -1,3 +1,4 @@
+import 'package:eng_dict/view/screens/practice/flashcard/flashcard_screen.dart';
 import 'package:eng_dict/view/screens/practice/quiz/quizzes_screen.dart';
 import 'package:eng_dict/view/screens/practice/word_scramble/word_scramble_start_screen.dart';
 import 'package:eng_dict/view/widgets/practice/practice_section_box.dart';
@@ -34,12 +35,12 @@ class PracticeScreen extends StatelessWidget {
               subTitle: "Test your knowledge and beat the clock",
               image: const AssetImage("assets/images/practice.png"),
             ),
-            // PracticeSectionBox(
-            //   title: "Flashcard",
-            //   nextScreen: WordScrambleSelectScreen(),
-            //   subTitle: "Flip, remember, and level up your vocabulary",
-            //   image: const AssetImage("assets/images/flashcard.png"),
-            // ),
+            PracticeSectionBox(
+              title: "Flashcard",
+              nextScreen: const FlashcardScreen(),
+              subTitle: "Flip, remember, and level up your vocabulary",
+              image: const AssetImage("assets/images/flashcard.png"),
+            ),
           ],
         ),
       ),

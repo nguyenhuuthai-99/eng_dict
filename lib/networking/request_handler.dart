@@ -8,9 +8,9 @@ import 'package:http/http.dart' as http;
 import 'package:eng_dict/model/word_field.dart';
 
 class RequestHandler {
-  final String _domain = "https://engdictbackend-1.onrender.com";
-  // final String _domain =
-  //     Platform.isIOS ? "http://localhost:8080" : "http://10.0.2.2:8080";
+  // final String _domain = "https://engdictbackend-1.onrender.com";
+  final String _domain =
+      Platform.isIOS ? "http://localhost:8080" : "http://10.0.2.2:8080";
   // final String _domain = "http://192.168.0.227:8080";
 
   late Uri URL;

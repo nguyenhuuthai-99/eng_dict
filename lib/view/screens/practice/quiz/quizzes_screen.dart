@@ -10,10 +10,12 @@ import 'package:eng_dict/view/screens/practice/quiz/multiple_choice.dart';
 import 'package:eng_dict/view/screens/practice/quiz/spelling.dart';
 import 'package:eng_dict/view/screens/practice/quiz/word_matching.dart';
 import 'package:eng_dict/view/utils/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../../../dialog/alertDialog.dart';
 import '../../../widgets/practice/quiz/circle_progression_box.dart';
 
 const level1Count = 6;
@@ -316,15 +318,25 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
             resizeToAvoidBottomInset: true,
             appBar: _isEnoughTestingWord
                 ? AppBar(
+                    leading: GestureDetector(
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) => ConfirmAlert(
+                            confirmAction: () {
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                            title: "Exit Practice Mode",
+                            content:
+                                "Are you sure you want to exit current training session.\n"
+                                "Your progress won't be saved."),
+                      ),
+                      child: const Icon(CupertinoIcons.back),
+                    ),
                     title: currentLessonIndex == generatedLessons.length
                         ? null
                         : Text(
                             "${currentLessonIndex + 1}/${generatedLessons.length}"),
-                    actions: [
-                      TextButton(
-                          onPressed: onNextPressed,
-                          child: const Text("Skip   "))
-                    ],
                   )
                 : AppBar(),
             body: _isQuizReady
