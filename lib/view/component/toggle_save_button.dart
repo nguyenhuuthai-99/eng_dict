@@ -26,8 +26,8 @@ class _ToggleSaveButtonState extends State<ToggleSaveButton> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
+    return TextButton(
+      onPressed: () {
         if (!isClicked) {
           if (widget.word == null) {
             return;
@@ -53,10 +53,12 @@ class _ToggleSaveButtonState extends State<ToggleSaveButton> {
       child: isClicked
           ? const Icon(
               CustomIcon.book_mark_filled,
+              size: 24,
               color: Constant.kPrimaryColor,
             )
           : const Icon(
               CustomIcon.book_mark,
+              size: 24,
               color: Colors.black38,
             ),
     );

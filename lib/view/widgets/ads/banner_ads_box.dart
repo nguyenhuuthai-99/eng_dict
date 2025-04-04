@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:eng_dict/model/banner_ads_state.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -17,14 +16,14 @@ class _BannerAdsBoxState extends State<BannerAdsBox>
   late BannerAd bannerAd;
   bool isLoaded = false;
 
-  // String get adUnitId => Platform.isAndroid
-  //     ? 'ca-app-pub-2903872604687353/2000827477'
-  //     : 'ca-app-pub-2903872604687353/8979132933';
+  String get adUnitId => Platform.isAndroid
+      ? 'ca-app-pub-2903872604687353/2000827477'
+      : 'ca-app-pub-2903872604687353/8979132933';
 
   // //dummy ad
-  final adUnitId = Platform.isAndroid
-      ? 'ca-app-pub-3940256099942544/9214589741'
-      : 'ca-app-pub-3940256099942544/2435281174';
+  // final adUnitId = Platform.isAndroid
+  //     ? 'ca-app-pub-3940256099942544/9214589741'
+  //     : 'ca-app-pub-3940256099942544/2435281174';
 
   @override
   void didChangeDependencies() {

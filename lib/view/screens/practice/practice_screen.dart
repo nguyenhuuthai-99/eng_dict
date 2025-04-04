@@ -18,6 +18,12 @@ class PracticeScreen extends StatelessWidget {
         child: ListView(
           children: [
             PracticeSectionBox(
+              title: "Quizzes",
+              nextScreen: const QuizzesScreen(),
+              subTitle: "Test your knowledge and beat the clock",
+              image: const AssetImage("assets/images/practice.png"),
+            ),
+            PracticeSectionBox(
               title: "Word Scramble",
               nextScreen: WordScrambleSelectScreen(),
               subTitle: "Fix the mix, master your spelling",
@@ -29,18 +35,12 @@ class PracticeScreen extends StatelessWidget {
             //   subTitle: "Beat the board, refine your vocabulary",
             //   image: const AssetImage("assets/images/word_board.png"),
             // ),
-            PracticeSectionBox(
-              title: "Quizzes",
-              nextScreen: const QuizzesScreen(),
-              subTitle: "Test your knowledge and beat the clock",
-              image: const AssetImage("assets/images/practice.png"),
-            ),
-            PracticeSectionBox(
-              title: "Flashcard",
-              nextScreen: const FlashcardScreen(),
-              subTitle: "Flip, remember, and level up your vocabulary",
-              image: const AssetImage("assets/images/flashcard.png"),
-            ),
+            // PracticeSectionBox(
+            //   title: "Flashcard",
+            //   nextScreen: const FlashcardScreen(),
+            //   subTitle: "Flip, remember, and level up your vocabulary",
+            //   image: const AssetImage("assets/images/flashcard.png"),
+            // ),
           ],
         ),
       ),
