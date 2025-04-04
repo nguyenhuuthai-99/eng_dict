@@ -33,6 +33,16 @@ class _SearchScreenState extends State<SearchScreen> {
     return searchedWords;
   }
 
+  String trimInput(String input) {
+    if (input.isEmpty) return input;
+
+    String trimmedInput = input;
+    if (input.endsWith(" ")) {
+      trimmedInput = trimmedInput.substring(0, trimmedInput.length - 1);
+    }
+    return trimmedInput;
+  }
+
   @override
   Widget build(BuildContext context) {
     initSearchedWords();
@@ -74,11 +84,12 @@ class _SearchScreenState extends State<SearchScreen> {
                       },
                       onChanged: (value) async {
                         if (value.length > 1) {
-                          suggestedWords =
-                              await requestHandler.getSuggestedWord(value);
+                          String trimmedInput = trimInput(value);
+                          suggestedWords = await requestHandler
+                              .getSuggestedWord(trimmedInput);
                           if (suggestedWords.isEmpty) {
-                            didYouMeanWords =
-                                await requestHandler.getDidYouMeanWord(value);
+                            didYouMeanWords = await requestHandler
+                                .getDidYouMeanWord(trimmedInput);
                           } else {
                             didYouMeanWords = null;
                           }
