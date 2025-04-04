@@ -1,10 +1,12 @@
 import 'package:eng_dict/model/vocabulary.dart';
 import 'package:eng_dict/provider/vocabulary_data.dart';
+import 'package:eng_dict/view/screens/practice/practice_screen.dart';
 import 'package:eng_dict/view/utils/constants.dart';
 import 'package:eng_dict/view/utils/custom_icon.dart';
 import 'package:eng_dict/view/widgets/ads/banner_ads_box.dart';
 import 'package:eng_dict/view/widgets/vocabulary/vocabulary_box.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class VocabularyScreen extends StatelessWidget {
@@ -62,28 +64,32 @@ class VocabularyScreen extends StatelessWidget {
                               const Expanded(
                                 child: SizedBox(),
                               ),
-                              // TextButton(
-                              //   style: const ButtonStyle(),
-                              //   onPressed: () {
-                              //     print("practice");
-                              //   },
-                              //   child: Text(
-                              //     "Practice now",
-                              //     style: GoogleFonts.openSans(
-                              //         decoration: TextDecoration.underline,
-                              //         decorationThickness: 2,
-                              //         decorationColor:
-                              //             Constant.kHyperLinkTextColor,
-                              //         fontWeight: FontWeight.w400,
-                              //         fontSize: 20,
-                              //         color: Colors.transparent,
-                              //         shadows: [
-                              //           const Shadow(
-                              //               color: Constant.kHyperLinkTextColor,
-                              //               offset: Offset(0, -5))
-                              //         ]),
-                              //   ),
-                              // )
+                              TextButton(
+                                style: const ButtonStyle(),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => PracticeScreen(),
+                                      ));
+                                },
+                                child: Text(
+                                  "Practice now",
+                                  style: GoogleFonts.openSans(
+                                      decoration: TextDecoration.underline,
+                                      decorationThickness: 2,
+                                      decorationColor:
+                                          Constant.kHyperLinkTextColor,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 20,
+                                      color: Colors.transparent,
+                                      shadows: [
+                                        const Shadow(
+                                            color: Constant.kHyperLinkTextColor,
+                                            offset: Offset(0, -5))
+                                      ]),
+                                ),
+                              ),
                               Container()
                             ],
                           ),
