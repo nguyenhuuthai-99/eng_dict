@@ -318,8 +318,8 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
             resizeToAvoidBottomInset: true,
             appBar: _isEnoughTestingWord
                 ? AppBar(
-                    leading: GestureDetector(
-                      onTap: () => showDialog(
+                    leading: TextButton(
+                      onPressed: () => showDialog(
                         context: context,
                         builder: (context) => ConfirmAlert(
                             confirmAction: () {
@@ -331,7 +331,10 @@ class _QuizzesScreenState extends State<QuizzesScreen> {
                                 "Are you sure you want to exit current training session.\n"
                                 "Your progress won't be saved."),
                       ),
-                      child: const Icon(CupertinoIcons.back),
+                      child: const Icon(
+                        CupertinoIcons.back,
+                        size: 30,
+                      ),
                     ),
                     title: currentLessonIndex == generatedLessons.length
                         ? null

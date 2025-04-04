@@ -283,8 +283,8 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
     return !isFinish
         ? Scaffold(
             appBar: AppBar(
-              leading: GestureDetector(
-                onTap: () => showDialog(
+              leading: TextButton(
+                onPressed: () => showDialog(
                   context: context,
                   builder: (context) => ConfirmAlert(
                       confirmAction: () {
@@ -296,7 +296,10 @@ class _ScrambleGameScreenState extends State<ScrambleGameScreen> {
                           "Are you sure you want to exit current training session.\n"
                           "Your progress won't be saved."),
                 ),
-                child: const Icon(CupertinoIcons.back),
+                child: const Icon(
+                  CupertinoIcons.back,
+                  size: 30,
+                ),
               ),
               title: Text(
                 "${currentIndex + 1}/${widget.words.length}",
