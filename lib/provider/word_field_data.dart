@@ -14,12 +14,14 @@ class WordFieldData extends ChangeNotifier {
   late String title;
   bool _isLoading = false;
   bool _hasError = false;
+  bool _isFirstSearched = false;
   final int _timeout = 60;
 
   WordFieldData();
 
   Future<void>? loadWordFromURL(String title, String url) async {
     this.title = title;
+    _isFirstSearched = true;
     _isLoading = true;
     _hasError = false;
     notifyListeners();
@@ -53,6 +55,7 @@ class WordFieldData extends ChangeNotifier {
 
   Future<void>? updateWordFieldList(String word) async {
     title = word;
+    _isFirstSearched = true;
     _isLoading = true;
     _hasError = false;
     notifyListeners();
@@ -91,4 +94,6 @@ class WordFieldData extends ChangeNotifier {
   bool get hasError => _hasError;
 
   bool get isLoading => _isLoading!;
+
+  bool get isFirstSearched => _isFirstSearched;
 }

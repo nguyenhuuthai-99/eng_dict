@@ -26,6 +26,7 @@ class DictionaryScreen extends StatelessWidget {
   late bool canNotify;
   bool isBottom = false;
   bool showAppBar;
+  bool isSearched = false;
 
   DictionaryScreen({super.key, required this.showAppBar});
 
@@ -105,16 +106,6 @@ class DictionaryScreen extends StatelessWidget {
         (await setting.readSettings())["notification_dictionary_screen"];
   }
 
-  bool canShowInformationLabel() {
-    if (isBottom) {
-      return false;
-    }
-    if (wordFieldData.wordFields.isEmpty) {
-      return true;
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     wordFieldData = Provider.of<WordFieldData>(context);
@@ -122,14 +113,8 @@ class DictionaryScreen extends StatelessWidget {
     init();
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: canShowInformationLabel()
-          ? AppBar(
-              backgroundColor: Colors.white,
-              title: const CustomSearchBar(),
-            )
-          : null,
       backgroundColor: Colors.white,
-      body: !canShowInformationLabel()
+      body: wordFieldData.isFirstSearched
           ? SafeArea(
               bottom: false,
               child: wordFieldData.isLoading
@@ -305,9 +290,6 @@ class DictionaryLoadingScreen extends StatelessWidget {
     wordFieldData = Provider.of<WordFieldData>(context);
     return !wordFieldData.hasError
         ? Scaffold(
-            appBar: AppBar(
-              title: const CustomSearchBar(),
-            ),
             body: Shimmer.fromColors(
               baseColor: Colors.grey.shade300,
               highlightColor: Colors.grey.shade100,
